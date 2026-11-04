@@ -1,0 +1,31 @@
+version: 1
+mode: continuous
+execution_loop:
+  enabled: true
+  max_repair_attempts: 3
+  max_test_runtime_sec: 300
+  require_receipt: true
+learning_loop:
+  enabled: true
+  analyze_test_receipts: true
+  classify_recurring_failures: true
+  minimum_observations_for_policy_candidate: 3
+improvement_loop:
+  enabled: true
+  propose_only: true
+  require_human_approval: true
+  version_harness_changes: true
+safety:
+  no_hidden_self_modification: true
+  no_unbounded_retries: true
+  no_automatic_policy_promotion: true
+
+worktree_isolation:
+  enabled: true
+  one_worktree_per_task: true
+  external_to_main_repo: true
+receipt_gate:
+  enabled: true
+  require_terminal_exit_zero: true
+  seal_algorithm: sha256
+  approval_requires_valid_seal: true

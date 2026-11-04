@@ -1,0 +1,9 @@
+id: data_trace
+severity: P0
+rule: "For payload/config/API/state tasks, document Ingress -> Validation -> State/Persistence -> Egress and identify root cause before mutation."
+required_steps:
+  - ingress
+  - validation
+  - state
+  - egress
+required_root_cause: true

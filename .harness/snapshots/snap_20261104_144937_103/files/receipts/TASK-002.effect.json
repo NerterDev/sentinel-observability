@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "required": true,
+  "cross_boundary": true,
+  "layers": [],
+  "changed_files": [],
+  "errors": [],
+  "warnings": [
+    "Declared impact differs from current Git classification; review the impact graph."
+  ],
+  "evidence": {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "tests"
+    ],
+    "exit_code": 0,
+    "status": "passed",
+    "duration_sec": 0.441,
+    "stdout": "",
+    "stderr": ".................................\n----------------------------------------------------------------------\nRan 33 tests in 0.017s\n\nOK\n",
+    "at": "2026-11-04T13:35:40+01:00"
+  },
+  "contract": ".harness\\tasks\\TASK-002.effect.yaml"
+}

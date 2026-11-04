@@ -1,0 +1,49 @@
+engineering_integrity:
+  canonical_path:
+    required: true
+    found: false
+    path: "src/orchestrator.py"
+  redundancy_check:
+    required: true
+    existing_canonical_path_found: false
+    existing_implementation_files: []
+    reason_extension_is_required: ""
+    reason_existing_path_cannot_be_fixed: ""
+    new_wrappers: []
+    new_fallbacks: []
+    new_parallel_state: []
+  data_trace:
+    required: true
+    reason: "Orquestração de sondas e consolidação de série temporal de 30 dias em JSON"
+    ingress: "EdgeInspectionResult, ProbeResult, config/sites.json e history.json"
+    validation: "Modelos Pydantic em src/models.py com validação de janela de 30 dias"
+    state: "Instâncias de CurrentStatusPayload e HistoryPayload em memória"
+    egress: "Gravação atómica em dashboard/data/current_status.json e history.json"
+    root_cause:
+      file: "src/orchestrator.py"
+      symbol: "run_observability_pipeline"
+      line: 1
+      explanation: "Implementação canónica do orquestrador multi-site e persistência GitOps"
+  schema_validation:
+    required: true
+    schema_authority:
+      type: "pydantic"
+      source: "src/models.py"
+  source_of_truth:
+    required: true
+    configuration: "config/sites.json"
+    thresholds: "config/thresholds.json"
+  new_interfaces:
+    allowed: true
+    justification_required: true
+    items:
+      - name: "ForensicRecorder"
+        kind: "class"
+        justification: "Gravador atómico de telemetria e série temporal deslizante de 30 dias"
+      - name: "run_observability_pipeline"
+        kind: "function"
+        justification: "Ponto de entrada canónico para execução da bateria de testes periódica"
+  phantom_interface_check:
+    required: true
+    undeclared_references: []
+

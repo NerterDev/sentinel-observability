@@ -1,0 +1,13 @@
+version: 1
+status: pending
+challenger: not_run
+human_review: pending
+findings: []
+
+challenge_questions:
+  - "Que requisitos podem não estar cobertos?"
+  - "Que premissas podem estar erradas?"
+  - "Existe um bottleneck ou single point of failure?"
+  - "Existe uma alternativa significativamente mais simples?"
+  - "Como sabemos que a arquitetura é viável para os requisitos críticos?"
+  - "Que evidência falta antes de aprovar?"

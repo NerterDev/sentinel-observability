@@ -1,0 +1,21 @@
+# Machine-maintained learning summary (Universal Failure Taxonomy)
+{
+  "version": 2,
+  "updated_at": "2026-11-03T03:54:15+00:00",
+  "total_runs": 0,
+  "passed": 0,
+  "failures": 0,
+  "pass_rate_pct": 100.0,
+  "failure_classes": {
+    "ENVIRONMENT": 0,
+    "DEPENDENCY": 0,
+    "CODE": 0,
+    "TEST": 0,
+    "CONTRACT": 0,
+    "UX_CONTRACT": 0,
+    "PERMISSION": 0,
+    "EXTERNAL_SERVICE": 0,
+    "UNKNOWN": 0
+  },
+  "lessons": []
+}

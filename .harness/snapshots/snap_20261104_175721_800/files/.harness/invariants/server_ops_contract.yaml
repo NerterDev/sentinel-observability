@@ -1,0 +1,88 @@
+version: 1
+name: "Universal Server-Ops & Infrastructure Contract: Hardening, WordPress, Trading Daemons & Backups"
+description: "Cross-technology invariant governing VPS, dedicated, bare-metal and cloud server operations, workload security, trading bot reliability and disaster recovery."
+axiom: "Um servidor de produção confiável é seguro por omissão, isolado por privilégios mínimos, imune a congelamentos silenciosos e recuperável a qualquer momento por cópias de segurança determinísticas."
+
+taxonomy:
+  MUST: "Violação incondicional = Tarefa/Recibo REJEITADO. Sem exceções."
+  SHOULD: "Violação exige justificativa explícita e documentada no Task Contract em tasks/."
+  MAY: "Preferência de engenharia recomendada, não mandatória."
+
+laws:
+  # =========================================================================
+  # 1. LEIS DE HARDENING DE SEGURANÇA E ACESSO
+  # =========================================================================
+  security_hardening:
+    rules:
+      - id: ZERO_PASSWORD_AUTH_SSH
+        level: MUST
+        requirement: "Servidores com acesso público SSH devem desativar obrigatoriamente a autenticação por palavra-passe (PasswordAuthentication no). Acesso estritamente restrito a chaves SSH criptográficas (Ed25519 recomendada)."
+      - id: NO_ROOT_EXECUTION
+        level: MUST
+        requirement: "PROIBIDO executar aplicações web (WordPress/PHP), daemons de bots de trading ou containers sem isolamento com utilizador root do sistema. Cada workload deve operar sob utilizador de sistema dedicado sem privilégios."
+      - id: STRICT_FIREWALL_DEFAULT_DENY
+        level: MUST
+        requirement: "A firewall do servidor (UFW/nftables/iptables) deve operar em modo padrão 'default deny incoming'. Apenas portas estritamente essenciais (SSH, 80, 443) devem estar abertas."
+      - id: ZERO_PUBLIC_DB_EXPOSURE
+        level: MUST
+        requirement: "Portas de bases de dados (MySQL/MariaDB 3306, PostgreSQL 5432, Redis 6379, MongoDB 27017) não podem ser expostas diretamente para a internet pública sem túnel VPN (WireGuard/OpenVPN), SSH ou bind estrito em 127.0.0.1."
+      - id: SECRETS_FILE_RESTRICTION
+        level: MUST
+        requirement: "Ficheiros de variáveis de ambiente (.env), chaves de API de exchanges e credenciais devem possuir permissões restritas (chmod 0600) e estar protegidos no .gitignore contra commit inadvertido."
+
+  # =========================================================================
+  # 2. LEIS DO WORKLOAD WORDPRESS & NGINX
+  # =========================================================================
+  wordpress_workload:
+    rules:
+      - id: UPLOADS_DIRECTORY_EXECUTION_BLOCK
+        level: MUST
+        requirement: "O servidor web (Nginx/Caddy/OpenLiteSpeed) deve bloquear categoricamente a execução de scripts PHP e binários (.php, .phtml, .sh, .py, .pl) dentro do diretório /wp-content/uploads/."
+      - id: XMLRPC_PROTECTION
+        level: MUST
+        requirement: "O endpoint /xmlrpc.php deve ser bloqueado ou fortemente restringido a nível do servidor web para mitigar ataques de amplificação DDoS e brute force."
+      - id: OPCACHE_AND_REDIS_TUNING
+        level: MUST
+        requirement: "Servidores de WordPress em produção devem ter Zend OPcache ativado com opcache.memory_consumption >= 128MB e camada de Object Cache (Redis) ativa para mitigar sobrecarga de base de dados."
+      - id: WP_CONFIG_PERMISSIONS
+        level: MUST
+        requirement: "O ficheiro wp-config.php deve possuir permissões restritas (chmod 0600 ou 0640) impedindo leitura por utilizadores não autorizados do sistema."
+
+  # =========================================================================
+  # 3. LEIS DO WORKLOAD BOTS DE TRADING & SERVIÇOS CRÍTICOS
+  # =========================================================================
+  trading_workload:
+    rules:
+      - id: SYSTEMD_AUTO_RECOVERY
+        level: MUST
+        requirement: "Bots de trading executados como daemons devem ser geridos via Systemd (ou Docker restart: always) com diretivas de reinício automático 'Restart=always' e intervalo 'RestartSec=5s' para recuperação imediata de falhas de rede."
+      - id: WATCHDOG_DEADLOCK_PROTECTION
+        level: MUST
+        requirement: "Bots com ligação contínua a exchanges devem possuir watchdog de heartbeat ativo (Systemd WatchdogSec ou script cron de telemetria) que termine e reinicie o processo se nenhum tick for processado em janela de tempo razoável."
+      - id: SUB_MILLISECOND_CHRONY_NTP
+        level: MUST
+        requirement: "O servidor deve executar o serviço Chrony ativo e sincronizado com pools NTP locais para garantir desfasamento de relógio < 1000 microsegundos, prevenindo rejeição de ordens por timestamp inválido nas corretoras."
+      - id: CGROUP_RESOURCE_LIMITS
+        level: MUST
+        requirement: "Serviços de bots devem ter limites de consumo de memória (MemoryMax no systemd ou mem_limit no docker-compose) para impedir fugas de memória que derrubem o servidor."
+      - id: TCP_BBR_LOW_LATENCY
+        level: SHOULD
+        requirement: "O kernel Linux deve estar configurado com algoritmo de controlo de congestão TCP BBR (net.ipv4.tcp_congestion_control=bbr) para minimizar latência e bufferbloat na transmissão de ordens."
+
+  # =========================================================================
+  # 4. LEIS DE OBSERVABILIDADE E RECUPERAÇÃO DE DESASTRES (BACKUPS)
+  # =========================================================================
+  disaster_recovery_and_backups:
+    rules:
+      - id: AUTOMATED_OFFSITE_BACKUP
+        level: MUST
+        requirement: "O servidor deve possuir rotina automatizada e periódica de cópia de segurança offsite (S3, B2, outro servidor ou storage box) com cifra ativada no envio e no destino."
+      - id: ATOMIC_DATABASE_DUMP
+        level: MUST
+        requirement: "Dumps de base de dados para backup devem ser executados de forma atómica e consistente (mysqldump --single-transaction --quick ou pg_dump) sem bloquear operações ativas de escrita no banco."
+      - id: JOURNALD_LOG_CAPPING
+        level: MUST
+        requirement: "O registo de logs do sistema (/etc/systemd/journald.conf) deve ter teto máximo explícito (SystemMaxUse=500M) para prevenir exaustão de espaço em disco em servidores de longa duração."
+      - id: DISK_AND_MEMORY_ALERTING
+        level: MUST
+        requirement: "Deve existir mecanismo de alerta ou telemetria para utilização de disco acima de 85% e memória swap exaurida."

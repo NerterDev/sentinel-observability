@@ -1,0 +1,18 @@
+version: "1.0"
+name: engineering-integrity-layer
+mode: enforced
+principles:
+  canonical_path_first: true
+  consolidation_over_extension: true
+  evidence_over_assertion: true
+  one_source_of_truth: true
+  phantom_interface_prevention: true
+rules:
+  new_wrappers: prohibited_by_default
+  new_fallbacks: prohibited_by_default
+  new_parallel_state: prohibited_by_default
+  new_interfaces: allowed_with_justification
+  dynamic_persistent_configuration: prohibited_without_schema_authority
+  data_trace: required_for_data_or_api_tasks
+receipt_gate:
+  require_integrity_pass: true

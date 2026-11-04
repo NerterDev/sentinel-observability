@@ -1,0 +1,6 @@
+# Dependências da Plataforma de Observabilidade Web (Tier-S)
+playwright>=1.40.0
+pydantic>=2.5.0
+httpx>=0.25.0
+python-dotenv>=1.0.0
+

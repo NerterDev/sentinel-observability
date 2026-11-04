@@ -1,0 +1,88 @@
+version: 1
+name: "Universal E-Commerce Tier-S Contract: Speed, SEO, CRO & Growth"
+description: "Cross-technology invariant governing web performance, technical SEO, conversion funnels and measurement integrity for e-commerce."
+axiom: "A loja que converte é veloz, previsível, semanticamente legível para motores de busca e respeitadora da atenção humana."
+
+taxonomy:
+  MUST: "Violação incondicional = Tarefa/Recibo REJEITADO. Sem exceções."
+  SHOULD: "Violação exige justificativa explícita e documentada no Task Contract em tasks/."
+  MAY: "Preferência ergonómica recomendada, não mandatória."
+
+laws:
+  # =========================================================================
+  # 1. LEIS DE VELOCIDADE, PERFORMANCE & CORE WEB VITALS (WPO)
+  # =========================================================================
+  performance_and_speed:
+    rules:
+      - id: ZERO_CART_FRAGMENTS_BLOAT
+        level: MUST
+        requirement: "PROIBIDO carregar cart-fragments.js globalmente de forma síncrona. Atualizações de estado do carrinho devem operar via LocalStorage ou chamadas AJAX pontuais sob demanda."
+      - id: PRELOAD_LCP_HERO_IMAGE
+        level: MUST
+        requirement: "A imagem principal do produto (LCP) deve ter preload com fetchpriority='high' e decoding='async'. Proibido loading='lazy' na imagem LCP da dobra inicial."
+      - id: EXPLICIT_MEDIA_DIMENSIONS
+        level: MUST
+        requirement: "Todas as tags <img> e contentores dinâmicos devem possuir width e height explícitos ou aspect-ratio definido para garantir Cumulative Layout Shift = 0.00."
+      - id: CONDITIONAL_ASSET_ENQUEUEING
+        level: MUST
+        requirement: "Scripts pesados de gateways de pagamento, checkout ou bibliotecas terceiras (ex: Stripe, Select2) não podem ser enfileirados em páginas de catálogo, arquivos ou blog."
+      - id: HPOS_DATABASE_COMPLIANCE
+        level: MUST
+        requirement: "Em WooCommerce 8.0+, todas as operações de leitura e gravação de encomendas devem ser compatíveis com High-Performance Order Storage (HPOS). Proibido criar dependência em wp_postmeta para novas encomendas."
+      - id: ZERO_N_PLUS_ONE_QUERIES
+        level: MUST
+        requirement: "Consultas de catálogo e listagens de produtos não podem executar get_post_meta em loops individuais sem cache agregada prévia (prime_post_caches)."
+
+  # =========================================================================
+  # 2. LEIS DE SEO TÉCNICO & DADOS ESTRUTURADOS
+  # =========================================================================
+  technical_seo:
+    rules:
+      - id: MANDATORY_SCHEMA_JSONLD
+        level: MUST
+        requirement: "Páginas de produto devem renderizar JSON-LD válido contendo obrigatoriamente: Product, Offer (preço, moeda, disponibilidade), AggregateRating (quando aplicável) e BreadcrumbList."
+      - id: SINGLE_H1_CANONICAL_HIERARCHY
+        level: MUST
+        requirement: "Existe estritamente 1 único elemento <h1> por página (o título do produto ou nome do arquivo de categoria). Subtítulos devem respeitar a hierarquia h2 -> h3 sem saltos de nível."
+      - id: CLEAN_FACETS_CRAWL_BUDGET
+        level: MUST
+        requirement: "Filtros multifacetados, buscas internas sem resultados e parâmetros de ordenação arbitrária devem possuir tag <meta name='robots' content='noindex, follow'> e canónica auto-referenciada limpa."
+      - id: CONTEXTUAL_ALT_TEXT
+        level: MUST
+        requirement: "Imagens de produtos no catálogo e PDP não podem possuir atributo alt vazio. O alt deve descrever o produto e a variação correspondente."
+
+  # =========================================================================
+  # 3. LEIS DE CONVERSÃO (CRO - CONVERSION RATE OPTIMIZATION)
+  # =========================================================================
+  conversion_rate_optimization:
+    rules:
+      - id: DISTRACTION_FREE_CHECKOUT
+        level: MUST
+        requirement: "O ecrã de checkout não pode conter menus de navegação extensos, sidebars de blog ou links de fuga que distraiam o utilizador do pagamento."
+      - id: REALTIME_INLINE_VALIDATION
+        level: MUST
+        requirement: "Campos críticos de checkout (NIF, Email, Código Postal/Morada) devem fornecer validação inline com mensagens claras antes da submissão do formulário."
+      - id: EXPRESS_CHECKOUT_ABOVE_THE_FOLD
+        level: SHOULD
+        requirement: "Métodos de pagamento expresso (Apple Pay, Google Pay, MB Way, Cartão 1-Clique) devem estar posicionados no topo do checkout, reduzindo a fricção do formulário."
+      - id: MOBILE_STICKY_ADD_TO_CART
+        level: SHOULD
+        requirement: "Na visualização móvel da PDP, o botão 'Adicionar ao Carrinho' deve fixar-se no fundo do ecrã (sticky) quando o botão principal for rolado para fora da vista."
+      - id: DYNAMIC_FREE_SHIPPING_BAR
+        level: SHOULD
+        requirement: "O carrinho lateral (mini-cart) deve exibir o valor restante para portes grátis em tempo real com barra de progresso visual."
+
+  # =========================================================================
+  # 4. LEIS DE GROWTH LOOPS, ANALYTICS & PRIVACIDADE
+  # =========================================================================
+  growth_and_analytics:
+    rules:
+      - id: GA4_DATA_LAYER_INTEGRITY
+        level: MUST
+        requirement: "Todas as interações de compra devem despachar os eventos padrão do GA4 E-Commerce: view_item, add_to_cart, begin_checkout e purchase com payload completo de itens e moeda."
+      - id: CONSENT_MODE_V2_COMPLIANCE
+        level: MUST
+        requirement: "Nenhum cookie de rastreamento de anúncios ou dados de utilizador pode ser disparado antes da concessão de consentimento explícito (Google Consent Mode v2 / RGPD)."
+      - id: SERVER_SIDE_CAPI_DEDUPLICATION
+        level: SHOULD
+        requirement: "Quando eventos de conversão são enviados via Meta CAPI ou Google Ads Server-Side, o event_id deve ser idêntico ao disparado no navegador para evitar duplicação de métricas."

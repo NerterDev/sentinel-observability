@@ -1,0 +1,13 @@
+version: 1
+completion_requires:
+  - "Architecture proposal exists"
+  - "Assumptions and unknowns are explicit"
+  - "Risks have mitigation or accepted rationale"
+  - "Architecture Challenge completed"
+  - "Human approval recorded before implementation"
+  - "Deterministic tests/checks pass"
+  - "Receipt records evidence"
+not_proven_by_tests:
+  - "The architecture is globally optimal"
+  - "The original requirements are correct"
+  - "Unobserved real-world behavior is safe"

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentinel — Observabilidade Sintética E-Commerce</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233fb950' stroke-width='2'><path d='M12 2L2 7l10 5 10-5-10-5z'/><path d='M2 17l10 5 10-5'/><path d='M2 12l10 5 10-5'/></svg>">
+</head>
+<body>
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo principal</a>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+          <path d="M2 12h20"></path>
+        </svg>
+        <div>
+          <h1 class="brand-title">Sentinel Observability</h1>
+          <p class="brand-subtitle">Plataforma Sintética E2E &amp; Diagnóstico Forense</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div id="last-run-indicator" class="last-run-badge">
+          <span class="pulse-indicator" aria-hidden="true"></span>
+          <span id="last-run-text">A carregar telemetria...</span>
+        </div>
+        <!-- Strictly 1 Primary CTA per view -->
+        <button id="btn-refresh" class="btn btn-primary" type="button" aria-label="Atualizar telemetria das lojas">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>Atualizar Telemetria</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter & Controls Navigation -->
+  <nav class="filter-bar" aria-label="Filtros e controlos de pesquisa">
+    <div class="filter-container">
+      <div class="filter-group">
+        <label for="filter-infra" class="filter-label">Infraestrutura:</label>
+        <select id="filter-infra" class="form-select">
+          <option value="all">Todas as Infraestruturas</option>
+          <option value="rocket_cloudflare">Rocket.net / Cloudflare</option>
+          <option value="vps">Linux VPS</option>
+          <option value="bare_metal">Bare-Metal</option>
+        </select>
+
+        <label for="filter-status" class="filter-label">Estado de Saúde:</label>
+        <select id="filter-status" class="form-select">
+          <option value="all">Todos os Estados</option>
+          <option value="healthy">Saudável</option>
+          <option value="degraded">Degradado</option>
+          <option value="critical">Crítico</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="search-input" class="filter-label">Pesquisa:</label>
+        <input id="search-input" type="search" class="form-input" placeholder="Filtrar por nome ou URL..." autocomplete="off">
+        <span id="stores-count-badge" class="badge badge-infra">0 lojas</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main id="main-content" class="main-wrapper">
+
+    <!-- Global Metrics Summary (Populated dynamically) -->
+    <section id="metrics-summary" class="metrics-summary-grid hidden" aria-label="Resumo geral de métricas">
+      <div class="metric-summary-card">
+        <span class="metric-summary-label">Uptime Médio (30d)</span>
+        <span id="summary-uptime" class="metric-summary-value">--%</span>
+      </div>
+      <div class="metric-summary-card">
+        <span class="metric-summary-label">Checkout Sucesso (30d)</span>
+        <span id="summary-checkout" class="metric-summary-value">--%</span>
+      </div>
+      <div class="metric-summary-card">
+        <span class="metric-summary-label">TTFB Médio Global</span>
+        <span id="summary-ttfb" class="metric-summary-value">-- ms</span>
+      </div>
+      <div class="metric-summary-card">
+        <span class="metric-summary-label">Incidentes Ativos</span>
+        <span id="summary-incidents" class="metric-summary-value">0</span>
+      </div>
+    </section>
+
+    <!-- State 5: PARTIAL_DEGRADED (Aviso não-bloqueante se métricas secundárias falharem) -->
+    <div id="state-partial-degraded" class="degraded-banner hidden" role="alert">
+      <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+      <div class="degraded-content">
+        <div class="degraded-title">Aviso de Telemetria Parcial</div>
+        <div id="degraded-message">O histórico de 30 dias está temporariamente indisponível. A apresentar dados instantâneos em tempo real.</div>
+      </div>
+    </div>
+
+    <!-- State 2: LOADING (Skeleton cards sem layout shift) -->
+    <div id="state-loading" class="state-container" aria-busy="true" aria-label="A carregar dados das lojas">
+      <div class="skeleton-grid">
+        <div class="skeleton-card">
+          <div class="skeleton-line" style="height: 24px; width: 60%;"></div>
+          <div class="skeleton-line" style="height: 16px; width: 40%;"></div>
+          <div class="skeleton-line" style="height: 64px; width: 100%;"></div>
+          <div class="skeleton-line" style="height: 32px; width: 100%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line" style="height: 24px; width: 50%;"></div>
+          <div class="skeleton-line" style="height: 16px; width: 35%;"></div>
+          <div class="skeleton-line" style="height: 64px; width: 100%;"></div>
+          <div class="skeleton-line" style="height: 32px; width: 100%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line" style="height: 24px; width: 65%;"></div>
+          <div class="skeleton-line" style="height: 16px; width: 45%;"></div>
+          <div class="skeleton-line" style="height: 64px; width: 100%;"></div>
+          <div class="skeleton-line" style="height: 32px; width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- State 1: EMPTY (Nenhuma loja configurada) -->
+    <div id="state-empty" class="state-container hidden">
+      <div class="state-icon-wrap">
+        <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+      </div>
+      <h2 class="state-title">Nenhuma Loja Monitorizada</h2>
+      <p class="state-description">
+        Não foram encontradas lojas configuradas na plataforma. Para iniciar a monitorização sintética, registe os seus domínios WooCommerce no ficheiro de configuração canónico.
+      </p>
+      <code class="code-terminal" style="max-width: 480px; width: 100%; text-align: left;">config/sites.json</code>
+    </div>
+
+    <!-- State 4: ZERO_RESULTS (Filtro sem resultados com botão de restauro) -->
+    <div id="state-zero-results" class="state-container hidden">
+      <div class="state-icon-wrap">
+        <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <h2 class="state-title">Nenhuma Loja Corresponde aos Filtros</h2>
+      <p class="state-description">
+        Nenhum resultado foi encontrado com os critérios de filtro ou pesquisa selecionados.
+      </p>
+      <button id="btn-reset-filters" class="btn btn-secondary" type="button">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        <span>Limpar Filtros</span>
+      </button>
+    </div>
+
+    <!-- State 6: ERROR (Falha com explicação e botão de recuperação) -->
+    <div id="state-error" class="state-container hidden" role="alert">
+      <div class="state-icon-wrap">
+        <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <h2 class="state-title">Falha ao Carregar Telemetria</h2>
+      <p id="error-message-text" class="state-description">
+        Ocorreu um erro ao aceder aos dados da plataforma no GitHub Pages ou armazenamento local.
+      </p>
+      <button id="btn-retry" class="btn btn-primary" type="button">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+        </svg>
+        <span>Tentar Novamente</span>
+      </button>
+    </div>
+
+    <!-- State 3: POPULATED (Grelha de cartões de loja) -->
+    <section id="state-populated" class="hidden" aria-label="Lojas monitorizadas">
+      <div id="stores-grid" class="stores-grid">
+        <!-- Injetado dinamicamente via app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal / Gaveta de Investigação Forense -->
+  <div id="forensic-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-store-name">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <h2 id="modal-store-name" class="modal-title">Dossiê Forense</h2>
+        </div>
+        <button id="btn-close-modal-x" class="btn btn-secondary" type="button" aria-label="Fechar modal forense">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="modal-tabs" role="tablist">
+        <button id="tab-btn-verdict" class="tab-btn active" role="tab" aria-selected="true" aria-controls="pane-verdict" type="button">
+          <span>Veredito</span>
+        </button>
+        <button id="tab-btn-screenshot" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-screenshot" type="button">
+          <span>Captura Forense</span>
+        </button>
+        <button id="tab-btn-js-errors" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-js-errors" type="button">
+          <span>Consola JS</span>
+        </button>
+        <button id="tab-btn-network" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-network" type="button">
+          <span>Requisições AJAX (&ge; 400)</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Pane: Veredito -->
+        <div id="pane-verdict" class="tab-pane active" role="tabpanel" aria-labelledby="tab-btn-verdict">
+          <div class="verdict-box">
+            <div class="verdict-header">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>Veredito da Causa-Raiz</span>
+            </div>
+            <p id="modal-verdict-text" class="verdict-text">Sem anomalias registadas no momento da inspeção.</p>
+          </div>
+          <div class="store-metrics">
+            <div class="metric-item">
+              <span class="metric-label">Passo do Fluxo com Falha</span>
+              <span id="modal-failed-step" class="metric-value">--</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Código de Erro</span>
+              <span id="modal-error-code" class="metric-value">--</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane: Captura Forense -->
+        <div id="pane-screenshot" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-screenshot">
+          <div class="screenshot-container">
+            <img id="modal-screenshot-img" class="screenshot-img" src="" alt="Captura forense no momento da falha de checkout">
+            <p id="modal-screenshot-empty" class="state-description hidden">Nenhuma captura de ecrã disponível para este incidente.</p>
+          </div>
+        </div>
+
+        <!-- Pane: Consola JS -->
+        <div id="pane-js-errors" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-js-errors">
+          <pre id="modal-js-errors" class="code-terminal">Nenhum erro de consola JavaScript intercetado.</pre>
+        </div>
+
+        <!-- Pane: Requisições AJAX -->
+        <div id="pane-network" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-network">
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Método</th>
+                  <th>URL</th>
+                  <th>Status</th>
+                  <th>Detalhes</th>
+                </tr>
+              </thead>
+              <tbody id="modal-network-tbody">
+                <tr>
+                  <td colspan="4" style="text-align: center; color: var(--text-muted);">Nenhuma chamada AJAX com falha intercetada.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <!-- Cancel is strictly no-op -->
+        <button id="btn-close-modal" class="btn btn-secondary" type="button">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- State 7: SUCCESS_FEEDBACK Toasts -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
+

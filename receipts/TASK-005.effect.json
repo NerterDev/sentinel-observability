@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "required": true,
+  "cross_boundary": true,
+  "layers": [],
+  "changed_files": [],
+  "errors": [],
+  "warnings": [
+    "Declared impact differs from current Git classification; review the impact graph."
+  ],
+  "evidence": {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "tests"
+    ],
+    "exit_code": 0,
+    "status": "passed",
+    "duration_sec": 0.574,
+    "stdout": "[2026-11-04T19:44:29.542069+00:00] A iniciar ronda de observabilidade (2 lojas)...\n  -> Inspecionando: Loja A Rocket (loja-a) [rocket_cloudflare]\n     [ERRO CR�TICO N�O TRATADO EM loja-a]: Falha de conex�o severa ou kernel panic\n  -> Inspecionando: Loja B VPS (loja-b) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: 180.0ms, Checkout: OK)\n\n--- RESUMO DA RONDA DE OBSERVABILIDADE ---\nLojas testadas: 2\n  - HEALTHY:  1\n  - DEGRADED: 0\n  - CRITICAL: 1\nNovos incidentes arquivados: 1\n-------------------------------------------\n\n[2026-11-04T19:44:29.553829+00:00] A iniciar ronda de observabilidade (1 lojas)...\n  -> Inspecionando: Loja B VPS (loja-b) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: Nonems, Checkout: OK)\n\n--- RESUMO DA RONDA DE OBSERVABILIDADE ---\nLojas testadas: 1\n  - HEALTHY:  1\n  - DEGRADED: 0\n  - CRITICAL: 0\nNovos incidentes arquivados: 0\n-------------------------------------------\n\n[2026-11-04T19:44:29.569347+00:00] A iniciar ronda de observabilidade (2 lojas)...\n  -> Inspecionando: Loja A Rocket (loja-a) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: 220.0ms, Checkout: OK)\n  -> Inspecionando: Loja B VPS (loja-b) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: 220.0ms, Checkout: OK)\n\n--- RESUMO DA RONDA DE OBSERVABILIDADE ---\nLojas testadas: 2\n  - HEALTHY:  2\n  - DEGRADED: 0\n  - CRITICAL: 0\nNovos incidentes arquivados: 0\n-------------------------------------------\n\n",
+    "stderr": "............................................................\n----------------------------------------------------------------------\nRan 60 tests in 0.109s\n\nOK\n",
+    "at": "2026-11-04T20:44:29+01:00"
+  },
+  "contract": ".harness\\tasks\\TASK-005.effect.yaml"
+}

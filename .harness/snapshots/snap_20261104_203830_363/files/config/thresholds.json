@@ -1,0 +1,10 @@
+{
+  "ttfb_warning_ms": 800.0,
+  "ttfb_critical_ms": 2500.0,
+  "ssl_expiry_warning_days": 15,
+  "ssl_expiry_critical_days": 3,
+  "step_timeout_sec": 25,
+  "max_js_errors_allowed": 0,
+  "http_error_threshold": 400
+}
+

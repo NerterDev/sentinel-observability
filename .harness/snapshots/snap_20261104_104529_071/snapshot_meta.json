@@ -1,0 +1,205 @@
+{
+  "id": "snap_20261104_104529_071",
+  "created_at": "2026-11-04T09:45:29.490126+00:00",
+  "label": "Pre-mutation TASK-001",
+  "task_id": null,
+  "total_files": 49,
+  "files": {
+    ".harness/antigravity-integration.json": {
+      "sha256": "e7932a53b7a59a7bc7cbafc7fb5bf7a2bdc2815592e2644bfcf11582f23bb621",
+      "size_bytes": 569
+    },
+    ".harness/architecture-options.yaml": {
+      "sha256": "8f64a5a4dbb172ab1aa24ea563e15d6d3a047d624fdd4614ff87f3d84cb9de7d",
+      "size_bytes": 191
+    },
+    ".harness/architecture-review.yaml": {
+      "sha256": "69d035448d30b2fe633e20711d697fae8cb42bb602c78c70506484f1a4df3a16",
+      "size_bytes": 446
+    },
+    ".harness/assumptions.yaml": {
+      "sha256": "d803b2c478b0828122659efeece3561992335b7cb169381fce2060e0127909be",
+      "size_bytes": 1762
+    },
+    ".harness/config.yaml": {
+      "sha256": "9ebe38ed49dd82b99385a01985a9b90ebef5e752d468fe0234520c20cda09be1",
+      "size_bytes": 195
+    },
+    ".harness/continuous.yaml": {
+      "sha256": "7245700631c73c77c61757c94a556c74a3ff02e99f368f291e5395c201cc2bb2",
+      "size_bytes": 765
+    },
+    ".harness/contract.yaml": {
+      "sha256": "bc0bc40b69b49c207ed80d5d88d2645fe66db4c6c58d28fcb22554d07b841750",
+      "size_bytes": 12028
+    },
+    ".harness/effect-verification.yaml": {
+      "sha256": "c9ab55761255382da2149949d3162c575a7aa305bccd91b060fd3584446f41ab",
+      "size_bytes": 676
+    },
+    ".harness/improvement-proposals.yaml": {
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "size_bytes": 4
+    },
+    ".harness/integrity.yaml": {
+      "sha256": "19bf10da276239b330e3215f500406db6e9fdec4c796f3d7b5d27d02e5933ec9",
+      "size_bytes": 592
+    },
+    ".harness/invariants/anti_redundancy.yaml": {
+      "sha256": "1c59fe8a739146c03a50e5a2b5a37923be8dfe406dbebc853182bac9e3f7225e",
+      "size_bytes": 414
+    },
+    ".harness/invariants/canonical_source.yaml": {
+      "sha256": "5078ddd2be938287ff3e3f405d46c181443e6ceb6873808afa692ed256913bdd",
+      "size_bytes": 161
+    },
+    ".harness/invariants/data_trace.yaml": {
+      "sha256": "3562d9ce2fd7fa49a5d0b1148bb23fe308f4bf5fcb47db2b7d011a261609a452",
+      "size_bytes": 274
+    },
+    ".harness/invariants/ecommerce_tier_s.yaml": {
+      "sha256": "343522c21d4cd01bf5f628072683c08fc369e96d0bb4dc9e03318298081574a1",
+      "size_bytes": 6168
+    },
+    ".harness/invariants/legal_contract.yaml": {
+      "sha256": "fc0bfee5bed0ba77fde30682b341d247092751eb67735f2838e6e6f2f53d3654",
+      "size_bytes": 3090
+    },
+    ".harness/invariants/phantom_interface.yaml": {
+      "sha256": "77b8ef6c78dc7cf18209d144b230390fa73a4073080d5b15294b3f953eb01ada",
+      "size_bytes": 247
+    },
+    ".harness/invariants/server_ops_contract.yaml": {
+      "sha256": "2d40cdbfd02742e102ef6a3dc2be48282e028689ecc96ffed33745935c95cb90",
+      "size_bytes": 6659
+    },
+    ".harness/invariants/strict_schema.yaml": {
+      "sha256": "6d2160773d556896546a3324141719bb87cb0a1743e97084623bc568b536dda6",
+      "size_bytes": 202
+    },
+    ".harness/invariants/ux_contract.yaml": {
+      "sha256": "0b777e0de771429141c5f4a14d2551d92e6efbc84d8b2924b1d7be80c5f9161b",
+      "size_bytes": 9188
+    },
+    ".harness/learning.yaml": {
+      "sha256": "418a37730e953d63043e69666df74f6888b9e1494e8f5aa3b84c909794ac2180",
+      "size_bytes": 453
+    },
+    ".harness/llm.yaml": {
+      "sha256": "8e8af4b366fd664cf85c8e8dec76f23266a48e54fc9c2fa9f24d16ad9f4f5f0e",
+      "size_bytes": 1188
+    },
+    ".harness/policy.yaml": {
+      "sha256": "c2fa195aed5232a12e2df3e4651ea10c76e69f3ebbe70b1ce46ccedf838ba6c6",
+      "size_bytes": 1880
+    },
+    ".harness/profile.yaml": {
+      "sha256": "222f70d6af587398ff89998326115b441c7d4221a310e19100bfd917341d6e53",
+      "size_bytes": 2264
+    },
+    ".harness/risks.yaml": {
+      "sha256": "abfda902bdb4f7d5be8b1c3b0fe113208c571bebaa9dab883acec9a1806323c6",
+      "size_bytes": 1283
+    },
+    ".harness/schema.yaml": {
+      "sha256": "57473b49f23c1313ed43cc6278bc181cde6cf7a0f500252c3c8947c80080326a",
+      "size_bytes": 223
+    },
+    ".harness/source_of_truth.yaml": {
+      "sha256": "a6b7ee9082a006007bd0290c5783c4a178c20b86e3b21b356f269abc2b3b8775",
+      "size_bytes": 448
+    },
+    ".harness/state.json": {
+      "sha256": "3ca1a43c911365cb49760c33c9df5f664f9f1054146f4e7a78358bdc656304db",
+      "size_bytes": 4115
+    },
+    ".harness/tokens.yaml": {
+      "sha256": "6e16e8b747c9f2b0c301aa17882fac1e3d78b50aaad739c683f102376091f6af",
+      "size_bytes": 2098
+    },
+    ".harness/tools.yaml": {
+      "sha256": "beb425c93c78ffe5126e5fe12f8e932a60aabb7b172f4e7e8050178ab62b9ca7",
+      "size_bytes": 279
+    },
+    ".harness/verification.yaml": {
+      "sha256": "d2eb021cefe011073388ac12e5f9242d59d57d755d1120c917e6e8bea723489f",
+      "size_bytes": 487
+    },
+    "AGENTS.md": {
+      "sha256": "71604d9b3e1ac17975791ffaf4ce91bd7465f9b13cdae2e93341230b9138ec70",
+      "size_bytes": 3072
+    },
+    "ANTIGRAVITY.md": {
+      "sha256": "1eb9f95801a647e39a2a8d94a6b5fbef6f25ea1d750773d15ade7ebe7e0aac5e",
+      "size_bytes": 1567
+    },
+    "ANTIGRAVITY_START_HERE.md": {
+      "sha256": "adfcc9b7315ef8e48c920fffa410473056df674d346e0803372d7d267ef8c819",
+      "size_bytes": 2631
+    },
+    "ARCHITECTURE.md": {
+      "sha256": "c60959d3a394d1d6f99a6aaaf548884540b79fe2029d04034b02867985c7dc14",
+      "size_bytes": 12736
+    },
+    "COMO_COMECAR.txt": {
+      "sha256": "6ba5a33e8cee2bdb96fb994198e6e319871dd47fb3f20bdb5e0b49f4a1f81bc3",
+      "size_bytes": 912
+    },
+    "DECISIONS.md": {
+      "sha256": "d87a953f1f4bb22890d33626d8fc096ed1b5019694f60d4eed988f225c7c7da7",
+      "size_bytes": 115098
+    },
+    "PROJECT.md": {
+      "sha256": "398ad231d9256cd225d1562be4cf1db6563a71f91bc6c400b1af940b41641bc6",
+      "size_bytes": 12079
+    },
+    "src/theme.py": {
+      "sha256": "a34a48809c3b6fb8d9deab26ca80dd59ce72845ce2428a4a9837685248f131cd",
+      "size_bytes": 1309
+    },
+    "tasks/TASK-001.yaml": {
+      "sha256": "746d7ddb18c9c6edd7e1ae2d34f20379306a2fee6a1d5f7844680ec23966b2e6",
+      "size_bytes": 4022
+    },
+    "templates/antigravity_prompts/00_BOOTSTRAP.md": {
+      "sha256": "684af41669c47ebdb4ca729a91e1bbc59c2005f57c7b472c6c16a11f23239d9c",
+      "size_bytes": 650
+    },
+    "templates/antigravity_prompts/00_GUIA_RAPIDO.md": {
+      "sha256": "6ba5a33e8cee2bdb96fb994198e6e319871dd47fb3f20bdb5e0b49f4a1f81bc3",
+      "size_bytes": 912
+    },
+    "templates/antigravity_prompts/01_ARCHITECTURE_REVIEW.md": {
+      "sha256": "e677b3034dc7fd152005b57b8d10ced9021f75e876901c72ef3ced7a2888c082",
+      "size_bytes": 441
+    },
+    "templates/antigravity_prompts/02_PLAN_FIRST_TASK.md": {
+      "sha256": "495e30dfd3408b727714b4f6f52fce576ef1baa1dd5b71da014feabbf4b6f6d2",
+      "size_bytes": 540
+    },
+    "templates/antigravity_prompts/03_IMPLEMENT.md": {
+      "sha256": "f54bdd3f0e986ead4d58b27c744137ff415e70fd981dacaee95fd73890407b97",
+      "size_bytes": 539
+    },
+    "templates/antigravity_prompts/04_VERIFY.md": {
+      "sha256": "ec42bd3091736131b6692fd3769eca1bfabe1ef2b0920130bdd605a13aee0a82",
+      "size_bytes": 497
+    },
+    "templates/antigravity_prompts/05_REPAIR.md": {
+      "sha256": "06c85a5a3da131fa6e08a8d6a93dfc3a3e04c8c21d78f2515ae2714d004c8173",
+      "size_bytes": 390
+    },
+    "templates/antigravity_prompts/06_CLOSE.md": {
+      "sha256": "a8fda8dd99110b293e0385d58868896958567300549060a7ac02e6b4b09b0747",
+      "size_bytes": 428
+    },
+    "templates/antigravity_prompts/07_GRANT_TRIAGE.md": {
+      "sha256": "6c02e2c0e1e3b87fec8fc7675aa2a02215fb3187d08811c8b0bb4b69185f3571",
+      "size_bytes": 680
+    },
+    "templates/antigravity_prompts/08_PAIN_DISCOVERY.md": {
+      "sha256": "1d9bd42db05100d63dc6c07f0b800a7e671d2163b021872131e0a5391e01389b",
+      "size_bytes": 666
+    }
+  }
+}

@@ -1,0 +1,6 @@
+id: phantom_interface
+severity: P0
+rule: "References to nonexistent interfaces must be declared as interface additions; invented parameters/config/fields are prohibited."
+required:
+  - new_interfaces
+  - justification_for_each_new_interface

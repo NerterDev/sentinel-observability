@@ -1,0 +1,49 @@
+{
+  "type": "gate_run",
+  "task_id": "TASK-003",
+  "at": "2026-11-04T14:16:04+00:00",
+  "status": "passed",
+  "command": [
+    "python",
+    "-m",
+    "unittest",
+    "discover",
+    "tests"
+  ],
+  "exit_code": 0,
+  "duration_sec": 0.513,
+  "receipt": "receipts\\TASK-003.receipt.md",
+  "sealed": true,
+  "stdout": "[2026-11-04T14:16:05.310766+00:00] A iniciar ronda de observabilidade (2 lojas)...\n  -> Inspecionando: Loja A Rocket (loja-a) [rocket_cloudflare]\n     [ERRO CR�TICO N�O TRATADO EM loja-a]: Falha de conex�o severa ou kernel panic\n  -> Inspecionando: Loja B VPS (loja-b) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: 180.0ms, Checkout: OK)\n\n--- RESUMO DA RONDA DE OBSERVABILIDADE ---\nLojas testadas: 2\n  - HEALTHY:  1\n  - DEGRADED: 0\n  - CRITICAL: 1\nNovos incidentes arquivados: 1\n-------------------------------------------\n\n[2026-11-04T14:16:05.318814+00:00] A iniciar ronda de observabilidade (1 lojas)...\n  -> Inspecionando: Loja B VPS (loja-b) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: Nonems, Checkout: OK)\n\n--- RESUMO DA RONDA DE OBSERVABILIDADE ---\nLojas testadas: 1\n  - HEALTHY:  1\n  - DEGRADED: 0\n  - CRITICAL: 0\nNovos incidentes arquivados: 0\n-------------------------------------------\n\n[2026-11-04T14:16:05.324889+00:00] A iniciar ronda de observabilidade (2 lojas)...\n  -> Inspecionando: Loja A Rocket (loja-a) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: 220.0ms, Checkout: OK)\n  -> Inspecionando: Loja B VPS (loja-b) [rocket_cloudflare]\n     Resultado: HEALTHY (TTFB: 220.0ms, Checkout: OK)\n\n--- RESUMO DA RONDA DE OBSERVABILIDADE ---\nLojas testadas: 2\n  - HEALTHY:  2\n  - DEGRADED: 0\n  - CRITICAL: 0\nNovos incidentes arquivados: 0\n-------------------------------------------\n\n",
+  "stderr": ".........................................\n----------------------------------------------------------------------\nRan 41 tests in 0.110s\n\nOK\n",
+  "engineering_integrity": {
+    "status": "PASS",
+    "errors": [],
+    "warnings": [],
+    "checks": [
+      "canonical_path_decision",
+      "anti_redundancy",
+      "data_trace",
+      "schema_authority",
+      "source_of_truth",
+      "new_interfaces",
+      "phantom_interface",
+      "integrity_report"
+    ],
+    "task_id": "TASK-003",
+    "contract": ".harness\\tasks\\TASK-003.integrity.yaml"
+  },
+  "effect_verification": {
+    "status": "PASS",
+    "required": true,
+    "cross_boundary": true,
+    "layers": [],
+    "changed_files": [],
+    "errors": [],
+    "warnings": [
+      "Declared impact differs from current Git classification; review the impact graph."
+    ],
+    "evidence": null,
+    "contract": ".harness\\tasks\\TASK-003.effect.yaml"
+  }
+}

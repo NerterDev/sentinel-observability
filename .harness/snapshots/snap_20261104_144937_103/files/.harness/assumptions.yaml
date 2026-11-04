@@ -1,0 +1,49 @@
+version: 1
+facts:
+  - id: F001
+    statement: "Target: Plataforma de observabilidade sintética ponta a ponta para lojas WooCommerce/WordPress"
+  - id: F002
+    statement: "Zero Footprint: sem plugins, sem PHP, sem wp-cron no WordPress; computação isolada no GitHub Actions US"
+  - id: F003
+    statement: "Dashboard estático em GitHub Pages (Dark Mode SPA sem backend)"
+
+assumptions:
+  - id: A001
+    statement: "GitHub Actions runners (US region) têm conectividade direta com as lojas alvo"
+    confidence: high
+    source: document
+    validated: false
+    requires_confirmation: false
+  - id: A002
+    statement: "Headers de bypass WAF (WAF_BYPASS_TOKEN) previnem bloqueios do Cloudflare Enterprise/Rocket.net"
+    confidence: high
+    source: document
+    validated: false
+    requires_confirmation: true
+  - id: A003
+    statement: "Histórico deslizante de 30 dias em JSON mantém o repositório leve para GitOps"
+    confidence: high
+    source: document
+    validated: false
+    requires_confirmation: false
+
+hypotheses:
+  - id: H001
+    statement: "A execução periódica de Chromium nos EUA a cada 30m deteta 100% das falhas silenciosas de checkout pós-clique"
+    confidence: high
+    source: document
+    validated: false
+
+unknowns:
+  - id: U001
+    statement: "Lista inicial de lojas e produtos a configurar em config/sites.json"
+    requires_confirmation: true
+  - id: U002
+    statement: "Gateways de pagamento específicos e seletores customizados de cada loja"
+    requires_confirmation: true
+
+open_questions:
+  - id: Q001
+    statement: "Quais são os primeiros domínios e URLs de produtos a monitorizar?"
+  - id: Q002
+    statement: "A publicação no GitHub Pages será por branch gh-pages ou GitHub Actions Pages deployment nativo?"

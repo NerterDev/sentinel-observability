@@ -1,0 +1,6 @@
+id: strict_schema
+severity: P0
+rule: "Persistent or externally exposed configuration keys require an explicit schema authority."
+required:
+  - schema_authority
+  - declared_interface_for_new_keys

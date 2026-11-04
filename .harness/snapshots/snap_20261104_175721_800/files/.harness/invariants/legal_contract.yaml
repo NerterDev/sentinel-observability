@@ -1,0 +1,56 @@
+contract_version: "1.0"
+domain: "legal"
+title: "Universal Legal Audit and Legal Opinion Contract"
+description: "Invariants for legal studies, regulatory audits, and formal legal opinions in Galician, Spanish, EU, and International Law."
+
+laws:
+  fact_integrity:
+    title: "Integridade de Factos e Separação Cognitiva"
+    rules:
+      - id: "STRICT_FACT_BOUNDARY"
+        severity: "BLOCKING"
+        description: "Factos fornecidos pelo consulente devem constar explicitamente na Secção I e em state.json (facts). Proibido inventar premissas fáticas."
+      - id: "PROVEN_VS_UNPROVEN_EVIDENCE"
+        severity: "BLOCKING"
+        description: "Documentos probatórios (escrituras, autos, notificações) devem ser claramente discriminados de meras alegações verbais."
+
+  ius_vigilans_currency:
+    title: "Vigência Normativa (Ius Vigilans)"
+    rules:
+      - id: "ZERO_REVOKED_LAWS"
+        severity: "BLOCKING"
+        description: "Nenhum parecer pode fundamentar a sua conclusão principal num artigo revogado, derrogado ou expulso da ordem jurídica."
+      - id: "CONSTITUTIONAL_COMPLIANCE"
+        severity: "BLOCKING"
+        description: "Normas objeto de declaração de inconstitucionalidade pelo Tribunal Constitucional ou incompatibilidade pelo TJUE devem ser assinaladas expressamente."
+
+  conflict_of_laws_hierarchy:
+    title: "Hierarquia Normativa e Conflito Interregional de Leis"
+    rules:
+      - id: "GALICIAN_CIVIL_LAW_PRIMACY"
+        severity: "BLOCKING"
+        description: "Havendo vizinhança civil galega ou conexão territorial foral galega, a Lei 2/2006 de Dereito Civil de Galicia tem prioridade sobre o Código Civil comum espanhol (arts. 14.1 e 16 CC)."
+      - id: "EU_ACQUIS_PRIMACY"
+        severity: "BLOCKING"
+        description: "Regulamentos da UE têm aplicação direta e primazia sobre o direito interno espanhol ou galego em caso de antinomia."
+
+  jurisprudential_rigor:
+    title: "Rigor Jurisprudencial e Anti-Alucinação"
+    rules:
+      - id: "MANDATORY_ECLI_OR_RESOLUTION_ID"
+        severity: "BLOCKING"
+        description: "Citações jurisprudenciais do TJUE, Tribunal Supremo, TSXG ou Tribunal Constitucional devem conter identificador oficial (ECLI ou número de sentença/recurso e data)."
+      - id: "DOCTRINAL_QUALIFICATION"
+        severity: "WARNING"
+        description: "Distingue explicitamente doutrina jurisprudencial reiterada e consolidada de votos particulares ou sentenças isoladas de instâncias inferiores."
+
+  risk_matrix_and_human_gate:
+    title: "Matriz de Contingências e Portão de Aprovação Humana"
+    rules:
+      - id: "MANDATORY_RISK_MATRIX"
+        severity: "BLOCKING"
+        description: "Todo o informe deve quantificar ou classificar o risco de cada tese jurídica (Certeza, Risco Moderado, Risco Elevado)."
+      - id: "HUMAN_SIGNATURE_GATE"
+        severity: "BLOCKING"
+        description: "O informe só se torna vinculativo perante terceiros após aposição de assinatura e validação humana (human_approved: true)."
+

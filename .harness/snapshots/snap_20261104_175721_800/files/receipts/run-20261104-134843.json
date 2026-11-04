@@ -1,0 +1,49 @@
+{
+  "type": "gate_run",
+  "task_id": "TASK-002",
+  "at": "2026-11-04T12:48:42+00:00",
+  "status": "passed",
+  "command": [
+    "python",
+    "-m",
+    "unittest",
+    "discover",
+    "tests"
+  ],
+  "exit_code": 0,
+  "duration_sec": 0.453,
+  "receipt": "receipts\\TASK-002.receipt.md",
+  "sealed": true,
+  "stdout": "",
+  "stderr": ".................................\n----------------------------------------------------------------------\nRan 33 tests in 0.016s\n\nOK\n",
+  "engineering_integrity": {
+    "status": "PASS",
+    "errors": [],
+    "warnings": [],
+    "checks": [
+      "canonical_path_decision",
+      "anti_redundancy",
+      "data_trace",
+      "schema_authority",
+      "source_of_truth",
+      "new_interfaces",
+      "phantom_interface",
+      "integrity_report"
+    ],
+    "task_id": "TASK-002",
+    "contract": ".harness\\tasks\\TASK-002.integrity.yaml"
+  },
+  "effect_verification": {
+    "status": "PASS",
+    "required": true,
+    "cross_boundary": true,
+    "layers": [],
+    "changed_files": [],
+    "errors": [],
+    "warnings": [
+      "Declared impact differs from current Git classification; review the impact graph."
+    ],
+    "evidence": null,
+    "contract": ".harness\\tasks\\TASK-002.effect.yaml"
+  }
+}

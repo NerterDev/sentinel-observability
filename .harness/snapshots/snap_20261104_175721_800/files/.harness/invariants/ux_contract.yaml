@@ -1,0 +1,157 @@
+version: 1
+name: "Universal UX & Behavioral Contract"
+description: "Cross-technology invariant governing human-computer interaction, cognitive load, and interface resilience."
+axiom: "A tecnologia implementa a interface. O Harness define o comportamento humano esperado. O projeto define os valores e o design visual concreto."
+
+authority_separation:
+  rule: "O Universal Harness NUNCA contém cores, fontes, dimensões de botões ou estilos de marca de projetos específicos."
+  project_authority: "A pasta project-ux/ gerada pelo UX/UI System Builder é a autoridade canónica para tokens de cores, tipografia, espaçamento, componentes e jornadas."
+  enforcement: "O Harness faz cumprir a existência e o respeito aos tokens do project-ux/, mas não inventa nem impõe valores próprios."
+
+taxonomy:
+  MUST: "Violação incondicional = Tarefa/Recibo REJEITADO. Sem exceções."
+  SHOULD: "Violação exige justificativa explícita e documentada no Task Contract em tasks/."
+  MAY: "Preferência ergonómica recomendada, não mandatória."
+
+laws:
+  # =========================================================================
+  # 1. OS 7 ESTADOS EXISTENCIAIS DE INTERFACE
+  # =========================================================================
+  existential_states:
+    rule: "Nenhum componente que apresente ou processe dados pode implementar apenas o happy-path."
+    states:
+      - id: EMPTY
+        level: MUST
+        requirement: "Quando não há dados existentes, proíbido ecrã em branco ou erro. Deve exibir mensagem orientadora amigável com botão de ação inicial (Call To Action)."
+      - id: LOADING
+        level: MUST
+        requirement: "Qualquer operação assíncrona ou espera >200ms deve fornecer feedback visual (spinner, skeleton ou botão em estado loading) sem bloquear a interface."
+      - id: POPULATED
+        level: MUST
+        requirement: "Renderização limpa e estruturada dos dados com hierarquia clara."
+      - id: ZERO_RESULTS
+        level: MUST
+        requirement: "Quando um filtro ou pesquisa não encontra correspondências, deve informar explicitamente e fornecer botão para limpar filtros."
+      - id: PARTIAL_DEGRADED
+        level: MUST
+        requirement: "Se um subsistema ou métrica falhar enquanto outros funcionam, a interface NUNCA deve cair num erro total. Deve degradar graciosamente com badge de aviso local."
+      - id: ERROR
+        level: MUST
+        requirement: "Mensagem legível para humanos explicando a causa + botão de recuperação/repetição (Retry). Proibido exibir apenas stack traces ou códigos crus."
+      - id: SUCCESS_FEEDBACK
+        level: MUST
+        requirement: "Toda a mutação bem-sucedida (gravar, eliminar, copiar) deve emitir confirmação imediata (toast, banner ou badge) com auto-fecho em 3-5 segundos."
+
+  # =========================================================================
+  # 2. HIERARQUIA FORMAL DE AÇÕES
+  # =========================================================================
+  action_hierarchy:
+    formula: "Primary = 1 | Secondary = 0..N | Tertiary = 0..N | Destructive = 0..N"
+    rules:
+      - id: SINGLE_PRIMARY_CTA
+        level: MUST
+        requirement: "Existe estritamente UMA ação primária por área visual/ecrã. Proibido múltiplos botões com peso primário no mesmo contexto."
+      - id: SECONDARY_ACTIONS
+        level: SHOULD
+        requirement: "Ações de suporte devem usar estilo contornado (outline/ghost) com menor peso visual que o CTA primário."
+      - id: DESTRUCTIVE_ISOLATION
+        level: MUST
+        requirement: "Ações destrutivas (apagar, reset, cancelar definitivo) devem ser visualmente isoladas e exigir barreira de confirmação em 2 passos ou janela de desfazer (Undo)."
+
+  # =========================================================================
+  # 3. PREVISIBILIDADE COMPORTAMENTAL
+  # =========================================================================
+  behavioral_predictability:
+    rules:
+      - id: DISMISS_ON_ESCAPE
+        level: MUST
+        requirement: "A tecla Escape (Esc) deve fechar sempre o elemento efémero mais próximo (modal, dropdown, popup ou menu contextual)."
+      - id: CANCEL_IS_NOOP
+        level: MUST
+        requirement: "O comando 'Cancelar' é estritamente idempotente e sem efeitos secundários. Nunca pode guardar ou enviar dados em segundo plano."
+      - id: KEYBOARD_FOCUS_VISIBLE
+        level: MUST
+        requirement: "Navegação por Tab deve ter anel de foco (focus ring) claramente visível. Nenhum elemento interativo pode ser inacessível por teclado."
+      - id: SUBMIT_SHORTCUT
+        level: SHOULD
+        requirement: "Em formulários e diálogos, Enter deve acionar a ação primária, exceto em caixas de texto multilinhas."
+      - id: SEMANTIC_ICON_CONSISTENCY
+        level: MUST
+        requirement: "O mesmo ícone não pode ter significados divergentes em ecrãs diferentes dentro do mesmo produto."
+
+  # =========================================================================
+  # 4. MATEMÁTICA MODULAR DE ESPAÇAMENTO E PROXIMIDADE
+  # =========================================================================
+  spacing_and_geometry:
+    modular_scale: [0, 4, 8, 12, 16, 24, 32, 48, 64]
+    rules:
+      - id: MODULAR_SCALE_ENFORCEMENT
+        level: MUST
+        requirement: "Paddings e margens devem pertencer à escala modular base 4/8pt. Valores arbitrários (ex: 5px, 7px, 11px, 13px) são rejeitados."
+      - id: GESTALT_PROXIMITY
+        level: MUST
+        requirement: "O padding interior de um container deve ser menor ou igual à sua margem exterior. Rótulos e os seus respetivos inputs devem estar mais próximos entre si do que de grupos vizinhos."
+      - id: CONCENTRIC_BORDER_RADIUS
+        level: MUST
+        requirement: "Elementos aninhados com cantos arredondados devem cumprir R_filho = max(0, R_pai - Padding). Proibido misturar raios arbitrários no mesmo bloco."
+
+  # =========================================================================
+  # 5. TIPOGRAFIA E ERGONOMIA DE LEITURA
+  # =========================================================================
+  typography:
+    rules:
+      - id: TYPE_HIERARCHY_LEVELS
+        level: SHOULD
+        requirement: "Máximo de 3 níveis tipográficos no mesmo contexto (Título, Corpo, Metadado/Muted)."
+      - id: COMFORTABLE_LINE_HEIGHT
+        level: MUST
+        requirement: "Blocos de texto contínuo devem manter entrelinha entre 1.4x e 1.6x o tamanho da fonte."
+      - id: OPTIMAL_MEASURE
+        level: SHOULD
+        requirement: "Linhas de texto longo de leitura devem ter entre 65 e 80 caracteres de largura máxima."
+      - id: TABULAR_NUMBERS_FOR_DATA
+        level: MUST
+        requirement: "Valores numéricos em tabelas, finanças, trading, bots e métricas devem usar fonte monoespaçada ou tabular-nums para alinhamento vertical rigoroso."
+
+  # =========================================================================
+  # 6. BOTÕES E ESTABILIDADE DE LAYOUT
+  # =========================================================================
+  buttons:
+    rules:
+      - id: MINIMUM_HIT_TARGET
+        level: MUST
+        requirement: "Área de clique mínima de 32px de altura em desktop e 44px/48dp em interfaces tácteis/mobile."
+      - id: PADDING_ASPECT_RATIO
+        level: SHOULD
+        requirement: "O padding horizontal de botões deve ser entre 1.5x e 2.0x o padding vertical (evita botões quadrados deformados)."
+      - id: ZERO_LAYOUT_SHIFT
+        level: MUST
+        requirement: "A transição para o estado Loading não pode alterar as dimensões externas do botão nem provocar salto de layout (layout shift) na tela."
+
+  # =========================================================================
+  # 7. GOVERNANÇA DE ÍCONES (MONOCROMÁTICOS E MINIMALISTAS)
+  # =========================================================================
+  icons:
+    style: "Outline / Line vector (estilo Lucide / Feather)"
+    stroke_width: "1.5px - 2.0px em grelha 24x24"
+    rules:
+      - id: MONOCHROME_CURRENT_COLOR
+        level: MUST
+        requirement: "Todo o ícone deve ser monocromático e herdar a cor do texto do hospedeiro (currentColor / tint semântico)."
+      - id: NO_FUNCTIONAL_EMOJIS
+        level: MUST
+        requirement: "Proibido o uso de emojis (🚀, 🔥, 💀, etc.) em botões funcionais, menus e cabeçalhos de software profissional."
+      - id: MODULAR_ICON_SIZES
+        level: MUST
+        requirement: "Tamanhos permitidos: 16px (micro/inline), 20px (botões/nav), 24px (títulos), 32/48px (empty states)."
+    catalog:
+      plus: "Criar novo item"
+      trash: "Eliminar / Ação destrutiva"
+      x: "Fechar / Cancelar"
+      check: "Concluído / Sucesso"
+      settings: "Definições / Configuração"
+      copy: "Copiar para área de transferência"
+      search: "Pesquisar / Filtrar"
+      refresh: "Recarregar / Sincronizar"
+      alert_triangle: "Aviso / Atenção necessária"
+      alert_circle: "Erro impeditivo"

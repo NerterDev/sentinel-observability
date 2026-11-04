@@ -1,0 +1,49 @@
+engineering_integrity:
+  canonical_path:
+    required: true
+    found: false
+    path: "src/edge_inspector.py"
+  redundancy_check:
+    required: true
+    existing_canonical_path_found: false
+    existing_implementation_files: []
+    reason_extension_is_required: ""
+    reason_existing_path_cannot_be_fixed: ""
+    new_wrappers: []
+    new_fallbacks: []
+    new_parallel_state: []
+  data_trace:
+    required: true
+    reason: "Validação e processamento de configurações e telemetria de rede"
+    ingress: "config/sites.json e config/thresholds.json"
+    validation: "Modelos Pydantic em src/models.py"
+    state: "Instâncias estruturadas de EdgeInspectionResult"
+    egress: "Telemetria de rede e diagnósticos para o orquestrador"
+    root_cause:
+      file: "src/edge_inspector.py"
+      symbol: "inspect_edge"
+      line: 198
+      explanation: "Implementação canónica inicial do motor de inspeção de borda"
+  schema_validation:
+    required: true
+    schema_authority:
+      type: "pydantic"
+      source: "src/models.py"
+  source_of_truth:
+    required: true
+    configuration: "config/sites.json"
+    thresholds: "config/thresholds.json"
+  new_interfaces:
+    allowed: true
+    justification_required: true
+    items:
+      - name: "EdgeInspectionResult"
+        kind: "model"
+        justification: "Modelo Pydantic estruturado para telemetria de rede e borda"
+      - name: "inspect_edge"
+        kind: "function"
+        justification: "Função canónica de inspeção de DNS, SSL e TTFB"
+  phantom_interface_check:
+    required: true
+    undeclared_references: []
+

@@ -1,0 +1,84 @@
+version: "1.0"
+task_id: "TASK-002"
+title: "Motor Playwright de Sonda Forense e Interceção Ativa (browser_probe.py)"
+status: "closed"
+created_at: "2026-11-04T11:18:00+01:00"
+
+objective: >
+  Desenvolver o motor sintético de sonda forense baseado em Playwright Chromium
+  (src/browser_probe.py). O módulo simula um comprador real nos EUA (en-US, timezone
+  America/New_York, 1440x900) executando um fluxo pós-clique de ponta a ponta
+  (página de produto -> adicionar ao carrinho -> checkout -> validação de frete e gateways).
+  O motor mantém intercetores ativos para capturar exceções JavaScript (pageerror),
+  mensagens console.error e falhas assíncronas em chamadas WooCommerce (wc-ajax >= 400).
+  Em caso de falha ou timeout (teto de 25s por etapa), captura screenshot full-page,
+  extrai o DOM e emite um registo forense tipado com veredito da causa-raiz em português.
+
+canonical_path: "src/browser_probe.py"
+schema_authority: "src/models.py"
+
+data_trace:
+  ingress:
+    sources:
+      - "SiteConfig (URL do produto, seletores DOM de carrinho/checkout)"
+      - "ThresholdsConfig (limiares de tempo, step_timeout_sec, max_js_errors)"
+      - "WAF_BYPASS_TOKEN (variável de ambiente / secret para bypass do WAF/Cloudflare)"
+    format: "Instâncias Pydantic e strings de ambiente"
+  validation:
+    rules:
+      - "Validar que a configuração da loja possui seletores definidos"
+      - "Validar que a inicialização do Chromium usa locale='en-US', timezone_id='America/New_York' e viewport 1440x900"
+      - "Validar que cabeçalhos de bypass são aplicados nas requisições do browser"
+  state:
+    models:
+      - "ProbeResult"
+      - "ForensicIncident"
+      - "SiteConfig"
+      - "ThresholdsConfig"
+    persistence_format: "Modelos Pydantic v2 com exportação para JSON e screenshots em public/screenshots/"
+  egress:
+    output: "Instância de ProbeResult com métricas de tempo por etapa, erros JS, requisições AJAX com falha e ForensicIncident em caso de anomalia"
+    consumer: "Orquestrador central (src/orchestrator.py) e gravador forense (src/forensic_recorder.py)"
+
+affected_files:
+  - "src/models.py"
+  - "src/browser_probe.py"
+  - "tests/test_browser_probe.py"
+  - ".harness/tasks/TASK-002.integrity.yaml"
+  - ".harness/tasks/TASK-002.effect.yaml"
+  - ".harness/tasks/TASK-002.json"
+  - "docs/integrity/TASK-002.md"
+  - ".harness/state.json"
+
+invariants_enforced:
+  canonical_path_first: true
+  strict_schema: true
+  data_trace: true
+  anti_redundancy: true
+  phantom_interface_prevention: true
+  evidence_over_assertion: true
+
+done_when:
+  - id: "DW-01"
+    statement: "src/models.py atualizado com o modelo ProbeResult e campos forenses complementares com tipagem Pydantic v2."
+    evidence_method: "Instanciação e validação do schema em testes unitários."
+  - id: "DW-02"
+    statement: "src/browser_probe.py implementa a criação de contexto Chromium com perfil real US (en-US, America/New_York, 1440x900) e injeção do cabeçalho WAF_BYPASS_TOKEN."
+    evidence_method: "Verificação dos argumentos passados ao browser context em testes unitários."
+  - id: "DW-03"
+    statement: "Interceção ativa funcional para pageerror (exceções JS não tratadas), console.error e respostas HTTP com falha em chamadas WooCommerce (wc-ajax >= 400)."
+    evidence_method: "Simulação de emissão de eventos pageerror, console e response com asserção do buffer forense."
+  - id: "DW-04"
+    statement: "Fluxo de checkout sequencial implementado em 6 etapas com medição de latência por passo e teto configurável de 25s."
+    evidence_method: "Execução do fluxo simulado registando as transições de estado até a confirmação de gateways."
+  - id: "DW-05"
+    statement: "Geração automática de captura de screenshot full-page, extração de DOM e diagnóstico em português em caso de falha de qualquer etapa."
+    evidence_method: "Testes simulando bloqueio de frete (.woocommerce-no-shipping-available-html) e timeout de carregamento com validação do ForensicIncident gerado."
+  - id: "DW-06"
+    statement: "Suíte de testes automatizados em tests/test_browser_probe.py executa com 100% de sucesso."
+    evidence_method: "python -m unittest discover tests com exit code 0."
+
+verification_plan:
+  test_command: "python -m unittest discover tests"
+  smoke_check: "python -c \"from src.browser_probe import BrowserProbeEngine, ProbeResult; print('Browser Probe Engine: Verified')\""
+

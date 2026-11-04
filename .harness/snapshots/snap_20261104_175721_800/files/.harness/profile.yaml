@@ -1,0 +1,39 @@
+name: software
+description: Desktop PC Application, Library or Core Software development
+verification:
+  default: "Run tests, lint/type checks and build checks where applicable."
+
+toolchain:
+  primary: "Python (Tkinter / CustomTkinter / PyQt) or C# / C++ / Rust / Go"
+  runner: "pytest / unittest / cargo test / dotnet test"
+  linter: "ruff / flake8 / mypy / clippy"
+
+ux_ecosystem:
+  host_design_system: "Native Desktop Windowing (Windows 10/11 Fluent, macOS HIG, Linux FreeDesktop)"
+
+  state_implementations:
+    loading: "Cursor de espera (watch/busy) + Progressbar indeterminado em thread secundária (sem bloquear GUI)"
+    empty: "Frame de boas-vindas centrado com ícone geométrico monocromático e botão de criação inicial"
+    error: "Banner de erro inline ou status bar com botão de retry (NUNCA messagebox modal bloqueante para erros recuperáveis)"
+    partial_degraded: "Nós com ícone de aviso na Treeview/Tabela sem interromper a execução do resto do programa"
+    success: "Status bar temporária ou toast nativo auto-destrutivo em 3-4 segundos"
+
+  component_primitives:
+    primary_action: "Botão de alto contraste (#238636 / accent), atalho Enter"
+    secondary_action: "Outline / Flat / Secondary TTK Button"
+    destructive_action: "Estilo alerta (#da3633) com confirmação modal explícita"
+    data_display: "Treeview/Table com suporte a scrollwheel e redimensionamento proporcional de colunas"
+    window: "Suporte a minsize, redimensionamento responsivo e preservação de geometria"
+
+  token_binding:
+    dark_surface: "#0d1117"
+    dark_card: "#161b22"
+    high_contrast_text: "#ffffff"
+    typography: "Segoe UI (Windows), SF Pro (macOS), Cantarell / Ubuntu (Linux)"
+    border_radius: "4px (controlos) a 8px (janelas/cards)"
+
+  anti_patterns:
+    - "PROIBIDO congelar a thread principal da GUI durante chamadas assíncronas, processos de rede ou cálculos longos."
+    - "PROIBIDO janelas com dimensões fixas sem suporte a DPI scaling ou redimensionamento de janela."
+    - "PROIBIDO usar clipboard volátil interno da linguagem sem ligação à área de transferência nativa do SO (Win32/X11/macOS)."
+    - "PROIBIDO caixas de diálogo modais bloqueantes para alertas não-críticos."

@@ -1,0 +1,79 @@
+version: "1.0"
+task_id: "TASK-001"
+title: "Modelos de Dados, Configuração Canónica e Edge Inspector"
+status: "closed"
+created_at: "2026-11-04T10:41:00+01:00"
+
+objective: >
+  Desenvolver a camada canónica de modelos de dados, ficheiros de configuração
+  e o motor de inspeção de borda (Edge Inspector) da plataforma de observabilidade.
+  O módulo é responsável por validar domínios de lojas WooCommerce, inspecionar
+  resolução DNS, validar o certificado TLS/SSL e respetivos dias até expiração,
+  medir com precisão o Time To First Byte (TTFB) e latência HTTP com suporte
+  ao cabeçalho de bypass de WAF/Cloudflare, classificando o estado inicial de rede
+  em HEALTHY, DEGRADED ou CRITICAL de forma determinística.
+
+canonical_path: "src/edge_inspector.py"
+schema_authority: "src/models.py"
+
+data_trace:
+  ingress:
+    sources:
+      - "config/sites.json (definição das lojas e parâmetros de sonda)"
+      - "config/thresholds.json (limiares de alerta para TTFB, SSL e timeouts)"
+      - "WAF_BYPASS_TOKEN (secret / variável de ambiente para cabeçalho de autorização)"
+    format: "JSON UTF-8 e variáveis de ambiente"
+  validation:
+    rules:
+      - "Validar que cada loja possui id único, nome, store_url válida (https://), selectors obrigatórios e infrastructure_type válido ('rocket_cloudflare', 'vps', 'bare_metal')"
+      - "Validar que thresholds.json define limiares válidos para ttfb_warning_ms, ttfb_critical_ms e ssl_expiry_warning_days"
+      - "Validar saneamento de URLs e timeouts para evitar bloqueio indefinido de sockets"
+  state:
+    models:
+      - "SiteConfig"
+      - "ThresholdsConfig"
+      - "EdgeInspectionResult"
+      - "StoreStatus"
+      - "ForensicIncident"
+    persistence_format: "Modelos Pydantic v2 / Python nativo com exportação JSON"
+  egress:
+    output: "Instância de EdgeInspectionResult com medições atómicas de TTFB, DNS, SSL e estado operacional"
+    consumer: "Orquestrador central (src/orchestrator.py) e gravador forense (src/forensic_recorder.py)"
+
+affected_files:
+  - "src/models.py"
+  - "src/edge_inspector.py"
+  - "config/sites.json"
+  - "config/thresholds.json"
+  - "tests/test_edge_inspector.py"
+  - ".harness/state.json"
+
+invariants_enforced:
+  canonical_path_first: true
+  strict_schema: true
+  data_trace: true
+  anti_redundancy: true
+  phantom_interface_prevention: true
+  evidence_over_assertion: true
+
+done_when:
+  - id: "DW-01"
+    statement: "Modelos Pydantic em src/models.py cobrem SiteConfig, ThresholdsConfig, EdgeInspectionResult, StoreStatus e ForensicIncident com tipagem rigorosa."
+    evidence_method: "Instanciação e validação de fixtures de dados válidos e inválidos em testes unitários."
+  - id: "DW-02"
+    statement: "Ficheiros config/sites.json e config/thresholds.json são criados e validam 100% contra os modelos Pydantic."
+    evidence_method: "Carregamento e validação de schema sem erros de parsing ou validação."
+  - id: "DW-03"
+    statement: "src/edge_inspector.py implementa inspeção determinística de DNS, SSL (dias até expiração) e requisição HTTP medindo TTFB com suporte ao header WAF_BYPASS_TOKEN."
+    evidence_method: "Testes unitários cobrindo cenários com mock de socket SSL e respostas HTTP."
+  - id: "DW-04"
+    statement: "Classificação automática de status de rede em HEALTHY, DEGRADED (TTFB alto ou SSL prestes a expirar) e CRITICAL (falha de rede, timeout, HTTP >= 500 ou SSL expirado)."
+    evidence_method: "Testes com diferentes combinações de métricas comprovando a atribuição correta dos estados."
+  - id: "DW-05"
+    statement: "Suíte de testes automatizados em tests/test_edge_inspector.py executa com 100% de aprovação."
+    evidence_method: "python -m unittest discover tests com exit code 0."
+
+verification_plan:
+  test_command: "python -m unittest discover tests"
+  smoke_check: "python -c \"from src.models import SiteConfig, ThresholdsConfig; from src.edge_inspector import inspect_edge; print('Edge Inspector and Models: Verified')\""
+

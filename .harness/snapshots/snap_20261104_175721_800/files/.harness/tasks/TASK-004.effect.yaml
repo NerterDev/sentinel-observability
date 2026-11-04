@@ -1,0 +1,32 @@
+effect_verification:
+  version: 1
+  required: true
+  impact:
+    source: git_auto
+    cross_boundary: true
+    affected_layers:
+    - presentation
+    - verification
+    affected_contracts:
+    - .harness/invariants/ux_contract.yaml
+    - .harness/invariants/strict_schema.yaml
+  capability_chain:
+    capability: "Dashboard SPA estático Dark Mode e modal forense"
+    contract: "tasks/TASK-004.yaml"
+    implementation: "dashboard/app.js, dashboard/index.html, dashboard/styles.css"
+    integration: "Consumo de current_status.json e history.json via Fetch API"
+    consumer: "Navegador web do operador (GitHub Pages)"
+    observable_effect: "Renderização dos 7 estados existenciais e aprovação em harness ux-audit"
+  final_effect:
+    expected: "Interface SPA responsiva em Dark Mode com modal forense, fechamento por Esc e 0 violações de UX"
+    verification_method: "python -m unittest discover tests"
+    evidence: null
+  runtime:
+    command: "python -m unittest discover tests"
+    environment: "Python 3.12"
+    setup: ""
+    teardown: ""
+  exceptions:
+    approved: false
+    reason: ""
+

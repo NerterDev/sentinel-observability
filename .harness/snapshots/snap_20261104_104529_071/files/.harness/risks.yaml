@@ -1,0 +1,28 @@
+version: 1
+risks:
+  - id: R001
+    description: "Desafios ou bloqueios WAF/Cloudflare nos runners do GitHub Actions"
+    severity: high
+    likelihood: medium
+    impact: high
+    mitigation: "Suporte a token e cabeçalho customizado de bypass WAF em todas as requisições sintéticas"
+    validation_method: "Simulação de requisição com e sem header no edge_inspector"
+    status: active
+
+  - id: R002
+    description: "Criação de encomendas indesejadas ou bloqueio de stock no checkout durante os testes sintéticos"
+    severity: high
+    likelihood: low
+    impact: high
+    mitigation: "Sonda é estritamente de leitura e validação DOM: interrompe o fluxo antes do botão final de compra (place_order)"
+    validation_method: "Testes unitários no browser_probe garantindo ausência de clique no botão de submissão do pedido"
+    status: active
+
+  - id: R003
+    description: "Flutuações transitórias de rede provocando falsos alarmes de indisponibilidade"
+    severity: medium
+    likelihood: medium
+    impact: medium
+    mitigation: "Limiares de alerta configuráveis (thresholds.json) e distinção entre DEGRADED (latência/aviso) e CRITICAL (quebra real)"
+    validation_method: "Testes de classificação de estados no forensic_recorder"
+    status: active

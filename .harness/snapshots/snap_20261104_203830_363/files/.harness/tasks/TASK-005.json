@@ -1,0 +1,8 @@
+{
+  "task_id": "TASK-005",
+  "objective": "Automação GitHub Actions e Publicação GitHub Pages (.github/workflows/sentinel_engine.yml)",
+  "created_at": "2026-11-04T20:35:00+01:00",
+  "project": "F:\\PROJETOS ANTIGRAVITY\\Software\\Plataforma de observabilidade web",
+  "task_file": "tasks/TASK-005.yaml"
+}
+

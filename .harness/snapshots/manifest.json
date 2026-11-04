@@ -1,0 +1,37 @@
+[
+  {
+    "id": "snap_20261104_203830_363",
+    "created_at": "2026-11-04T19:38:30.468658+00:00",
+    "label": "Pre-mutation TASK-005",
+    "task_id": null,
+    "total_files": 104
+  },
+  {
+    "id": "snap_20261104_175721_800",
+    "created_at": "2026-11-04T16:57:21.911458+00:00",
+    "label": "Pre-mutation TASK-004",
+    "task_id": null,
+    "total_files": 91
+  },
+  {
+    "id": "snap_20261104_144937_103",
+    "created_at": "2026-11-04T13:49:37.541898+00:00",
+    "label": "Pre-mutation TASK-003",
+    "task_id": null,
+    "total_files": 79
+  },
+  {
+    "id": "snap_20261104_114707_211",
+    "created_at": "2026-11-04T10:47:07.281901+00:00",
+    "label": "Pre-mutation TASK-002",
+    "task_id": null,
+    "total_files": 69
+  },
+  {
+    "id": "snap_20261104_104529_071",
+    "created_at": "2026-11-04T09:45:29.490126+00:00",
+    "label": "Pre-mutation TASK-001",
+    "task_id": null,
+    "total_files": 49
+  }
+]

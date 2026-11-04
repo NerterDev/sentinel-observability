@@ -1,0 +1,33 @@
+effect_verification:
+  version: 1
+  required: true
+  impact:
+    source: git_auto
+    cross_boundary: true
+    affected_layers:
+      - application
+      - verification
+    affected_contracts:
+      - .harness/invariants/strict_schema.yaml
+      - .harness/invariants/data_trace.yaml
+      - .harness/invariants/ecommerce_tier_s.yaml
+  capability_chain:
+    capability: "Sonda forense sintética Playwright de checkout e interceção JS/AJAX"
+    contract: "tasks/TASK-002.yaml"
+    implementation: "src/browser_probe.py"
+    integration: "src/models.py integrado com motor de browser"
+    consumer: "Orquestrador central e testes automatizados"
+    observable_effect: "Testes unitários aprovados em tests/test_browser_probe.py"
+  final_effect:
+    expected: "Execução do fluxo de checkout simulado capturando erros JS, AJAX e screenshots em falhas"
+    verification_method: "python -m unittest discover tests"
+    evidence: null
+  runtime:
+    command: "python -m unittest discover tests"
+    environment: "Python 3.12"
+    setup: ""
+    teardown: ""
+  exceptions:
+    approved: false
+    reason: ""
+

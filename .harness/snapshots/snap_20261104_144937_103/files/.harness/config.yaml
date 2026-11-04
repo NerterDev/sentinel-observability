@@ -1,0 +1,6 @@
+harness_version: "4.0"
+mode: "architecture-challenge"
+requires_human_approval: true
+allow_assumption_as_fact: false
+require_architecture_challenge: true
+require_verification_evidence: true

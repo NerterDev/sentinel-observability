@@ -1,0 +1,116 @@
+{
+  "harness_version": "6.4",
+  "architecture_status": "proposed",
+  "human_approved": false,
+  "challenge_status": "pending",
+  "continuous_mode": true,
+  "facts": [
+    "Workspace root: F:\\PROJETOS ANTIGRAVITY\\Software\\Plataforma de observabilidade web",
+    "Profile: software (Tier-S E-Commerce Synthetic Observability)",
+    "Target system: Plataforma de observabilidade sintética ponta a ponta (E2E) e diagnóstico forense para lojas WooCommerce/WordPress",
+    "Execution engine: GitHub Actions runner (US region, cron 30m) com Playwright Chromium headless",
+    "Zero-Footprint constraint: Sem plugins ou PHP no WordPress; zero impacto de CPU/RAM nas lojas monitorizadas",
+    "Publication target: GitHub Pages (painel estático SPA Dark Mode sem backend)",
+    "Current codebase: Fase inicial (greenfield), src/theme.py existente, TASK-001 planeada"
+  ],
+  "assumptions": [
+    "GitHub Actions runners têm conectividade direta com as lojas alvo nos EUA",
+    "Headers de bypass WAF (WAF_BYPASS_TOKEN) previnem falsos positivos do Cloudflare/Rocket.net",
+    "Histórico de 30 dias em JSON deslizante mantém o repositório leve para GitOps",
+    "Seletores WooCommerce para carrinho e checkout (#order_review) seguem o padrão WooCommerce ou são configuráveis em sites.json"
+  ],
+  "hypotheses": [
+    "Testar periodicamente via Chromium US (en-US, America/New_York) deteta falhas silenciosas de checkout (erros JS, frete indisponível, falhas de iframe de pagamento) com 100% de precisão",
+    "Capturar screenshots e dumps de rede em caso de timeout de 25s fornece evidência forense completa para diagnóstico instantâneo"
+  ],
+  "unknowns": [
+    "Lista inicial de URLs e produtos das lojas alvo a monitorizar",
+    "Gateways de pagamento específicos instalados em cada loja (Stripe, PayPal, MB Way, etc.)"
+  ],
+  "open_questions": [
+    "Quais os primeiros domínios WooCommerce a registar em config/sites.json?",
+    "A publicação no GitHub Pages será via branch gh-pages ou GitHub Actions Pages deployment nativo?"
+  ],
+  "risks": [
+    {
+      "id": "R001",
+      "description": "Desafios ou bloqueios WAF/Cloudflare nos runners do GitHub Actions",
+      "severity": "high",
+      "mitigation": "Suporte a token e cabeçalho customizado de bypass WAF em todas as requisições"
+    },
+    {
+      "id": "R002",
+      "description": "Criação de encomendas ou bloqueio de stock no checkout durante os testes sintéticos",
+      "severity": "high",
+      "mitigation": "Sonda é estritamente de leitura forense: para na validação da tabela de revisão e recipientes de pagamento, sem submeter o pedido final"
+    },
+    {
+      "id": "R003",
+      "description": "Flutuações transitórias de rede provocando falsos alarmes de indisponibilidade",
+      "severity": "medium",
+      "mitigation": "Limiares de alerta configuráveis (thresholds.json) e classificação de estados degradados vs críticos"
+    }
+  ],
+  "decisions": [
+    "D001",
+    "D002",
+    "D003",
+    "D004",
+    "D005",
+    "D006",
+    "D007",
+    "D008",
+    "D009",
+    "D010",
+    "D013",
+    "D014",
+    "D015",
+    "D016",
+    "D017",
+    "D018",
+    "D019",
+    "D020",
+    "D021",
+    "D022",
+    "D023",
+    "D024",
+    "D025",
+    "D026",
+    "D027",
+    "D028",
+    "D029",
+    "D030",
+    "D031",
+    "D032",
+    "D033",
+    "D034",
+    "D035",
+    "D036",
+    "D037",
+    "D038",
+    "D039",
+    "D040",
+    "D041"
+  ],
+  "learning": {
+    "updated_at": "2026-11-04T10:35:00+00:00",
+    "lessons": 0,
+    "pass_rate_pct": 100.0,
+    "active_failures": {}
+  },
+  "improvement_status": "none",
+  "last_test": "pending",
+  "last_action": {
+    "action": "plan_task_001",
+    "at": "2026-11-04T10:42:00+01:00"
+  },
+  "resume_hud": {
+    "project": "Plataforma de observabilidade web",
+    "profile": "software (E-Commerce Tier-S)",
+    "active_task": "TASK-001: Modelos de Dados, Configuração Canónica e Edge Inspector",
+    "last_decision": "D041",
+    "next_step": "Aprovação do contrato e execução com /harness-implement"
+  },
+  "verification_layer": "effect-runtime",
+  "last_snapshot": null
+}

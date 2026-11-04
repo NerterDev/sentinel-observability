@@ -1,0 +1,131 @@
+{
+  "harness_version": "6.4",
+  "architecture_status": "proposed",
+  "human_approved": false,
+  "challenge_status": "pending",
+  "continuous_mode": true,
+  "facts": [
+    "Workspace root: F:\\PROJETOS ANTIGRAVITY\\Software\\Plataforma de observabilidade web",
+    "Profile: software (Tier-S E-Commerce Synthetic Observability)",
+    "Target system: Plataforma de observabilidade sint\u00e9tica ponta a ponta (E2E) e diagn\u00f3stico forense para lojas WooCommerce/WordPress",
+    "Execution engine: GitHub Actions runner (US region, cron 30m) com Playwright Chromium headless",
+    "Zero-Footprint constraint: Sem plugins ou PHP no WordPress; zero impacto de CPU/RAM nas lojas monitorizadas",
+    "Publication target: GitHub Pages (painel est\u00e1tico SPA Dark Mode sem backend)",
+    "Current codebase: TASK-001, TASK-002, TASK-003 e TASK-004 CONCLU\u00cdDAS E SELADAS (52/52 testes, receipts SHA-256 aprovados, UX Audit aprovado)"
+  ],
+  "assumptions": [
+    "GitHub Actions runners t\u00eam conectividade direta com as lojas alvo nos EUA",
+    "Headers de bypass WAF (WAF_BYPASS_TOKEN) previnem falsos positivos do Cloudflare/Rocket.net",
+    "Hist\u00f3rico de 30 dias em JSON deslizante mant\u00e9m o reposit\u00f3rio leve para GitOps",
+    "Seletores WooCommerce para carrinho e checkout (#order_review) seguem o padr\u00e3o WooCommerce ou s\u00e3o configur\u00e1veis em sites.json"
+  ],
+  "hypotheses": [
+    "Testar periodicamente via Chromium US (en-US, America/New_York) deteta falhas silenciosas de checkout (erros JS, frete indispon\u00edvel, falhas de iframe de pagamento) com 100% de precis\u00e3o",
+    "Capturar screenshots e dumps de rede em caso de timeout de 25s fornece evid\u00eancia forense completa para diagn\u00f3stico instant\u00e2neo"
+  ],
+  "unknowns": [
+    "Lista inicial de URLs e produtos das lojas alvo a monitorizar",
+    "Gateways de pagamento espec\u00edficos instalados em cada loja (Stripe, PayPal, MB Way, etc.)"
+  ],
+  "open_questions": [
+    "Quais os primeiros dom\u00ednios WooCommerce a registar em config/sites.json?",
+    "A publica\u00e7\u00e3o no GitHub Pages ser\u00e1 via branch gh-pages ou GitHub Actions Pages deployment nativo?"
+  ],
+  "risks": [
+    {
+      "id": "R001",
+      "description": "Desafios ou bloqueios WAF/Cloudflare nos runners do GitHub Actions",
+      "severity": "high",
+      "mitigation": "Suporte a token e cabe\u00e7alho customizado de bypass WAF em todas as requisi\u00e7\u00f5es"
+    },
+    {
+      "id": "R002",
+      "description": "Cria\u00e7\u00e3o de encomendas ou bloqueio de stock no checkout durante os testes sint\u00e9ticos",
+      "severity": "high",
+      "mitigation": "Sonda \u00e9 estritamente de leitura forense: para na valida\u00e7\u00e3o da tabela de revis\u00e3o e recipientes de pagamento, sem submeter o pedido final"
+    },
+    {
+      "id": "R003",
+      "description": "Flutua\u00e7\u00f5es transit\u00f3rias de rede provocando falsos alarmes de indisponibilidade",
+      "severity": "medium",
+      "mitigation": "Limiares de alerta configur\u00e1veis (thresholds.json) e classifica\u00e7\u00e3o de estados degradados vs cr\u00edticos"
+    }
+  ],
+  "decisions": [
+    "D001",
+    "D002",
+    "D003",
+    "D004",
+    "D005",
+    "D006",
+    "D007",
+    "D008",
+    "D009",
+    "D010",
+    "D013",
+    "D014",
+    "D015",
+    "D016",
+    "D017",
+    "D018",
+    "D019",
+    "D020",
+    "D021",
+    "D022",
+    "D023",
+    "D024",
+    "D025",
+    "D026",
+    "D027",
+    "D028",
+    "D029",
+    "D030",
+    "D031",
+    "D032",
+    "D033",
+    "D034",
+    "D035",
+    "D036",
+    "D037",
+    "D038",
+    "D039",
+    "D040",
+    "D041",
+    "D042",
+    "D043"
+  ],
+  "learning": {
+    "updated_at": "2026-11-04T10:50:00+00:00",
+    "lessons": 0,
+    "pass_rate_pct": 100.0,
+    "active_failures": {}
+  },
+  "improvement_status": "none",
+  "last_test": "tests/ (52 passed: edge_inspector.py, browser_probe.py, forensic_recorder.py, orchestrator.py, test_dashboard_contract.py - 7 existential states, UX contract, WAI-ARIA, design tokens)",
+  "last_action": {
+    "action": "task_plan",
+    "at": "2026-11-04T20:36:00+01:00",
+    "task_id": "TASK-005"
+  },
+  "resume_hud": {
+    "project": "Plataforma de observabilidade web",
+    "profile": "software (E-Commerce Tier-S)",
+    "active_task": "TASK-005 (Planeada e Pronta para Implementa\u00e7\u00e3o)",
+    "last_decision": "D043",
+    "next_step": "Implementar TASK-005 (/harness-implement)"
+  },
+  "verification_layer": "effect-runtime",
+  "last_snapshot": {
+    "id": "snap_20261104_175721_800",
+    "at": "2026-11-04T16:57:21.911458+00:00",
+    "label": "Pre-mutation TASK-004",
+    "total_files": 91
+  },
+  "last_gate": {
+    "task_id": "TASK-004",
+    "status": "passed",
+    "sealed": true,
+    "receipt": "receipts/TASK-004.receipt.md",
+    "at": "2026-11-04T18:20:29+00:00"
+  }
+}

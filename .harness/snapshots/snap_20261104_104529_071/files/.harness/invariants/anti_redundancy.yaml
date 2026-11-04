@@ -1,0 +1,13 @@
+id: anti_redundancy
+severity: P0
+rule: "When a canonical path exists and behavior is wrong, fix the canonical path before extending it."
+forbidden_by_default:
+  - shadow_wrapper
+  - parallel_handler
+  - fallback_parameter
+  - duplicate_state
+  - duplicate_configuration_key
+required_evidence:
+  - existing_canonical_path_found
+  - reason_extension_is_required
+  - reason_existing_path_cannot_be_fixed

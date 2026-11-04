@@ -1,0 +1,91 @@
+version: "1.0"
+task_id: "TASK-003"
+title: "Gravador Forense, Histórico GitOps Deslizante e Orquestrador Central"
+status: "closed"
+created_at: "2026-11-04T13:53:00+01:00"
+
+objective: >
+  Desenvolver a camada de persistência GitOps (src/forensic_recorder.py) e o motor
+  de orquestração central multi-site (src/orchestrator.py). O gravador forense consolida
+  os resultados das sondas de rede (Edge Inspector) e de browser (Playwright Probe),
+  atualizando atomicamente dashboard/data/current_status.json, mantendo a série temporal
+  deslizante de 30 dias em dashboard/data/history.json e arquivando relatórios individuais
+  de incidentes em dashboard/data/incidents/. O orquestrador central coordena a execução
+  periódica multi-loja, garantindo resiliência total a falhas individuais e interface CLI.
+
+canonical_path: "src/orchestrator.py"
+schema_authority: "src/models.py"
+
+data_trace:
+  ingress:
+    sources:
+      - "config/sites.json (definição das lojas a inspecionar)"
+      - "config/thresholds.json (limiares de alerta)"
+      - "EdgeInspectionResult (métricas de rede, DNS, SSL e TTFB)"
+      - "ProbeResult (resultado da sonda Playwright e evidências forenses)"
+      - "dashboard/data/history.json (série temporal pré-existente)"
+    format: "Instâncias Pydantic e ficheiros JSON UTF-8"
+  validation:
+    rules:
+      - "Validar que a série temporal em history.json descarta pontos com mais de 30 dias"
+      - "Validar que a gravação em disco utiliza ficheiros temporários com replace atómico"
+      - "Validar integridade dos esquemas de current_status.json e history.json via Pydantic"
+  state:
+    models:
+      - "CurrentStatusPayload"
+      - "HistoryPayload"
+      - "HistoryPoint"
+      - "StoreStatus"
+      - "ForensicIncident"
+    persistence_format: "JSON UTF-8 com indentação de 2 espaços em dashboard/data/"
+  egress:
+    output:
+      - "dashboard/data/current_status.json (estado instantâneo para o SPA)"
+      - "dashboard/data/history.json (série temporal 30 dias para gráficos)"
+      - "dashboard/data/incidents/<incident_id>.json (dossiê de anomalia)"
+    consumer: "Dashboard Web Estático (GitHub Pages SPA) e pipeline GitHub Actions"
+
+affected_files:
+  - "src/models.py"
+  - "src/forensic_recorder.py"
+  - "src/orchestrator.py"
+  - "tests/test_forensic_recorder.py"
+  - "tests/test_orchestrator.py"
+  - ".harness/tasks/TASK-003.json"
+  - ".harness/tasks/TASK-003.integrity.yaml"
+  - ".harness/tasks/TASK-003.effect.yaml"
+  - "docs/integrity/TASK-003.md"
+  - ".harness/state.json"
+
+invariants_enforced:
+  canonical_path_first: true
+  strict_schema: true
+  data_trace: true
+  anti_redundancy: true
+  phantom_interface_prevention: true
+  evidence_over_assertion: true
+
+done_when:
+  - id: "DW-01"
+    statement: "src/models.py expandido com CurrentStatusPayload, HistoryPayload e HistoryPoint com tipagem Pydantic v2."
+    evidence_method: "Instanciação e validação do schema em testes unitários."
+  - id: "DW-02"
+    statement: "src/forensic_recorder.py grava atomicamente current_status.json e history.json com janela deslizante estrita de 30 dias (limpeza automática de registos antigos)."
+    evidence_method: "Testes unitários verificando a remoção de pontos com mais de 30 dias e persistência atómica."
+  - id: "DW-03"
+    statement: "src/forensic_recorder.py computa com exatidão métricas de 30 dias: uptime_pct_30d, checkout_success_rate_pct e average_ttfb_ms por loja."
+    evidence_method: "Testes com fixtures de histórico simulado comprovando os cálculos estatísticos."
+  - id: "DW-04"
+    statement: "Gravação individual de incidentes em dashboard/data/incidents/<incident_id>.json com referência ao screenshot correspondente."
+    evidence_method: "Geração e validação de ficheiro JSON de incidente após falha simulada."
+  - id: "DW-05"
+    statement: "src/orchestrator.py orquestra o pipeline multi-loja (Edge Inspector -> Browser Probe -> Forensic Recorder) de forma resiliente (falha numa loja não aborta as restantes) e oferece suporte a CLI."
+    evidence_method: "Execução ponta a ponta simulada via CLI com asserção do código de saída e ficheiros gerados."
+  - id: "DW-06"
+    statement: "Suítes de testes automatizados em tests/test_forensic_recorder.py e tests/test_orchestrator.py passam com 100% de sucesso."
+    evidence_method: "python -m unittest discover tests com exit code 0."
+
+verification_plan:
+  test_command: "python -m unittest discover tests"
+  smoke_check: "python -c \"from src.forensic_recorder import ForensicRecorder; from src.orchestrator import run_observability_pipeline; print('Recorder and Orchestrator: Verified')\""
+

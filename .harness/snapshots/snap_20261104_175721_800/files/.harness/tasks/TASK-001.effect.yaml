@@ -1,0 +1,41 @@
+effect_verification:
+  version: 1
+  required: true
+  impact:
+    source: git_auto
+    cross_boundary: true
+    affected_layers:
+    - configuration
+    - application
+    - verification
+    affected_contracts:
+    - .harness/invariants/strict_schema.yaml
+    - .harness/invariants/data_trace.yaml
+  capability_chain:
+    capability: Inspeção de borda e validação estrita de esquemas
+    contract: tasks/TASK-001.yaml
+    implementation: src/edge_inspector.py
+    integration: src/models.py com config/sites.json e config/thresholds.json
+    consumer: Orquestrador e suite de testes determinísticos
+    observable_effect: 20 testes automatizados passando em tests/test_edge_inspector.py
+  final_effect:
+    expected: Carregamento e validação de 100% dos modelos Pydantic e inspeção de
+      rede simulada com sucesso
+    verification_method: python -m unittest discover tests
+    evidence:
+      status: passed
+      command:
+      - python
+      - -m
+      - unittest
+      - discover
+      - tests
+      at: '2026-11-04T10:58:11+01:00'
+  runtime:
+    command: python -m unittest discover tests
+    environment: Python 3.12
+    setup: ''
+    teardown: ''
+  exceptions:
+    approved: false
+    reason: ''

@@ -1,0 +1,46 @@
+engineering_integrity:
+  canonical_path:
+    required: true
+    found: false
+    path: "dashboard/app.js"
+  redundancy_check:
+    required: true
+    existing_canonical_path_found: false
+    existing_implementation_files: []
+    reason_extension_is_required: ""
+    reason_existing_path_cannot_be_fixed: ""
+    new_wrappers: []
+    new_fallbacks: []
+    new_parallel_state: []
+  data_trace:
+    required: true
+    reason: "Consumo de dados JSON do GitOps e renderização reativa dos 7 estados de interface"
+    ingress: "dashboard/data/current_status.json e dashboard/data/history.json"
+    validation: "Validação de arrays de lojas, tratamento de estados vazios e erros de rede"
+    state: "Estado reativo em memória na aplicação cliente SPA"
+    egress: "Interface HTML5/CSS acessível renderizada no navegador"
+    root_cause:
+      file: "dashboard/app.js"
+      symbol: "initDashboard"
+      line: 1
+      explanation: "Implementação canónica da interface web SPA da plataforma de observabilidade"
+  schema_validation:
+    required: true
+    schema_authority:
+      type: "pydantic"
+      source: "src/models.py"
+  source_of_truth:
+    required: true
+    configuration: "config/sites.json"
+    thresholds: "config/thresholds.json"
+  new_interfaces:
+    allowed: true
+    justification_required: true
+    items:
+      - name: "DashboardSPA"
+        kind: "frontend"
+        justification: "Painel web interativo para observabilidade e investigação forense"
+  phantom_interface_check:
+    required: true
+    undeclared_references: []
+

@@ -1,0 +1,79 @@
+version: 1
+name: "Harness Abstract Design Tokens"
+description: "Universal semantic tokens compiled into platform-native variables or constants."
+
+tokens:
+  spacing:
+    space_0: 0
+    space_1: 4
+    space_2: 8
+    space_3: 12
+    space_4: 16
+    space_5: 24
+    space_6: 32
+    space_7: 48
+    space_8: 64
+
+  radius:
+    radius_none: 0
+    radius_sm: 4
+    radius_md: 8
+    radius_pill: 9999
+
+  typography:
+    scale:
+      display: { size: 28, line_height: 1.25, weight: 700 }
+      title: { size: 20, line_height: 1.3, weight: 600 }
+      headline: { size: 16, line_height: 1.4, weight: 600 }
+      body: { size: 14, line_height: 1.5, weight: 400 }
+      caption: { size: 12, line_height: 1.5, weight: 400 }
+      code: { size: 13, line_height: 1.45, family: "monospace", tabular: true }
+
+  colors_dark:
+    surface: "#0d1117"
+    surface_card: "#161b22"
+    surface_elevated: "#21262d"
+    border: "#30363d"
+    border_subtle: "#21262d"
+    text_primary: "#ffffff"
+    text_secondary: "#c9d1d9"
+    text_muted: "#8b949e"
+    action_primary: "#238636"
+    action_primary_hover: "#2ea043"
+    action_secondary_bg: "#21262d"
+    action_secondary_text: "#c9d1d9"
+    action_danger: "#da3633"
+    action_danger_hover: "#f85149"
+    status_success: "#3fb950"
+    status_warning: "#d29922"
+    status_error: "#f85149"
+    status_info: "#58a6ff"
+
+  colors_light:
+    surface: "#f6f8fa"
+    surface_card: "#ffffff"
+    surface_elevated: "#ffffff"
+    border: "#d0d7de"
+    border_subtle: "#eaeef2"
+    text_primary: "#1f2328"
+    text_secondary: "#424a53"
+    text_muted: "#656d76"
+    action_primary: "#1f883d"
+    action_primary_hover: "#1a7f37"
+    action_secondary_bg: "#f3f4f6"
+    action_secondary_text: "#24292f"
+    action_danger: "#cf222e"
+    action_danger_hover: "#a40e26"
+    status_success: "#1a7f37"
+    status_warning: "#9a6700"
+    status_error: "#cf222e"
+    status_info: "#0969da"
+
+  icons:
+    stroke_width: 1.75
+    sizes:
+      micro: 16
+      regular: 20
+      medium: 24
+      large: 32
+      hero: 48

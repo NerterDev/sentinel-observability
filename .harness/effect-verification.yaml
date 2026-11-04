@@ -1,0 +1,25 @@
+version: 1
+name: effect-runtime-verification
+principle: "Implementation is not completion; completion requires evidence of the intended observable effect."
+mode: universal
+rules:
+  cross_boundary_changes_require_effect_contract: true
+  evidence_over_assertion: true
+  runtime_command_is_project_defined: true
+  no_technology_is_hardcoded: true
+  no_model_selection_or_switching: true
+profiles_may_define:
+  - runtime_environment
+  - boundary_classification
+  - verification_commands
+  - visual_or_domain_specific_checks
+core_never_assumes:
+  - frontend
+  - backend
+  - database
+  - browser
+  - HTTP
+  - WordPress
+  - Python
+  - JavaScript
+  - trading

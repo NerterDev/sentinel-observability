@@ -1,0 +1,8 @@
+version: "1.0"
+# Declare schema authorities for persistent/API/configuration data.
+authorities: []
+# Example:
+# - name: application_settings
+#   type: pydantic
+#   source: app/models/settings.py
+#   scope: settings

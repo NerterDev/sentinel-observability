@@ -1,0 +1,33 @@
+effect_verification:
+  version: 1
+  required: true
+  impact:
+    source: git_auto
+    cross_boundary: true
+    affected_layers:
+    - automation
+    - documentation
+    - verification
+    affected_contracts:
+    - .harness/invariants/strict_schema.yaml
+    - .harness/invariants/canonical_source.yaml
+  capability_chain:
+    capability: "Automação agendada de observabilidade sintética e publicação GitHub Pages"
+    contract: "tasks/TASK-005.yaml"
+    implementation: ".github/workflows/sentinel_engine.yml, README.md, .env.example"
+    integration: "Execução do orquestrador via GitHub Actions e persistência GitOps"
+    consumer: "Runners agendados (cron 30m), GitHub Pages e operadores de e-commerce"
+    observable_effect: "Execução determinística da suíte de testes em tests/test_workflow_contract.py"
+  final_effect:
+    expected: "Workflow GitHub Actions validado com cron 30m, GitOps commit [skip ci], deploy Pages e documentação operacional completa"
+    verification_method: "python -m unittest discover tests"
+    evidence: null
+  runtime:
+    command: "python -m unittest discover tests"
+    environment: "Python 3.12"
+    setup: ""
+    teardown: ""
+  exceptions:
+    approved: false
+    reason: ""
+

@@ -1,0 +1,42 @@
+effect_verification:
+  version: 1
+  required: true
+  impact:
+    source: git_auto
+    cross_boundary: true
+    affected_layers:
+    - application
+    - persistence
+    - verification
+    affected_contracts:
+    - .harness/invariants/strict_schema.yaml
+    - .harness/invariants/data_trace.yaml
+  capability_chain:
+    capability: Orquestração completa de observabilidade e gravação GitOps
+    contract: tasks/TASK-003.yaml
+    implementation: src/orchestrator.py e src/forensic_recorder.py
+    integration: Integração do Edge Inspector e Browser Probe na persistência de dashboard/data/
+    consumer: GitHub Actions runner (Cron 30m) e Dashboard Web SPA
+    observable_effect: Geração de current_status.json e history.json validados nos
+      testes
+  final_effect:
+    expected: Execução multi-loja gravando status consolidado e mantendo histórico
+      deslizante de 30 dias
+    verification_method: python -m unittest discover tests
+    evidence:
+      status: passed
+      command:
+      - python
+      - -m
+      - unittest
+      - discover
+      - tests
+      at: '2026-11-04T15:21:49+01:00'
+  runtime:
+    command: python -m unittest discover tests
+    environment: Python 3.12
+    setup: ''
+    teardown: ''
+  exceptions:
+    approved: false
+    reason: ''

@@ -1,0 +1,11 @@
+version: "1.0"
+authorities:
+  - kind: schema
+    source: "src/models.py"
+    description: "Modelos Pydantic autoritativos para configurações, sondas e incidentes"
+  - kind: configuration
+    source: "config/sites.json"
+    description: "Inventário autoritativo de lojas WooCommerce, produtos e seletores"
+  - kind: thresholds
+    source: "config/thresholds.json"
+    description: "Limiares autoritativos para TTFB, SSL e timeouts da plataforma"

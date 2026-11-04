@@ -1,0 +1,7 @@
+version: 1
+status: proposed
+selected_option: null
+options: []
+
+# Consequential architectural choices should have multiple options where practical.
+# Do not encode an automatic winner.

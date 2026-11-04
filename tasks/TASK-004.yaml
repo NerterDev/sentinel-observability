@@ -1,0 +1,90 @@
+version: "1.0"
+task_id: "TASK-004"
+title: "Painel Web de Gestão SPA Estático Dark Mode (dashboard/)"
+status: "completed"
+completed_at: "2026-11-04T19:20:00+01:00"
+created_at: "2026-11-04T15:19:00+01:00"
+
+objective: >
+  Desenvolver a interface web Single Page Application (SPA) estática da plataforma
+  de observabilidade (dashboard/index.html, styles.css e app.js) para publicação
+  no GitHub Pages. A interface opera em modo escuro de alto contraste (Dark Mode),
+  apresenta cartões de status instantâneo por loja, badges de infraestrutura
+  (Rocket.net/Cloudflare, VPS, Bare-Metal), métricas consolidadas dos últimos 30 dias
+  (uptime, taxa de sucesso de checkout, TTFB médio) e gráficos de série temporal.
+  Inclui gaveta/modal de investigação forense detalhada com visualizador de screenshot,
+  terminal de erros JS e logs de rede com falha. Cumpre estritamente o Contrato
+  Universal de UX (.harness/invariants/ux_contract.yaml), cobrindo os 7 estados
+  existenciais de interface, modularidade 4/8pt e navegação acessível por teclado.
+
+canonical_path: "dashboard/app.js"
+schema_authority: "src/models.py"
+
+data_trace:
+  ingress:
+    sources:
+      - "dashboard/data/current_status.json (estado instantâneo das lojas)"
+      - "dashboard/data/history.json (série temporal de 30 dias)"
+      - "dashboard/data/incidents/<incident_id>.json (dossiês individuais)"
+    format: "JSON UTF-8 estático consumido via Fetch API no navegador"
+  validation:
+    rules:
+      - "Validar presença e estrutura de dados de cada loja antes de renderizar"
+      - "Garantir tratamento explícito dos 7 estados existenciais: EMPTY, LOADING, POPULATED, ZERO_RESULTS, PARTIAL_DEGRADED, ERROR, SUCCESS_FEEDBACK"
+      - "Garantir conformidade com os tokens de design (Dark Theme) e escala 4/8pt"
+  state:
+    models:
+      - "CurrentStatusPayload"
+      - "HistoryPayload"
+      - "StoreStatus"
+      - "ForensicIncident"
+    persistence_format: "Estado reativo em memória no cliente (SPA Vanilla JS)"
+  egress:
+    output: "Interface visual interativa renderizada no browser para visualização dos operadores"
+    consumer: "Navegador web do utilizador (GitHub Pages)"
+
+affected_files:
+  - "dashboard/index.html"
+  - "dashboard/styles.css"
+  - "dashboard/app.js"
+  - "tests/test_dashboard_contract.py"
+  - ".harness/tasks/TASK-004.json"
+  - ".harness/tasks/TASK-004.integrity.yaml"
+  - ".harness/tasks/TASK-004.effect.yaml"
+  - "docs/integrity/TASK-004.md"
+  - ".harness/state.json"
+
+invariants_enforced:
+  canonical_path_first: true
+  strict_schema: true
+  data_trace: true
+  ux_contract: true
+  anti_redundancy: true
+  phantom_interface_prevention: true
+  evidence_over_assertion: true
+
+done_when:
+  - id: "DW-01"
+    statement: "dashboard/index.html criado com semântica acessível, Dark Mode nativo e elementos para os 7 estados existenciais de interface."
+    evidence_method: "Auditoria determinística do HTML em tests/test_dashboard_contract.py."
+  - id: "DW-02"
+    statement: "dashboard/styles.css cumpre rigorosamente os design tokens de src/theme.py, escala de espaçamento modular 4/8pt e raios concêntricos."
+    evidence_method: "Auditoria estática de regras CSS e aprovação no comando harness ux-audit ."
+  - id: "DW-03"
+    statement: "dashboard/app.js carrega assincronamente current_status.json e history.json, renderizando cartões de status, filtros instantâneos e gráficos dos últimos 30 dias."
+    evidence_method: "Testes automatizados de presença de funções de renderização, filtragem e gráficos."
+  - id: "DW-04"
+    statement: "Modal de investigação forense implementado com visualizador de screenshot, terminal de erros JS com sintaxe destacada e tabela de chamadas AJAX com erro >= 400."
+    evidence_method: "Inspeção estrutural dos componentes do modal forense no DOM."
+  - id: "DW-05"
+    statement: "Previsibilidade comportamental respeitada: tecla Escape fecha o modal, foco acessível por teclado e cancelamento idempotente."
+    evidence_method: "Verificação de event listeners de teclado (Escape) e atributos de acessibilidade WAI-ARIA."
+  - id: "DW-06"
+    statement: "Comando harness ux-audit . e suíte de testes em tests/test_dashboard_contract.py aprovam com 100% de sucesso."
+    evidence_method: "Execução determinística com exit code 0."
+
+verification_plan:
+  test_command: "python -m unittest discover tests"
+  ux_audit_command: "python \"F:\\PROJETOS ANTIGRAVITY\\Harness\\AI-Harness-Architect-v6.3-Universal\\app\\harness.py\" ux-audit ."
+  smoke_check: "python -c \"import os; assert os.path.exists('dashboard/index.html') and os.path.exists('dashboard/app.js') and os.path.exists('dashboard/styles.css'); print('Dashboard Files: Verified')\""
+

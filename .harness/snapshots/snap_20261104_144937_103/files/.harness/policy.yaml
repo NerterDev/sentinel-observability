@@ -1,0 +1,27 @@
+version: 1
+policies:
+  - id: P001
+    rule: "Never silently convert assumptions or hypotheses into facts."
+  - id: P002
+    rule: "Architecture is proposed until explicitly approved by a human."
+  - id: P003
+    rule: "Consequential architecture choices should expose alternatives when practical."
+  - id: P004
+    rule: "Architecture Challenge must run before final approval."
+  - id: P005
+    rule: "Passing tests prove conformance to the current contract, not correctness of the contract itself."
+  - id: P006
+    rule: "External side effects require explicit authorization and verification."
+
+  - id: P007
+    rule: "Canonical Path First: when an existing implementation path is responsible for requested behavior, fix or consolidate it before adding wrappers, fallback parameters, parallel handlers, duplicate state or duplicate configuration."
+  - id: P008
+    rule: "Data Trace Requirement: payload, API, configuration, parameter and state tasks must document Ingress -> Validation -> State/Persistence -> Egress and identify the root cause before mutation."
+  - id: P009
+    rule: "Strict Schema Authority: persistent or externally exposed configuration/data must have an explicit schema authority appropriate to the project's technology."
+  - id: P010
+    rule: "One Source of Truth: do not create a competing source of truth for configuration, schemas, API contracts, domain state or persistent data."
+  - id: P011
+    rule: "Phantom Interface Prevention: nonexistent parameters, fields, endpoints, functions, configuration keys, environment variables or tables may not be invented; new interfaces require explicit declaration and justification."
+  - id: P012
+    rule: "Engineering Integrity is evidence-gated: the agent's self-attestation is not sufficient; deterministic Harness checks must pass before a completion receipt can be sealed."

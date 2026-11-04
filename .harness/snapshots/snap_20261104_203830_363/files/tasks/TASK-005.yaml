@@ -1,0 +1,84 @@
+version: "1.0"
+task_id: "TASK-005"
+title: "Automação GitHub Actions e Publicação GitHub Pages (.github/workflows/sentinel_engine.yml)"
+status: "planned"
+created_at: "2026-11-04T20:35:00+01:00"
+
+objective: >
+  Implementar a esteira de automação contínua no GitHub Actions (.github/workflows/sentinel_engine.yml)
+  para execução agendada (cron 30m) da sonda sintética em runners sediados nos EUA
+  (ubuntu-latest) com Playwright Chromium headless. A automação assegura persistência
+  GitOps (commit de dados de telemetria e screenshots com [skip ci]) e publicação
+  automática da pasta dashboard/ no GitHub Pages sem custos de infraestrutura.
+  Inclui a criação de .env.example, README.md com runbook operacional completo
+  (onboarding de lojas heterogéneas, configuração de tokens de bypass WAF e execução local)
+  e suite determinística de testes em tests/test_workflow_contract.py.
+
+canonical_path: ".github/workflows/sentinel_engine.yml"
+schema_authority: "src/models.py"
+
+data_trace:
+  ingress:
+    sources:
+      - "Agendamento cron ('*/30 * * * *') ou manual (workflow_dispatch)"
+      - "Segredos do repositório GitHub (WAF_BYPASS_TOKEN)"
+      - "Ficheiros de configuração canónicos (config/sites.json, config/thresholds.json)"
+    format: "Variáveis de ambiente e argumentos de linha de comando no runner"
+  validation:
+    rules:
+      - "Workflow YAML sintaticamente válido com permissões mínimas necessárias"
+      - "Instalação do Chromium com dependências de SO no runner Ubuntu"
+      - "Prevenção de loops infinitos de CI com marcação [skip ci] no commit GitOps"
+  state:
+    models:
+      - "SiteConfig"
+      - "CurrentStatusPayload"
+      - "HistoryPayload"
+    persistence_format: "Commit e push automático no branch principal e publicação no GitHub Pages"
+  egress:
+    output: "Dashboard SPA atualizado publicado no GitHub Pages e dados históricos preservados"
+    consumer: "Equipas de engenharia, operadores de e-commerce e navegadores web"
+
+affected_files:
+  - ".github/workflows/sentinel_engine.yml"
+  - ".env.example"
+  - "README.md"
+  - "tests/test_workflow_contract.py"
+  - ".harness/tasks/TASK-005.json"
+  - ".harness/tasks/TASK-005.integrity.yaml"
+  - ".harness/tasks/TASK-005.effect.yaml"
+  - "docs/integrity/TASK-005.md"
+  - ".harness/state.json"
+
+invariants_enforced:
+  canonical_path_first: true
+  strict_schema: true
+  data_trace: true
+  anti_redundancy: true
+  phantom_interface_prevention: true
+  evidence_over_assertion: true
+
+done_when:
+  - id: "DW-01"
+    statement: ".github/workflows/sentinel_engine.yml implementado com cron de 30m, suporte a trigger manual com filtros (workflow_dispatch), instalação de Python 3.12 e Playwright Chromium com dependências (--with-deps)."
+    evidence_method: "Auditoria determinística do YAML em tests/test_workflow_contract.py."
+  - id: "DW-02"
+    statement: "Pipeline GitOps de persistência configurada com commit determinístico e atómico ([skip ci]) para dados de telemetria e screenshots, prevenindo loops de execução."
+    evidence_method: "Verificação dos passos de git commit e push no workflow."
+  - id: "DW-03"
+    statement: "Deploy contínuo e sem servidor configurado para publicação direta da pasta dashboard/ no GitHub Pages com actions oficiais de Pages e permissões restritas (contents: write, pages: write, id-token: write)."
+    evidence_method: "Verificação das permissões e dos jobs de upload-pages-artifact e deploy-pages no workflow."
+  - id: "DW-04"
+    statement: ".env.example documentando todos os segredos e variáveis necessários para o motor de observabilidade."
+    evidence_method: "Inspeção determinística do ficheiro no disco."
+  - id: "DW-05"
+    statement: "README.md detalhando visão de arquitetura, garantia Zero-Footprint em WordPress/WooCommerce, guia de setup, onboarding de lojas e procedimentos operacionais."
+    evidence_method: "Verificação da existência e seções canónicas no README.md."
+  - id: "DW-06"
+    statement: "Suíte de testes em tests/test_workflow_contract.py e testes globais aprovam com 100% de sucesso."
+    evidence_method: "Execução determinística com exit code 0."
+
+verification_plan:
+  test_command: "python -m unittest discover tests"
+  smoke_check: "python -c \"import os; assert os.path.exists('.github/workflows/sentinel_engine.yml') and os.path.exists('.env.example') and os.path.exists('README.md'); print('Workflow & Runbook: Verified')\""
+

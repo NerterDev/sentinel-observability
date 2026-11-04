@@ -1,0 +1,18 @@
+version: "2.0"
+
+tools:
+  filesystem:
+    allowed: true
+    risk: low
+  terminal:
+    allowed: true
+    risk: medium
+  git:
+    allowed: true
+    risk: medium
+  network:
+    allowed: false
+    risk: high
+  external_actions:
+    allowed: false
+    risk: critical

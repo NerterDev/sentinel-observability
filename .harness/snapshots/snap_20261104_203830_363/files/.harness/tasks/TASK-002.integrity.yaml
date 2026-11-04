@@ -1,0 +1,49 @@
+engineering_integrity:
+  canonical_path:
+    required: true
+    found: false
+    path: "src/browser_probe.py"
+  redundancy_check:
+    required: true
+    existing_canonical_path_found: false
+    existing_implementation_files: []
+    reason_extension_is_required: ""
+    reason_existing_path_cannot_be_fixed: ""
+    new_wrappers: []
+    new_fallbacks: []
+    new_parallel_state: []
+  data_trace:
+    required: true
+    reason: "Execução de sonda de browser, interceção forense e persistência de incidentes"
+    ingress: "SiteConfig, ThresholdsConfig e WAF_BYPASS_TOKEN"
+    validation: "Validação de seletores e configuração Playwright via Pydantic"
+    state: "Instância de ProbeResult e buffers de logs JS/AJAX"
+    egress: "ProbeResult estruturado, ForensicIncident e screenshots para disco"
+    root_cause:
+      file: "src/browser_probe.py"
+      symbol: "BrowserProbeEngine.probe_site"
+      line: 1
+      explanation: "Implementação canónica do motor de sonda Playwright com intercetores forenses"
+  schema_validation:
+    required: true
+    schema_authority:
+      type: "pydantic"
+      source: "src/models.py"
+  source_of_truth:
+    required: true
+    configuration: "config/sites.json"
+    thresholds: "config/thresholds.json"
+  new_interfaces:
+    allowed: true
+    justification_required: true
+    items:
+      - name: "ProbeResult"
+        kind: "model"
+        justification: "Modelo estruturado de resultado forense da sonda de browser"
+      - name: "BrowserProbeEngine"
+        kind: "class"
+        justification: "Motor canónico de execução Playwright e interceção"
+  phantom_interface_check:
+    required: true
+    undeclared_references: []
+

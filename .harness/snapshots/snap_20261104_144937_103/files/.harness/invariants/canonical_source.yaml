@@ -1,0 +1,5 @@
+id: canonical_source
+severity: P0
+rule: "Do not create a second source of truth when an authoritative source already exists."
+required:
+  - source_of_truth

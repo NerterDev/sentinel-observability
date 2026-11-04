@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-11-04T09:32:55+00:00",
+  "project": "Plataforma de observabilidade web",
+  "task_objective": "",
+  "skills": [
+    "harness-bootstrap",
+    "harness-plan",
+    "harness-implement",
+    "harness-verify",
+    "harness-repair",
+    "harness-close",
+    "harness-grant-triage",
+    "harness-pain-triage"
+  ],
+  "prompts": [
+    "00_BOOTSTRAP",
+    "01_ARCHITECTURE_REVIEW",
+    "02_PLAN_FIRST_TASK",
+    "03_IMPLEMENT",
+    "04_VERIFY",
+    "05_REPAIR",
+    "06_CLOSE",
+    "07_GRANT_TRIAGE",
+    "08_PAIN_DISCOVERY"
+  ]
+}

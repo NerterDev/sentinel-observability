@@ -1,0 +1,46 @@
+engineering_integrity:
+  canonical_path:
+    required: true
+    found: false
+    path: ".github/workflows/sentinel_engine.yml"
+  redundancy_check:
+    required: true
+    existing_canonical_path_found: false
+    existing_implementation_files: []
+    reason_extension_is_required: ""
+    reason_existing_path_cannot_be_fixed: ""
+    new_wrappers: []
+    new_fallbacks: []
+    new_parallel_state: []
+  data_trace:
+    required: true
+    reason: "Orquestração agendada no GitHub Actions e publicação contínua no GitHub Pages"
+    ingress: "GitHub Actions schedule (cron 30m) e secrets (WAF_BYPASS_TOKEN)"
+    validation: "Execução determinística de python -m src.orchestrator com isolamento de falhas"
+    state: "Persistência GitOps em dashboard/data/ e public/screenshots/"
+    egress: "Publicação do painel web SPA no GitHub Pages"
+    root_cause:
+      file: ".github/workflows/sentinel_engine.yml"
+      symbol: "sentinel_engine"
+      line: 1
+      explanation: "Pipeline de automação contínua de observabilidade e deploy estático"
+  schema_validation:
+    required: true
+    schema_authority:
+      type: "pydantic"
+      source: "src/models.py"
+  source_of_truth:
+    required: true
+    configuration: "config/sites.json"
+    thresholds: "config/thresholds.json"
+  new_interfaces:
+    allowed: true
+    justification_required: true
+    items:
+      - name: "SentinelEngineWorkflow"
+        kind: "ci_cd"
+        justification: "Esteira de execução sintética de 30 minutos em runners US e publicação Pages"
+  phantom_interface_check:
+    required: true
+    undeclared_references: []
+

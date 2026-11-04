@@ -1,0 +1,44 @@
+version: "2.0"
+mode: "antigravity-first"
+model_selection:
+  automatic: false
+  required: true
+  authority: human
+  provider_ui: "Google Antigravity"
+  supported_examples:
+    - gemini-3.8-flash-medium
+    - gemini-3.8-flash-high
+    - gemini-3.7-flash-medium
+    - gemini-3.7-flash-high
+    - gemini-3.6-flash-medium
+    - gemini-3.6-flash-high
+    - gemini-3.1-pro-high
+context:
+  optimizer: true
+  max_files: 12
+  max_chars_per_file: 12000
+  deterministic_filtering: true
+  include_full_history: false
+  stable_prefix_first: true
+telemetry:
+  enabled: true
+  record_input_tokens: true
+  record_output_tokens: true
+  record_cached_tokens: true
+  record_estimated_cost: true
+  record_model_selected_by_user: true
+cache:
+  enabled: true
+  stable_prefix_first: true
+policy:
+  never_skip_verification_for_cost: true
+  never_expand_context_without_reason: true
+  max_retries: 3
+  never_auto_switch_model: true
+  never_auto_escalate_model: true
+antigravity:
+  integration: "workspace-first"
+  direct_api_calls_from_harness: false
+  model_selected_in_antigravity_ui: true
+  harness_generates_task_context: true
+  harness_records_selected_model: true
