@@ -265,6 +265,8 @@ def inspect_edge(
 
     # Consolidação de mensagens de erro
     errors = [e for e in (dns_error, ssl_error, http_error) if e]
+    if ttfb_ms is not None and thresholds and ttfb_ms >= thresholds.ttfb_critical_ms:
+        errors.append(f"TTFB crítico ({ttfb_ms:.0f}ms excedeu limiar crítico de {thresholds.ttfb_critical_ms:.0f}ms)")
     consolidated_error = " | ".join(errors) if errors else None
 
     # Construção do objeto de resultado

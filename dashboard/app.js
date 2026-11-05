@@ -205,6 +205,56 @@
   }
 
   /**
+   * Normalização resiliente de esquemas de dados de loja
+   */
+  function normalizeStore(s) {
+    const statusUpper = (s.status || s.health || 'HEALTHY').toUpperCase();
+    const healthLower = statusUpper.toLowerCase();
+    const ttfb =
+      typeof s.latest_ttfb_ms === 'number'
+        ? s.latest_ttfb_ms
+        : s.edge && typeof s.edge.ttfb_ms === 'number'
+        ? s.edge.ttfb_ms
+        : null;
+    const sslDays =
+      typeof s.ssl_days_remaining === 'number'
+        ? s.ssl_days_remaining
+        : s.edge && typeof s.edge.ssl_days_remaining === 'number'
+        ? s.edge.ssl_days_remaining
+        : null;
+    const checkoutOk =
+      s.checkout_success_rate_pct !== undefined
+        ? s.checkout_success_rate_pct >= 90
+        : s.checkout_ok !== undefined
+        ? Boolean(s.checkout_ok)
+        : true;
+    const incident = s.last_incident || s.incident || null;
+    const infra = s.infrastructure_type || s.infrastructure || 'rocket_cloudflare';
+    const storeUrl = s.url || s.store_url || `https://${s.site_id}.com`;
+
+    return {
+      ...s,
+      site_id: s.site_id || s.id,
+      name: s.name || s.site_id,
+      url: storeUrl,
+      store_url: storeUrl,
+      health: healthLower,
+      status: statusUpper,
+      infrastructure: infra,
+      infrastructure_type: infra,
+      latest_ttfb_ms: ttfb,
+      ssl_days_remaining: sslDays,
+      checkout_ok: checkoutOk,
+      incident: incident,
+      last_incident: incident,
+      edge: {
+        ttfb_ms: ttfb,
+        ssl_days_remaining: sslDays
+      }
+    };
+  }
+
+  /**
    * Carregamento assíncrono dos ficheiros de telemetria
    */
   async function loadTelemetry(showFeedback = false) {
@@ -228,7 +278,7 @@
       }
 
       const currentData = await currentStatusRes.value.json();
-      const rawStores = currentData.stores || [];
+      const rawStores = (currentData.stores || []).map(normalizeStore);
 
       // Tratamento do histórico (falha não-bloqueante -> PARTIAL_DEGRADED)
       let historyData = {};
@@ -249,9 +299,10 @@
       state.historyData = historyData;
 
       // Estado 1: EMPTY se nenhuma loja estiver configurada
+      const lastRunTs = currentData.updated_at || currentData.generated_at;
       if (state.allStores.length === 0) {
         setViewState('EMPTY');
-        updateLastRunIndicator(currentData.generated_at);
+        updateLastRunIndicator(lastRunTs);
         return;
       }
 
@@ -259,7 +310,7 @@
       updateMetricsSummary(rawStores, historyData);
 
       // Atualizar indicador da última execução
-      updateLastRunIndicator(currentData.generated_at);
+      updateLastRunIndicator(lastRunTs);
 
       // Aplicar filtros e renderizar cartões
       applyFilters();
@@ -461,17 +512,29 @@
 
       const siteHist = state.historyData[store.site_id] || {};
       const uptime30d =
-        siteHist.uptime_pct_30d !== undefined ? `${siteHist.uptime_pct_30d.toFixed(1)}%` : '--%';
+        typeof store.uptime_pct_30d === 'number'
+          ? `${store.uptime_pct_30d.toFixed(1)}%`
+          : siteHist.uptime_pct_30d !== undefined
+          ? `${siteHist.uptime_pct_30d.toFixed(1)}%`
+          : '--%';
       const checkout30d =
-        siteHist.checkout_success_rate_pct !== undefined
+        typeof store.checkout_success_rate_pct === 'number'
+          ? `${store.checkout_success_rate_pct.toFixed(1)}%`
+          : siteHist.checkout_success_rate_pct !== undefined
           ? `${siteHist.checkout_success_rate_pct.toFixed(1)}%`
           : '--%';
 
       const ttfbVal =
-        store.edge && typeof store.edge.ttfb_ms === 'number' ? `${store.edge.ttfb_ms} ms` : '--';
+        typeof store.latest_ttfb_ms === 'number'
+          ? `${store.latest_ttfb_ms.toFixed(0)} ms`
+          : store.edge && typeof store.edge.ttfb_ms === 'number'
+          ? `${store.edge.ttfb_ms.toFixed(0)} ms`
+          : '--';
 
       const sslDays =
-        store.edge && typeof store.edge.ssl_days_remaining === 'number'
+        typeof store.ssl_days_remaining === 'number'
+          ? `${store.ssl_days_remaining} dias`
+          : store.edge && typeof store.edge.ssl_days_remaining === 'number'
           ? `${store.edge.ssl_days_remaining} dias`
           : 'N/A';
 
@@ -481,7 +544,7 @@
       // Geração do minigráfico SVG da série temporal
       const sparklineSvg = generateSparklineSvg(siteHist.points || []);
 
-      const hasIncident = Boolean(store.incident);
+      const hasIncident = Boolean(store.last_incident || store.incident);
 
       card.innerHTML = `
         <div class="store-card-header">
@@ -610,10 +673,10 @@
       DOM.modalStoreName.textContent = `${store.name} — Investigação Forense`;
     }
 
-    let incident = store.incident;
+    let incident = store.last_incident || store.incident;
 
     // Se o incidente não estiver embutido no status, tentar carregar ficheiro individual
-    if (!incident && store.health === 'critical') {
+    if (!incident && (store.health === 'critical' || store.status === 'CRITICAL')) {
       try {
         const res = await fetch(`data/incidents/${siteId}.json`);
         if (res.ok) {
@@ -627,9 +690,11 @@
     // Preenchimento dos dados do modal
     if (incident) {
       DOM.modalVerdictText.textContent =
-        incident.root_cause_verdict || 'Anomalia intercetada durante o fluxo de checkout.';
-      DOM.modalFailedStep.textContent = incident.step || 'N/A';
-      DOM.modalErrorCode.textContent = incident.error_code || 'N/A';
+        incident.verdict_pt || incident.root_cause_verdict || 'Anomalia intercetada durante o fluxo de checkout.';
+      DOM.modalFailedStep.textContent = incident.failure_phase || incident.step || 'N/A';
+      DOM.modalErrorCode.textContent = incident.http_status
+        ? `HTTP ${incident.http_status}`
+        : incident.error_details || incident.error_code || 'CRITICAL';
 
       // Screenshot forense
       if (incident.screenshot_path) {
@@ -645,22 +710,27 @@
       }
 
       // Erros de consola JavaScript
-      if (incident.js_errors && incident.js_errors.length > 0) {
-        DOM.modalJsErrors.textContent = incident.js_errors.join('\n\n');
+      const jsErrs = incident.js_errors || [];
+      if (jsErrs.length > 0) {
+        DOM.modalJsErrors.textContent = jsErrs
+          .map((e) => (typeof e === 'object' ? JSON.stringify(e, null, 2) : String(e)))
+          .join('\n\n');
       } else {
         DOM.modalJsErrors.textContent = 'Nenhum erro de consola JavaScript intercetado.';
       }
 
       // Tabela de requisições AJAX com falha
-      if (incident.network_errors && incident.network_errors.length > 0) {
+      const netCalls = incident.failed_ajax_calls || incident.network_errors || [];
+      if (netCalls.length > 0) {
         DOM.modalNetworkTbody.innerHTML = '';
-        incident.network_errors.forEach((net) => {
+        netCalls.forEach((net) => {
           const row = document.createElement('tr');
+          const reason = net.failure_reason || (net.status ? `HTTP ${net.status}` : 'Falha');
           row.innerHTML = `
             <td><span class="badge badge-infra">${escapeHtml(net.method || 'GET')}</span></td>
             <td style="word-break: break-all;">${escapeHtml(net.url || '--')}</td>
             <td><span class="badge badge-critical">${escapeHtml(String(net.status || 'ERR'))}</span></td>
-            <td>${escapeHtml(net.failure_reason || '--')}</td>
+            <td>${escapeHtml(reason)}</td>
           `;
           DOM.modalNetworkTbody.appendChild(row);
         });
