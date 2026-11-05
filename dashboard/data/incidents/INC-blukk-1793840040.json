@@ -1,0 +1,196 @@
+{
+  "incident_id": "INC-blukk-1793840040",
+  "site_id": "blukk",
+  "site_name": "Blukk",
+  "timestamp": "2026-11-05T00:54:00.904830Z",
+  "failure_phase": "order_review",
+  "verdict_pt": "Timeout ao aguardar atualização da tabela de pedido (#order_review)",
+  "screenshot_path": "public/screenshots/blukk_order_review_20261105_005400.png",
+  "js_errors": [],
+  "failed_ajax_calls": [
+    {
+      "timestamp": "2026-11-05T00:53:26.464196+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/swatches.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.465072+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/single-product.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.476387+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/spinner.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.508587+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/footer.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.509611+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/js/swatches.js?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.513422+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/product-subtitle.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.528673+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/js/pdp-variations.js?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.564017+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/estimated-delivery.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:26.577050+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/fast-grid.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:27.552774+00:00",
+      "url": "https://www.blukk.com/wp-admin/admin-ajax.php",
+      "status": 403,
+      "method": "POST"
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.183315+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/spinner.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.232971+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/swatches.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.244092+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/estimated-delivery.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.288473+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/product-subtitle.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.293709+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/single-product.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.299341+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/footer.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.375825+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/js/swatches.js?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.400837+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/fast-grid.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:29.404900+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/js/pdp-variations.js?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:35.597341+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/swatches.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:35.598172+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/footer.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:35.653593+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/spinner.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:35.660217+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/product-subtitle.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:35.668199+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/js/swatches.js?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:35.675174+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/fast-grid.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    },
+    {
+      "timestamp": "2026-11-05T00:53:35.758991+00:00",
+      "url": "https://www.blukk.com/wp-content/plugins/astraoptima/assets/css/estimated-delivery.css?ver=2.2.0",
+      "status": 404,
+      "method": "GET",
+      "body_preview": null
+    }
+  ],
+  "dom_extract": "<!DOCTYPE html><html lang=\"pt-PT\" prefix=\"og: https://ogp.me/ns#\"><head><meta http-equiv=\"origin-trial\" content=\"A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==\">\n<script src=\"https://www.blukk.com/wp-includes/js/zxcvbn.min.js\" type=\"text/javascript\" async=\"\"></script><script type=\"text/javascript\" async=\"\" charset=\"utf-8\" src=\"https://www.gstatic.com/recaptcha/releases/bSuJ2xBC8cFy7pM4Z3Hu9boH/recaptcha__en.js\" crossorigin=\"anonymous\" integrity=\"sha384-9mbe30ZjP8YtpsPpfkAY9YFHSid+HzvwAEuq3Hi/hp/TlAYMhJFop96TI6Nva6Dn\"></script><script src=\"https://www.paypal.com/sdk/js?client-id=BAAQWZioJ97Mc4oGErHQQQvjPIPbHKVhdz3bo3uSDpAmnLNVxTIahIQalfpP_FBRIWblFiYZVNNFyl9VxU&amp;intent=capture&amp;commit=true&amp;components=buttons,messages,card-fields,googlepay,applepay&amp;currency=EUR&amp;enable-funding=paylater&amp;locale=pt_PT\" data-partner-attribution-id=\"PaymentPlugins_PCP\" data-page-type=\"cart\" data-uid-auto=\"uid_bziorpjnuismtbznnbpjoatrkssill\"></script><meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\t<link rel=\"profile\" href=\"https://gmpg.org/xfn/11\"> \n\t\n<!-- Otimização para mecanismos de busca com o Rank Math - https://rankmath.com/ -->\n<title>Cart - Blukk™</title>\n<meta name=\"robots\" content=\"noindex, follow\">\n<meta property=\"og:locale\" content=\"pt_PT\">\n<meta property=\"og:type\" content=\"article\">\n<meta property=\"og:title\" content=\"Cart - Blukk™\">\n<meta property=\"og:description\" content=\"[vc_row][vc_column][/vc_column][/vc_row]\">\n<meta property=\"og:url\" content=\"https://www.blukk.com/cart/\">\n<meta property=\"og:site_name\" content=\"Blukk™\">\n<meta property=\"article:publisher\" content=\"https://www.facebook.com/blukkbooks/\">\n<meta property=\"og:updated_time\" content=\"2026-08-28T04:33:44+02:00\">\n<meta property=\"og:image\" content=\"https://www.blukk.com/wp-content/uploads/2023/12/logo_blukk_002.png\">\n<meta property=\"og:image:secure_url\" content=\"https://www.blukk.com/wp-content/uploads/2023/12/logo_blukk_002.png\">\n<meta property=\"og:image:width\" content=\"600\">\n<meta property=\"og:image:height\" content=\"600\">\n<meta property=\"og:image:alt\" content=\"Blukk Editora\">\n<meta property=\"og:image:type\" content=\"image/png\">\n<meta name=\"twitter:card\" content=\"summary_large_image\">\n<meta name=\"twitter:title\" content=\"Cart - Blukk™\">\n<meta name=\"twitter:description\" content=\"[vc_row][vc_column][/vc_column][/vc_row]\">\n<meta name=\"twitter:site\" content=\"@https://twitter.com/blukkeditora\">\n<meta name=\"twitter:creator\" content=\"@https://twitter.com/blukkeditora\">\n<meta name=\"twitter:image\" content=\"https://www.blukk.com/wp-content/uploads/2023/12/logo_blukk_002.png\">\n<meta name=\"twitter:label1\" content=\"Hora de ler\">\n<meta name=\"twitter:data1\" content=\"Menos de um minuto\">\n<!-- /Plugin Rank Math para SEO no WordPress -->\n\n<link rel=\"dns-prefetch\" href=\"//fonts.googleapis.com\">\n<link href=\"https://fonts.googleapis.com\" rel=\"preconnect\">\n<link href=\"https://fonts.gstatic.com\" crossorigin=\"anonymous\" rel=\"preconnect\">\n<link rel=\"alternate\" type=\"application/rss+xml\" title=\"Blukk™ » Feed\" href=\"https://www.blukk.com/feed/\">\n<link rel=\"alternate\" title=\"oEmbed (JSON)\" type=\"application/json+oembed\" href=\"https://www.blukk.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.blukk.com%2Fcart%2F\">\n<link rel=\"alternate\" title=\"oEmbed (XML)\" type=\"text/xml+oembed\" href=\"https://www.blukk.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.blukk.com%2Fcart%2F&amp;format=xml\">\n<style id=\"astraoptima-spinner-inline-css\">@keyframes ast-modern-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } @-webkit-keyframes ast-modern-spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); } } @keyframes ao-pop-check { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.25); } 100% { transform: scale(1); opacity: 1; } } .woocommerce li.product .add_to_cart_button.loading::after, .woocommerce li.product .add_to_cart_button.loading::before, .single_add_to_cart_button.loading::after, .single_add_to_cart_button.loading::before, .woocommerce .blockUI.blockOverlay::before, .woocommerce a.button.loading::before, .woocommerce button.button.loading::before { display: none !important; content: none !important; } .ast-btn-loading, .ast-btn-loading *, .ast-grid-btn.ast-btn-loading, .ast-grid-btn.loading, button.ast-btn-loading, a.ast-btn-loading, .button.ast-btn-loading, .ast-unify-wc-loop .button.ast-btn-loading, .ast-unify-wc-loop ul.products li.product .button.ast-btn-loading, .ast-unify-wc-loop ul.products li.product a.button.ast-btn-loading, input[type=\"submit\"].ast-btn-loading, .single_add_to_cart_button.ast-btn-loading, ul.products li.product .button.ast-btn-loading, ul.products li.product .button.loading, .add_to_cart_button.ast-btn-loading, .add_to_cart_button.loading, .ast-button.ast-btn-loading, #place_order.ast-btn-loading, #co_apply_btn.ast-btn-loading { position: relative !important; color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; pointer-events: none !important; user-select: none !important; cursor: wait !important; opacity: 1 !important; } .ast-btn-loading *, .ast-grid-btn.ast-btn-loading *, .ast-grid-btn.loading *, ul.products li.product .button.loading *, ul.products li.product .button.ast-btn-loading *, .ast-unify-wc-loop .button.ast-btn-loading * { opacity: 0 !important; visibility: hidden !important; color: transparent !important; -webkit-text-fill-color: transparent !important; } .ast-btn-loading::after, .ast-grid-btn.ast-btn-loading::after, .ast-grid-btn.loading::after, button.ast-btn-loading::after, a.ast-btn-loading::after, .button.ast-btn-loading::after, .ast-unify-wc-loop .button.ast-btn-loading::after, .ast-unify-wc-loop ul.products li.product .button.ast-btn-loading::after, input[type=\"submit\"].ast-btn-loading::after, .single_add_to_cart_button.ast-btn-loading::after, ul.products li.product .button.ast-btn-loading::after, ul.products li.product .button.loading::after, .add_to_cart_button.ast-btn-loading::after, .add_to_cart_button.loading::after, #place_order.ast-btn-loading::after { content: \"\" !important; position: absolute !important; top: 50% !important; left: 50% !important; width: 18px !important; height: 18px !important; margin-top: -9px !important; margin-left: -9px !important; background: transparent !important; background-color: transparent !important; border: 2.5px solid rgba(255, 255, 255, 0.25) !important; border-top-color: #ffffff !important; border-radius: 50% !important; box-sizing: border-box !important; animation: ast-modern-spin 0.65s linear infinite !important; -webkit-animation: ast-modern-spin 0.65s linear infinite !important; display: block !important; z-index: 999 !important; } #co_apply_btn.ast-btn-loading::after, .coupon button.ast-btn-loading::after, .woocommerce-form-coupon button.ast-btn-loading::after { width: 15px !important; height: 15px !important; margin-top: -7.5px !important; margin-left: -7.5px !important; border-width: 2px !important; background: transparent !important; } .ast-grid-btn.added::after, .add_to_cart_button.added::after, ul.products li.product .button.added::after, .wc-block-grid__product-add-to-cart .button.added::after, .wc-block-components-product-button .wc-block-components-product-button__button.added::after { content: \" \\2713\" !important; display: inline-block !important; margin-left: 6px !important; font-size: 14px !important; font-weight: 700 !important; line-height: 1 !important; color: inherit !important; position: static !important; top: auto !important; left: auto !important; width: auto !important; height: auto !important; margin-top: 0 !important; border: none !important; animation: ao-pop-check 0.35s ease-out !imp",
+  "http_status": null,
+  "error_details": "Page.wait_for_selector: Timeout 25000ms exceeded.\nCall log:\n  - waiting for locator(\"#order_review\") to be visible\n"
+}
