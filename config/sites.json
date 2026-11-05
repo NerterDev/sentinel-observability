@@ -5,7 +5,7 @@
       "id": "txrace",
       "name": "TX Race",
       "store_url": "https://www.txrace.com",
-      "product_url": "https://www.txrace.com/product/tx-race-restyle-kit-gen25-for-honda-cr125-250-2002-2007/",
+      "product_url": "https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/",
       "infrastructure_type": "rocket_cloudflare",
       "selectors": {
         "add_to_cart_btn": "button[name='add-to-cart'], .single_add_to_cart_button",

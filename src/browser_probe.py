@@ -212,6 +212,21 @@ class BrowserProbeEngine:
             # =========================================================================
             current_phase = "add_to_cart"
             t0 = time.perf_counter()
+
+            # Suporte a produtos variáveis: se existirem seletores de variação (.variations select), seleciona opção válida
+            try:
+                variation_selects = page.locator(".variations select, select[name^='attribute_']").all()
+                for sel in variation_selects:
+                    options = sel.locator("option").all()
+                    for opt in options:
+                        val = opt.get_attribute("value")
+                        if val:
+                            sel.select_option(val)
+                            time.sleep(0.3)
+                            break
+            except Exception:
+                pass
+
             # Localiza e clica no botão de adicionar ao carrinho
             page.wait_for_selector(site.selectors.add_to_cart_btn, timeout=timeout_ms)
             page.click(site.selectors.add_to_cart_btn)
@@ -219,7 +234,7 @@ class BrowserProbeEngine:
             # Aguarda feedback visual ou transição
             # Tenta encontrar a mensagem de sucesso ou mudança no carrinho
             try:
-                page.wait_for_selector(site.selectors.cart_feedback, timeout=min(timeout_ms, 8000.0))
+                page.wait_for_selector(site.selectors.cart_feedback, timeout=min(timeout_ms, 5000.0))
             except Exception:
                 # Nem todas as lojas mostram .woocommerce-message; algumas redirecionam logo
                 pass
@@ -238,6 +253,18 @@ class BrowserProbeEngine:
             current_url = getattr(page, "url", "")
             if "checkout" not in current_url and "finalizar" not in current_url:
                 page.goto(checkout_full_url, timeout=timeout_ms, wait_until="domcontentloaded")
+
+            # Resiliência para lojas que mantêm o utilizador no /cart/ antes do checkout
+            post_nav_url = getattr(page, "url", "")
+            if "cart" in post_nav_url and "checkout" not in post_nav_url:
+                try:
+                    proceed_btn = page.locator(".checkout-button, a[href*='checkout'], a[href*='finalizar']").first
+                    if proceed_btn.count() > 0 and proceed_btn.is_visible():
+                        proceed_btn.click()
+                        page.wait_for_load_state("domcontentloaded", timeout=5000)
+                except Exception:
+                    pass
+
             step_latencies["checkout_navigation"] = round((time.perf_counter() - t0) * 1000.0, 2)
 
             # =========================================================================
