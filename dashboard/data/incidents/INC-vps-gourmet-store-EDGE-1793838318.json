@@ -1,0 +1,14 @@
+{
+  "incident_id": "INC-vps-gourmet-store-EDGE-1793838318",
+  "site_id": "vps-gourmet-store",
+  "site_name": "Armazém Gourmet (VPS Ubuntu / Nginx)",
+  "timestamp": "2026-11-05T00:25:18.450289Z",
+  "failure_phase": "edge_network",
+  "verdict_pt": "Erro de DNS (gaierror): [Errno -5] No address associated with hostname | Falha de conexão a https://gourmet-vps.example.com/produto/azeite-virgem-extra-500ml/: [Errno -5] No address associated with hostname",
+  "screenshot_path": null,
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": null,
+  "http_status": null,
+  "error_details": "Erro de DNS (gaierror): [Errno -5] No address associated with hostname | Falha de conexão a https://gourmet-vps.example.com/produto/azeite-virgem-extra-500ml/: [Errno -5] No address associated with hostname"
+}

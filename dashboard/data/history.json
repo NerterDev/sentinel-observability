@@ -1,0 +1,33 @@
+{
+  "retention_days": 30,
+  "updated_at": "2026-11-05T00:25:18.450289Z",
+  "points": [
+    {
+      "timestamp": "2026-11-05T00:25:18.450289Z",
+      "site_id": "rocket-apparel-demo",
+      "status": "CRITICAL",
+      "ttfb_ms": null,
+      "checkout_success": false,
+      "total_duration_ms": null,
+      "incident_id": "INC-rocket-apparel-demo-EDGE-1793838318"
+    },
+    {
+      "timestamp": "2026-11-05T00:25:18.450289Z",
+      "site_id": "vps-gourmet-store",
+      "status": "CRITICAL",
+      "ttfb_ms": null,
+      "checkout_success": false,
+      "total_duration_ms": null,
+      "incident_id": "INC-vps-gourmet-store-EDGE-1793838318"
+    },
+    {
+      "timestamp": "2026-11-05T00:25:18.450289Z",
+      "site_id": "baremetal-tech-parts",
+      "status": "CRITICAL",
+      "ttfb_ms": null,
+      "checkout_success": false,
+      "total_duration_ms": null,
+      "incident_id": "INC-baremetal-tech-parts-EDGE-1793838318"
+    }
+  ]
+}
