@@ -205,6 +205,15 @@ class BrowserProbeEngine:
             current_phase = "product_page"
             t0 = time.perf_counter()
             page.goto(site.product_url, timeout=timeout_ms, wait_until="domcontentloaded")
+
+            # Dispensa banner de cookies para evitar bloqueio de cliques
+            try:
+                cookie_btn = page.locator("#daextlwcn-cookie-notice-button-container button, .cookie-notice button, button:has-text('Accept all cookies'), button:has-text('Aceitar')").first
+                if cookie_btn.count() > 0 and cookie_btn.is_visible():
+                    cookie_btn.click(timeout=1000)
+            except Exception:
+                pass
+
             step_latencies["product_page"] = round((time.perf_counter() - t0) * 1000.0, 2)
 
             # =========================================================================
@@ -231,10 +240,16 @@ class BrowserProbeEngine:
             page.wait_for_selector(site.selectors.add_to_cart_btn, timeout=timeout_ms)
             page.click(site.selectors.add_to_cart_btn)
 
+            # Aguarda conclusão de eventuais requisições AJAX/POST decorrentes do clique
+            try:
+                page.wait_for_load_state("networkidle", timeout=3000.0)
+            except Exception:
+                pass
+
             # Aguarda feedback visual ou transição
             # Tenta encontrar a mensagem de sucesso ou mudança no carrinho
             try:
-                page.wait_for_selector(site.selectors.cart_feedback, timeout=min(timeout_ms, 5000.0))
+                page.wait_for_selector(site.selectors.cart_feedback, timeout=min(timeout_ms, 3000.0))
             except Exception:
                 # Nem todas as lojas mostram .woocommerce-message; algumas redirecionam logo
                 pass
