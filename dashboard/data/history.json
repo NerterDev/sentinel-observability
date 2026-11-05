@@ -1,6 +1,6 @@
 {
   "retention_days": 30,
-  "updated_at": "2026-11-05T00:25:18.450289Z",
+  "updated_at": "2026-11-05T00:44:54.196706Z",
   "points": [
     {
       "timestamp": "2026-11-05T00:25:18.450289Z",
@@ -28,6 +28,33 @@
       "checkout_success": false,
       "total_duration_ms": null,
       "incident_id": "INC-baremetal-tech-parts-EDGE-1793838318"
+    },
+    {
+      "timestamp": "2026-11-05T00:44:54.196706Z",
+      "site_id": "txrace",
+      "status": "HEALTHY",
+      "ttfb_ms": 575.18,
+      "checkout_success": true,
+      "total_duration_ms": 578.08,
+      "incident_id": null
+    },
+    {
+      "timestamp": "2026-11-05T00:44:54.196706Z",
+      "site_id": "artabrian",
+      "status": "DEGRADED",
+      "ttfb_ms": 941.31,
+      "checkout_success": true,
+      "total_duration_ms": 1074.32,
+      "incident_id": null
+    },
+    {
+      "timestamp": "2026-11-05T00:44:54.196706Z",
+      "site_id": "blukk",
+      "status": "HEALTHY",
+      "ttfb_ms": 123.37,
+      "checkout_success": true,
+      "total_duration_ms": 140.05,
+      "incident_id": null
     }
   ]
 }

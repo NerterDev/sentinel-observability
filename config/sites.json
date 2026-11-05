@@ -2,10 +2,10 @@
   "version": "1.0",
   "sites": [
     {
-      "id": "rocket-apparel-demo",
-      "name": "Loja Vestuário (Cloudflare / Rocket.net)",
-      "store_url": "https://loja-demo-rocket.example.com",
-      "product_url": "https://loja-demo-rocket.example.com/produto/camisa-oxford-premium/",
+      "id": "txrace",
+      "name": "TX Race",
+      "store_url": "https://www.txrace.com",
+      "product_url": "https://www.txrace.com/product/tx-race-restyle-kit-gen25-for-honda-cr125-250-2002-2007/",
       "infrastructure_type": "rocket_cloudflare",
       "selectors": {
         "add_to_cart_btn": "button[name='add-to-cart'], .single_add_to_cart_button",
@@ -20,15 +20,15 @@
       "custom_headers": {}
     },
     {
-      "id": "vps-gourmet-store",
-      "name": "Armazém Gourmet (VPS Ubuntu / Nginx)",
-      "store_url": "https://gourmet-vps.example.com",
-      "product_url": "https://gourmet-vps.example.com/produto/azeite-virgem-extra-500ml/",
-      "infrastructure_type": "vps",
+      "id": "artabrian",
+      "name": "Artabrian",
+      "store_url": "https://www.artabrian.com",
+      "product_url": "https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/",
+      "infrastructure_type": "rocket_cloudflare",
       "selectors": {
         "add_to_cart_btn": "button[name='add-to-cart'], .single_add_to_cart_button",
         "cart_feedback": ".woocommerce-message, .added-to-cart, a.added_to_cart",
-        "checkout_url": "/finalizar-compra/",
+        "checkout_url": "/checkout/",
         "order_review_table": "#order_review",
         "shipping_blocked_notice": ".woocommerce-no-shipping-available-html",
         "payment_gateways_container": "#payment, .wc_payment_methods"
@@ -38,11 +38,11 @@
       "custom_headers": {}
     },
     {
-      "id": "baremetal-tech-parts",
-      "name": "Peças de Precisão (Dedicado Bare-Metal)",
-      "store_url": "https://pecas-baremetal.example.com",
-      "product_url": "https://pecas-baremetal.example.com/produto/modulo-telemetria-industrial/",
-      "infrastructure_type": "bare_metal",
+      "id": "blukk",
+      "name": "Blukk",
+      "store_url": "https://www.blukk.com",
+      "product_url": "https://www.blukk.com/shop/o-reino-medieval-de-galicia/",
+      "infrastructure_type": "rocket_cloudflare",
       "selectors": {
         "add_to_cart_btn": "button[name='add-to-cart'], .single_add_to_cart_button",
         "cart_feedback": ".woocommerce-message, .added-to-cart, a.added_to_cart",
@@ -57,4 +57,3 @@
     }
   ]
 }
-
