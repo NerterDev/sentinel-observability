@@ -864,3 +864,42 @@ No architecture decision is considered final until explicitly approved by the hu
   - Garantia de execução a partir de IPs e redes de data centers dos EUA.
 - **Unresolved uncertainty:** Nenhuma.
 - **Human approval:** Registado para implementação em TASK-005.
+
+### D044: Motor de Diagnóstico Forense Avançado Tier-S e Dossiês Per-Store (TASK-006)
+- **Context:**
+  O utilizador solicitou elevar a capacidade de observabilidade sintética para equipará-la aos produtos SaaS Tier-S líderes de mercado (Datadog Synthetics, Sentry Performance, SpeedCurve), detetando erros de código no site (exceções JavaScript estruturadas com ficheiro, linha e coluna, rejeições assíncronas não tratadas), bloqueios e atrito de interface (Long Tasks > 50ms na main-thread, Total Blocking Time TBT, Core Web Vitals FCP/DCL/Load, interferência de banners/popups), e gargalos de rede/infraestrutura (top 5 requisições lentas, quebras HTTP >= 400, estado de cache Cloudflare DYNAMIC vs HIT, compressão Brotli/gzip).
+- **Decision:**
+  1. **Modelos Canónicos Pydantic v2 (`src/models.py`):**
+     - `CodeErrorDetail`: tipo de erro, mensagem, ficheiro de origem, linha, coluna, stack trace e fase do fluxo.
+     - `LongTaskDetail`: duração em ms, tempo de início, nome e atribuição de script.
+     - `SlowRequestDetail`: URL, método, código HTTP, duração em ms, tipo de recurso, Content-Type, tamanho em bytes e estado de cache.
+     - `PerformanceMetrics`: TBT acumulado, contagem de tarefas longas, FCP, DOMContentLoaded, Load Event, bytes transferidos por recurso (JS, CSS, Imagens, Fontes) e contagem total de pedidos.
+     - `DiagnosticsDossier`: dossiê completo individualizado por loja persistido em `dashboard/data/dossiers/{site_id}.json`.
+     - `StoreStatus.diagnostics_summary`: mini-métricas instantâneas embutidas no cartão da loja.
+  2. **Motor de Sonda com Instrumentação Não-Invasiva (`src/browser_probe.py`):**
+     - Injeção em tempo real de `SENTINEL_INIT_SCRIPT` via `page.add_init_script` antes de qualquer script da loja carregar, capturando Long Tasks via `PerformanceObserver(['longtask'])` e eventos de `unhandledrejection` e `error`.
+     - `ForensicBuffer.requests_log` acumulado via `page.on("requestfinished")` com medição precisa de duração, tipo de conteúdo e tamanho.
+     - Função `parse_js_error` com expressões regulares para decomposição de stack traces do V8/Chromium.
+     - Cálculo de TBT respeitando a norma da W3C (apenas o tempo excedente aos 50ms de cada tarefa é considerado bloqueante).
+  3. **Inspeção de Borda (`src/edge_inspector.py`):**
+     - Extração determinística de cabeçalhos de CDN: `cf-cache-status`, `content-encoding`, `server` e versão HTTP do socket.
+  4. **Persistência Atómica GitOps (`src/forensic_recorder.py`, `src/orchestrator.py`):**
+     - Gravação atómica de ficheiros em `dashboard/data/dossiers/{site_id}.json` através de substituição de ficheiro temporário (`os.replace`), prevenindo leituras corrompidas.
+     - Geração de dossiê para **todas** as lojas em cada ronda (saudáveis ou com anomalias), permitindo auditoria preventiva de desempenho.
+  5. **Interface SPA Dark Mode Tier-S (`dashboard/index.html`, `styles.css`, `app.js`):**
+     - 5 abas acessíveis WAI-ARIA no modal forense:
+       - Veredito: causa-raiz executiva, passos com falha e recomendação técnica contextualizada.
+       - Erros de Código: grelha de cartões de exceções com ficheiro, linha e stack trace expansível, mais terminal de consola.
+       - Gargalos & Long Tasks: cartões de Core Web Vitals (TBT, FCP, DCL, Load), lista de tarefas longas e repartição de peso da página (JS, CSS, imagens).
+       - Rede & Waterfall: estado do Cloudflare e compressão, tabela top 5 requisições lentas e pedidos HTTP >= 400.
+       - Captura Forense: screenshot do ecrã e extrato de texto do DOM.
+     - Mini-badges de diagnóstico nos cartões da grelha principal (0 Erros JS / N Erros JS, TBT: 0ms, CF: HIT, Peso em KB e número de requisições).
+     - Conformidade inegociável com `.harness/invariants/ux_contract.yaml` (7 estados existenciais, 1 CTA primário `#btn-refresh`, fecho por Escape, sem emojis em botões e espaçamento modular de 4/8pt).
+- **Alternatives considered:**
+  1. Instalar agente ou script de monitorização (RUM) dentro do WordPress. (Rejeitado: violaria o princípio inegociável de Zero-Footprint e sobrecarregaria o servidor das lojas com scripts de rastreio).
+  2. Limitar o modal forense apenas a lojas em estado CRITICAL. (Rejeitado: lojistas necessitam de inspecionar tempos de bloqueio de thread, peso da página e cache Cloudflare mesmo quando o checkout não quebra).
+- **Evidence / Reasoning:**
+  - 64/64 testes determinísticos aprovados (`python -m unittest discover tests`), incluindo suite dedicada `tests/test_tier_s_diagnostics.py` e testes contratuais de UX `tests/test_dashboard_contract.py`.
+  - Execução validada da pipeline local com geração de dossiês reais para `txrace`, `artabrian` e `blukk`.
+- **Unresolved uncertainty:** Nenhuma.
+- **Human approval:** Implementado conforme solicitado pelo utilizador.

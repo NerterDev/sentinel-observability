@@ -1,6 +1,6 @@
 {
   "retention_days": 30,
-  "updated_at": "2026-11-05T01:23:48.500024Z",
+  "updated_at": "2026-11-05T01:53:56.323114Z",
   "points": [
     {
       "timestamp": "2026-11-05T00:25:18.450289Z",
@@ -190,6 +190,33 @@
       "checkout_success": false,
       "total_duration_ms": 36324.52,
       "incident_id": "INC-blukk-1793841938"
+    },
+    {
+      "timestamp": "2026-11-05T01:53:56.323114Z",
+      "site_id": "txrace",
+      "status": "HEALTHY",
+      "ttfb_ms": 122.41,
+      "checkout_success": true,
+      "total_duration_ms": 124.51,
+      "incident_id": null
+    },
+    {
+      "timestamp": "2026-11-05T01:53:56.323114Z",
+      "site_id": "artabrian",
+      "status": "DEGRADED",
+      "ttfb_ms": 1047.51,
+      "checkout_success": true,
+      "total_duration_ms": 1202.66,
+      "incident_id": null
+    },
+    {
+      "timestamp": "2026-11-05T01:53:56.323114Z",
+      "site_id": "blukk",
+      "status": "HEALTHY",
+      "ttfb_ms": 111.05,
+      "checkout_success": true,
+      "total_duration_ms": 128.33,
+      "incident_id": null
     }
   ]
 }

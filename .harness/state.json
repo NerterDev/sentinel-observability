@@ -7,51 +7,51 @@
   "facts": [
     "Workspace root: F:\\PROJETOS ANTIGRAVITY\\Software\\Plataforma de observabilidade web",
     "Profile: software (Tier-S E-Commerce Synthetic Observability)",
-    "Target system: Plataforma de observabilidade sint\u00e9tica ponta a ponta (E2E) e diagn\u00f3stico forense para lojas WooCommerce/WordPress",
+    "Target system: Plataforma de observabilidade sintética ponta a ponta (E2E) e diagnóstico forense para lojas WooCommerce/WordPress",
     "Execution engine: GitHub Actions runner (US region, cron 30m) com Playwright Chromium headless",
     "Zero-Footprint constraint: Sem plugins ou PHP no WordPress; zero impacto de CPU/RAM nas lojas monitorizadas",
-    "Publication target: GitHub Pages (painel est\u00e1tico SPA Dark Mode sem backend)",
-    "Current codebase: TASK-001 a TASK-005 100% CONCLU\u00cdDAS E SELADAS (60/60 testes determin\u00edsticos, receipts SHA-256 aprovados, UX Audit aprovado)",
-    "Lojas reais em monitoriza\u00e7\u00e3o cont\u00ednua: txrace.com, artabrian.com, blukk.com configuradas e ativas",
-    "Ronda de produ\u00e7\u00e3o executada com sucesso via GitHub Actions runner US (Playwright Chromium headless, cron 30m)",
+    "Publication target: GitHub Pages (painel estático SPA Dark Mode sem backend)",
+    "Current codebase: TASK-001 a TASK-005 100% CONCLUÍDAS E SELADAS (60/60 testes determinísticos, receipts SHA-256 aprovados, UX Audit aprovado)",
+    "Lojas reais em monitorização contínua: txrace.com, artabrian.com, blukk.com configuradas e ativas",
+    "Ronda de produção executada com sucesso via GitHub Actions runner US (Playwright Chromium headless, cron 30m)",
     "Painel SPA Dark Mode publicado e operacional em https://nerterdev.github.io/sentinel-observability/"
   ],
   "assumptions": [
-    "GitHub Actions runners t\u00eam conectividade direta com as lojas alvo nos EUA",
+    "GitHub Actions runners têm conectividade direta com as lojas alvo nos EUA",
     "Headers de bypass WAF (WAF_BYPASS_TOKEN) previnem falsos positivos do Cloudflare/Rocket.net",
-    "Hist\u00f3rico de 30 dias em JSON deslizante mant\u00e9m o reposit\u00f3rio leve para GitOps",
-    "Seletores WooCommerce para carrinho e checkout (#order_review) seguem o padr\u00e3o WooCommerce ou s\u00e3o configur\u00e1veis em sites.json"
+    "Histórico de 30 dias em JSON deslizante mantém o repositório leve para GitOps",
+    "Seletores WooCommerce para carrinho e checkout (#order_review) seguem o padrão WooCommerce ou são configuráveis em sites.json"
   ],
   "hypotheses": [
-    "Testar periodicamente via Chromium US (en-US, America/New_York) deteta falhas silenciosas de checkout (erros JS, frete indispon\u00edvel, falhas de iframe de pagamento) com 100% de precis\u00e3o",
-    "Capturar screenshots e dumps de rede em caso de timeout de 25s fornece evid\u00eancia forense completa para diagn\u00f3stico instant\u00e2neo"
+    "Testar periodicamente via Chromium US (en-US, America/New_York) deteta falhas silenciosas de checkout (erros JS, frete indisponível, falhas de iframe de pagamento) com 100% de precisão",
+    "Capturar screenshots e dumps de rede em caso de timeout de 25s fornece evidência forense completa para diagnóstico instantâneo"
   ],
   "unknowns": [
     "Lista inicial de URLs e produtos das lojas alvo a monitorizar",
-    "Gateways de pagamento espec\u00edficos instalados em cada loja (Stripe, PayPal, MB Way, etc.)"
+    "Gateways de pagamento específicos instalados em cada loja (Stripe, PayPal, MB Way, etc.)"
   ],
   "open_questions": [
-    "Quais os primeiros dom\u00ednios WooCommerce a registar em config/sites.json?",
-    "A publica\u00e7\u00e3o no GitHub Pages ser\u00e1 via branch gh-pages ou GitHub Actions Pages deployment nativo?"
+    "Quais os primeiros domínios WooCommerce a registar em config/sites.json?",
+    "A publicação no GitHub Pages será via branch gh-pages ou GitHub Actions Pages deployment nativo?"
   ],
   "risks": [
     {
       "id": "R001",
       "description": "Desafios ou bloqueios WAF/Cloudflare nos runners do GitHub Actions",
       "severity": "high",
-      "mitigation": "Suporte a token e cabe\u00e7alho customizado de bypass WAF em todas as requisi\u00e7\u00f5es"
+      "mitigation": "Suporte a token e cabeçalho customizado de bypass WAF em todas as requisições"
     },
     {
       "id": "R002",
-      "description": "Cria\u00e7\u00e3o de encomendas ou bloqueio de stock no checkout durante os testes sint\u00e9ticos",
+      "description": "Criação de encomendas ou bloqueio de stock no checkout durante os testes sintéticos",
       "severity": "high",
-      "mitigation": "Sonda \u00e9 estritamente de leitura forense: para na valida\u00e7\u00e3o da tabela de revis\u00e3o e recipientes de pagamento, sem submeter o pedido final"
+      "mitigation": "Sonda é estritamente de leitura forense: para na validação da tabela de revisão e recipientes de pagamento, sem submeter o pedido final"
     },
     {
       "id": "R003",
-      "description": "Flutua\u00e7\u00f5es transit\u00f3rias de rede provocando falsos alarmes de indisponibilidade",
+      "description": "Flutuações transitórias de rede provocando falsos alarmes de indisponibilidade",
       "severity": "medium",
-      "mitigation": "Limiares de alerta configur\u00e1veis (thresholds.json) e classifica\u00e7\u00e3o de estados degradados vs cr\u00edticos"
+      "mitigation": "Limiares de alerta configuráveis (thresholds.json) e classificação de estados degradados vs críticos"
     }
   ],
   "decisions": [
@@ -95,7 +95,8 @@
     "D040",
     "D041",
     "D042",
-    "D043"
+    "D043",
+    "D044"
   ],
   "learning": {
     "updated_at": "2026-11-04T10:50:00+00:00",
@@ -104,32 +105,32 @@
     "active_failures": {}
   },
   "improvement_status": "none",
-  "last_test": "tests/ (60 passed: edge_inspector.py, browser_probe.py, forensic_recorder.py, orchestrator.py, test_dashboard_contract.py, test_workflow_contract.py - cron 30m, GitOps [skip ci], GitHub Pages)",
+  "last_test": "tests/ (64 passed: edge_inspector.py, browser_probe.py, forensic_recorder.py, orchestrator.py, test_dashboard_contract.py, test_tier_s_diagnostics.py, test_workflow_contract.py)",
   "last_action": {
     "action": "receipt_gate",
-    "at": "2026-11-04T19:50:21+00:00",
-    "task_id": "TASK-005"
+    "at": "2026-11-05T01:55:00+00:00",
+    "task_id": "TASK-006"
   },
   "resume_hud": {
     "project": "Plataforma de observabilidade web",
     "profile": "software (E-Commerce Tier-S)",
-    "active_task": "Lan\u00e7amento Conclu\u00eddo em Produ\u00e7\u00e3o",
-    "last_decision": "D043",
+    "active_task": "Motor Tier-S Concluído",
+    "last_decision": "D044",
     "live_url": "https://nerterdev.github.io/sentinel-observability/",
     "repo_url": "https://github.com/NerterDev/sentinel-observability"
   },
   "verification_layer": "effect-runtime",
   "last_snapshot": {
-    "id": "snap_20261104_203830_363",
-    "at": "2026-11-04T19:38:30.468658+00:00",
-    "label": "Pre-mutation TASK-005",
-    "total_files": 104
+    "id": "snap_20261105_014042_00590",
+    "at": "2026-11-05T01:40:42+00:00",
+    "label": "Pre-mutation TASK-006",
+    "total_files": 142
   },
   "last_gate": {
-    "task_id": "TASK-005",
+    "task_id": "TASK-006",
     "status": "passed",
     "sealed": true,
-    "receipt": "receipts/TASK-005.receipt.md",
-    "at": "2026-11-04T19:50:21+00:00"
+    "receipt": "receipts/TASK-006.receipt.md",
+    "at": "2026-11-05T01:55:00+00:00"
   }
 }

@@ -1,0 +1,32 @@
+{
+  "site_id": "blukk",
+  "site_name": "Blukk",
+  "timestamp": "2026-11-05T01:53:56.323114Z",
+  "status": "HEALTHY",
+  "verdict_pt": "Inspeção de observabilidade concluída",
+  "failure_phase": null,
+  "cf_cache_status": "HIT",
+  "content_encoding": "gzip",
+  "http_version": "HTTP/1.1",
+  "ttfb_ms": 111.05,
+  "code_errors": [],
+  "console_errors": [],
+  "long_tasks": [],
+  "performance": {
+    "total_blocking_time_ms": 0.0,
+    "long_tasks_count": 0,
+    "fcp_ms": null,
+    "dom_content_loaded_ms": null,
+    "load_event_ms": null,
+    "total_transferred_bytes": 0,
+    "js_bytes": 0,
+    "css_bytes": 0,
+    "img_bytes": 0,
+    "font_bytes": 0,
+    "requests_count": 0
+  },
+  "slowest_requests": [],
+  "failed_requests": [],
+  "screenshot_path": null,
+  "dom_extract": null
+}

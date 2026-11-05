@@ -16,10 +16,12 @@ from src.browser_probe import BrowserProbeEngine
 from src.edge_inspector import inspect_edge
 from src.forensic_recorder import ForensicRecorder
 from src.models import (
+    DiagnosticsDossier,
     EdgeInspectionResult,
     ForensicIncident,
     HealthStatus,
     HistoryPoint,
+    PerformanceMetrics,
     ProbeResult,
     SiteConfig,
     SitesConfigFile,
@@ -108,6 +110,7 @@ def run_observability_pipeline(
     all_statuses: List[StoreStatus] = []
     all_points: List[HistoryPoint] = []
     all_incidents: List[ForensicIncident] = []
+    all_dossiers: List[DiagnosticsDossier] = []
 
     print(f"[{run_now.isoformat()}] A iniciar ronda de observabilidade ({len(candidates)} lojas)...")
 
@@ -168,7 +171,29 @@ def run_observability_pipeline(
                 )
                 all_incidents.append(active_incident)
 
-            # 4. Criação do estado instantâneo (StoreStatus)
+            # 4. Extração de diagnósticos consolidados e criação do Dossiê Forense
+            code_errs = [e for e in getattr(probe_res, "code_errors", []) if isinstance(e, CodeErrorDetail)] if probe_res else []
+            raw_js_errs = getattr(probe_res, "js_errors", []) if probe_res else []
+            js_err_count = len(code_errs) if code_errs else len(raw_js_errs)
+
+            perf_obj = PerformanceMetrics()
+            if probe_res and hasattr(probe_res, "performance") and isinstance(probe_res.performance, PerformanceMetrics):
+                perf_obj = probe_res.performance
+
+            long_tasks_list = [lt for lt in getattr(probe_res, "long_tasks", []) if isinstance(lt, LongTaskDetail)] if probe_res else []
+            slow_reqs_list = [sr for sr in getattr(probe_res, "slowest_requests", []) if isinstance(sr, SlowRequestDetail)] if probe_res else []
+            cf_cache = (edge_res.diagnostics.get("cf_cache_status") if edge_res.diagnostics else None) or "DYNAMIC"
+
+            diagnostics_summary = {
+                "js_error_count": js_err_count,
+                "long_tasks_count": perf_obj.long_tasks_count,
+                "tbt_ms": perf_obj.total_blocking_time_ms,
+                "cf_cache_status": cf_cache,
+                "requests_count": perf_obj.requests_count,
+                "total_transferred_bytes": perf_obj.total_transferred_bytes,
+                "fcp_ms": perf_obj.fcp_ms,
+            }
+
             store_status = StoreStatus(
                 site_id=site.id,
                 name=site.name,
@@ -178,8 +203,45 @@ def run_observability_pipeline(
                 latest_ttfb_ms=edge_res.ttfb_ms,
                 last_checked_at=run_now,
                 last_incident=active_incident,
+                diagnostics_summary=diagnostics_summary,
             )
             all_statuses.append(store_status)
+
+            # Veredito seguro para o dossiê
+            verdict_text = "Inspeção de observabilidade concluída"
+            if active_incident and getattr(active_incident, "verdict_pt", None):
+                verdict_text = str(active_incident.verdict_pt)
+            elif probe_res and getattr(probe_res, "verdict_pt", None):
+                verdict_text = str(probe_res.verdict_pt)
+
+            failure_phase_val = None
+            if active_incident and getattr(active_incident, "failure_phase", None):
+                failure_phase_val = str(active_incident.failure_phase)
+            elif probe_res and getattr(probe_res, "completed_step", None):
+                failure_phase_val = str(probe_res.completed_step)
+
+            # Registo do Dossiê Diagnóstico da loja
+            dossier = DiagnosticsDossier(
+                site_id=site.id,
+                site_name=site.name,
+                timestamp=run_now,
+                status=consolidated_health,
+                verdict_pt=verdict_text,
+                failure_phase=failure_phase_val,
+                cf_cache_status=edge_res.diagnostics.get("cf_cache_status") if edge_res.diagnostics else None,
+                content_encoding=edge_res.diagnostics.get("content_encoding") if edge_res.diagnostics else None,
+                http_version=edge_res.diagnostics.get("http_version") if edge_res.diagnostics else None,
+                ttfb_ms=edge_res.ttfb_ms,
+                code_errors=code_errs,
+                console_errors=[str(c) for c in getattr(probe_res, "console_errors", [])] if probe_res else [],
+                long_tasks=long_tasks_list,
+                performance=perf_obj,
+                slowest_requests=slow_reqs_list,
+                failed_requests=getattr(probe_res, "failed_ajax_calls", []) if probe_res else [],
+                screenshot_path=getattr(probe_res, "screenshot_path", None) or (getattr(active_incident, "screenshot_path", None) if active_incident else None),
+                dom_extract=getattr(probe_res, "dom_extract", None) or (getattr(active_incident, "dom_extract", None) if active_incident else None),
+            )
+            all_dossiers.append(dossier)
 
             # 5. Criação do ponto da série temporal (HistoryPoint)
             checkout_ok = probe_res.success if probe_res else (consolidated_health != HealthStatus.CRITICAL)
@@ -236,6 +298,7 @@ def run_observability_pipeline(
         new_statuses=all_statuses,
         new_points=all_points,
         incidents=all_incidents,
+        dossiers=all_dossiers,
         now=run_now,
     )
 

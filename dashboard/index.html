@@ -229,14 +229,17 @@
         <button id="tab-btn-verdict" class="tab-btn active" role="tab" aria-selected="true" aria-controls="pane-verdict" type="button">
           <span>Veredito</span>
         </button>
-        <button id="tab-btn-screenshot" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-screenshot" type="button">
-          <span>Captura Forense</span>
-        </button>
         <button id="tab-btn-js-errors" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-js-errors" type="button">
-          <span>Consola JS</span>
+          <span>Erros de Código</span>
+        </button>
+        <button id="tab-btn-performance" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-performance" type="button">
+          <span>Gargalos &amp; Long Tasks</span>
         </button>
         <button id="tab-btn-network" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-network" type="button">
-          <span>Requisições AJAX (&ge; 400)</span>
+          <span>Rede &amp; Waterfall</span>
+        </button>
+        <button id="tab-btn-screenshot" class="tab-btn" role="tab" aria-selected="false" aria-controls="pane-screenshot" type="button">
+          <span>Captura Forense</span>
         </button>
       </div>
 
@@ -263,24 +266,145 @@
               <span class="metric-label">Código de Erro</span>
               <span id="modal-error-code" class="metric-value">--</span>
             </div>
+            <div class="metric-item">
+              <span class="metric-label">Cache Cloudflare</span>
+              <span id="modal-cf-cache" class="metric-value">--</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">TTFB Instantâneo</span>
+              <span id="modal-ttfb" class="metric-value">-- ms</span>
+            </div>
+          </div>
+          <div id="modal-recommendation-box" class="recommendation-box hidden">
+            <div class="recommendation-title">Recomendação Técnica Imediata</div>
+            <p id="modal-recommendation-text" class="recommendation-text">--</p>
           </div>
         </div>
 
-        <!-- Pane: Captura Forense -->
-        <div id="pane-screenshot" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-screenshot">
-          <div class="screenshot-container">
-            <img id="modal-screenshot-img" class="screenshot-img" src="" alt="Captura forense no momento da falha de checkout">
-            <p id="modal-screenshot-empty" class="state-description hidden">Nenhuma captura de ecrã disponível para este incidente.</p>
-          </div>
-        </div>
-
-        <!-- Pane: Consola JS -->
+        <!-- Pane: Erros de Código (Runtime JS & Exceções) -->
         <div id="pane-js-errors" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-js-errors">
+          <div class="forensic-section-header">
+            <h3 class="forensic-section-title">Exceções JavaScript &amp; Erros Não Tratados</h3>
+            <span id="modal-js-errors-count" class="badge badge-infra">0 erros</span>
+          </div>
+          <div id="modal-code-errors-list" class="code-errors-list">
+            <!-- Injetado dinamicamente com stack traces e locais -->
+          </div>
+          <div class="forensic-section-header" style="margin-top: 16px;">
+            <h3 class="forensic-section-title">Registo Bruto de Consola</h3>
+          </div>
           <pre id="modal-js-errors" class="code-terminal">Nenhum erro de consola JavaScript intercetado.</pre>
         </div>
 
-        <!-- Pane: Requisições AJAX -->
+        <!-- Pane: Gargalos & Long Tasks (Performance & Core Web Vitals) -->
+        <div id="pane-performance" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-performance">
+          <div class="forensic-section-header">
+            <h3 class="forensic-section-title">Core Web Vitals &amp; Responsividade</h3>
+          </div>
+          <div class="vitals-grid">
+            <div class="vital-card">
+              <span class="vital-label">Total Blocking Time (TBT)</span>
+              <span id="modal-vital-tbt" class="vital-value">0 ms</span>
+              <span id="modal-vital-tbt-status" class="vital-badge badge-healthy">Fluido</span>
+            </div>
+            <div class="vital-card">
+              <span class="vital-label">First Contentful Paint (FCP)</span>
+              <span id="modal-vital-fcp" class="vital-value">-- ms</span>
+            </div>
+            <div class="vital-card">
+              <span class="vital-label">DOMContentLoaded</span>
+              <span id="modal-vital-dcl" class="vital-value">-- ms</span>
+            </div>
+            <div class="vital-card">
+              <span class="vital-label">Window Load</span>
+              <span id="modal-vital-load" class="vital-value">-- ms</span>
+            </div>
+          </div>
+
+          <div class="forensic-section-header" style="margin-top: 16px;">
+            <h3 class="forensic-section-title">Bloqueios da Thread Principal (Long Tasks &gt; 50ms)</h3>
+            <span id="modal-long-tasks-count" class="badge badge-infra">0 tarefas</span>
+          </div>
+          <div id="modal-long-tasks-list" class="long-tasks-list">
+            <!-- Injetado dinamicamente -->
+          </div>
+
+          <div class="forensic-section-header" style="margin-top: 16px;">
+            <h3 class="forensic-section-title">Peso da Página &amp; Recursos</h3>
+          </div>
+          <div class="store-metrics">
+            <div class="metric-item">
+              <span class="metric-label">Peso Total</span>
+              <span id="modal-weight-total" class="metric-value">0 KB</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">JavaScript</span>
+              <span id="modal-weight-js" class="metric-value">0 KB</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">CSS</span>
+              <span id="modal-weight-css" class="metric-value">0 KB</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Imagens</span>
+              <span id="modal-weight-img" class="metric-value">0 KB</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Total Requisições</span>
+              <span id="modal-weight-requests" class="metric-value">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane: Rede & Mini-Waterfall -->
         <div id="pane-network" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-network">
+          <div class="forensic-section-header">
+            <h3 class="forensic-section-title">Diagnóstico de Borda &amp; CDN Cloudflare</h3>
+          </div>
+          <div class="store-metrics" style="margin-bottom: 16px;">
+            <div class="metric-item">
+              <span class="metric-label">CF-Cache-Status</span>
+              <span id="modal-net-cache" class="metric-value">--</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Compressão</span>
+              <span id="modal-net-encoding" class="metric-value">--</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Protocolo HTTP</span>
+              <span id="modal-net-protocol" class="metric-value">--</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Servidor</span>
+              <span id="modal-net-server" class="metric-value">--</span>
+            </div>
+          </div>
+
+          <div class="forensic-section-header">
+            <h3 class="forensic-section-title">Top 5 Requisições Mais Lentas (Gargalos)</h3>
+          </div>
+          <div class="data-table-wrap" style="margin-bottom: 16px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Método</th>
+                  <th>URL</th>
+                  <th>Duração</th>
+                  <th>Tipo</th>
+                  <th>Cache</th>
+                </tr>
+              </thead>
+              <tbody id="modal-slowest-tbody">
+                <tr>
+                  <td colspan="5" style="text-align: center; color: var(--text-muted);">Nenhuma requisição lenta registada.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="forensic-section-header">
+            <h3 class="forensic-section-title">Requisições com Erro (&ge; 400)</h3>
+          </div>
           <div class="data-table-wrap">
             <table class="data-table">
               <thead>
@@ -293,11 +417,23 @@
               </thead>
               <tbody id="modal-network-tbody">
                 <tr>
-                  <td colspan="4" style="text-align: center; color: var(--text-muted);">Nenhuma chamada AJAX com falha intercetada.</td>
+                  <td colspan="4" style="text-align: center; color: var(--text-muted);">Nenhuma chamada com falha intercetada.</td>
                 </tr>
               </tbody>
             </table>
           </div>
+        </div>
+
+        <!-- Pane: Captura Forense -->
+        <div id="pane-screenshot" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-screenshot">
+          <div class="screenshot-container">
+            <img id="modal-screenshot-img" class="screenshot-img" src="" alt="Captura forense no momento da falha de checkout">
+            <p id="modal-screenshot-empty" class="state-description hidden">Nenhuma captura de ecrã disponível para este incidente.</p>
+          </div>
+          <div class="forensic-section-header" style="margin-top: 16px;">
+            <h3 class="forensic-section-title">Extrato DOM no Momento da Inspeção</h3>
+          </div>
+          <pre id="modal-dom-extract" class="code-terminal" style="max-height: 200px;">Nenhum extrato DOM disponível.</pre>
         </div>
       </div>
 

@@ -119,6 +119,53 @@ class ThresholdsConfig(BaseModel):
         return self
 
 
+class CodeErrorDetail(BaseModel):
+    """Registo estruturado de erro de código em tempo de execução."""
+    error_type: str = Field(default="JavaScriptError", description="Tipo de exceção (TypeError, ReferenceError, etc.)")
+    message: str = Field(..., description="Mensagem de erro")
+    source_file: Optional[str] = Field(default=None, description="Ficheiro ou URL de origem do script")
+    line_number: Optional[int] = Field(default=None, description="Número da linha")
+    column_number: Optional[int] = Field(default=None, description="Número da coluna")
+    stack_trace: Optional[str] = Field(default=None, description="Stack trace formatado")
+    phase: Optional[str] = Field(default=None, description="Fase da navegação onde o erro ocorreu")
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class LongTaskDetail(BaseModel):
+    """Registo de bloqueio de thread principal (Long Task > 50ms)."""
+    duration_ms: float = Field(..., description="Duração do congelamento da thread em milissegundos")
+    start_time_ms: float = Field(..., description="Momento de início relativo ao início da navegação")
+    name: str = Field(default="self", description="Identificador da tarefa")
+    attribution: Optional[str] = Field(default=None, description="Origem ou container associado ao bloqueio")
+
+
+class SlowRequestDetail(BaseModel):
+    """Registo das requisições mais lentas (gargalos de rede)."""
+    url: str = Field(..., description="URL da requisição")
+    method: str = Field(default="GET", description="Método HTTP")
+    status: int = Field(default=200, description="Código de status HTTP")
+    duration_ms: float = Field(..., description="Tempo de resposta em milissegundos")
+    resource_type: str = Field(default="xhr", description="Tipo de recurso (xhr, script, stylesheet, img, etc.)")
+    content_type: Optional[str] = Field(default=None, description="Tipo MIME retornado")
+    size_bytes: Optional[int] = Field(default=None, description="Tamanho transferido em bytes")
+    cache_status: Optional[str] = Field(default=None, description="Estado de cache (HIT, MISS, DYNAMIC, BYPASS)")
+
+
+class PerformanceMetrics(BaseModel):
+    """Métricas consolidadas de desempenho e Core Web Vitals."""
+    total_blocking_time_ms: float = Field(default=0.0, description="Total Blocking Time (TBT)")
+    long_tasks_count: int = Field(default=0, description="Total de tarefas que bloquearam a thread >50ms")
+    fcp_ms: Optional[float] = Field(default=None, description="First Contentful Paint (FCP)")
+    dom_content_loaded_ms: Optional[float] = Field(default=None, description="DOMContentLoaded timing")
+    load_event_ms: Optional[float] = Field(default=None, description="Window Load timing")
+    total_transferred_bytes: int = Field(default=0, description="Bytes totais transferidos na sessão")
+    js_bytes: int = Field(default=0, description="Bytes de scripts JavaScript")
+    css_bytes: int = Field(default=0, description="Bytes de folhas de estilo CSS")
+    img_bytes: int = Field(default=0, description="Bytes de imagens")
+    font_bytes: int = Field(default=0, description="Bytes de fontes")
+    requests_count: int = Field(default=0, description="Total de requisições HTTP efetuadas")
+
+
 class EdgeInspectionResult(BaseModel):
     """Resultado da sonda de rede, DNS e handshake TLS/SSL."""
     site_id: str
@@ -152,6 +199,9 @@ class ForensicIncident(BaseModel):
     dom_extract: Optional[str] = None
     http_status: Optional[int] = None
     error_details: Optional[str] = None
+    code_errors: List[CodeErrorDetail] = Field(default_factory=list)
+    long_tasks: List[LongTaskDetail] = Field(default_factory=list)
+    slowest_requests: List[SlowRequestDetail] = Field(default_factory=list)
 
 
 class StoreStatus(BaseModel):
@@ -167,6 +217,32 @@ class StoreStatus(BaseModel):
     checkout_success_rate_pct: float = 100.0
     last_checked_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     last_incident: Optional[ForensicIncident] = None
+    diagnostics_summary: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Resumo de diagnósticos rápidos (erros JS, TBT, cache Cloudflare, peso)"
+    )
+
+
+class DiagnosticsDossier(BaseModel):
+    """Dossiê forense aprofundado persistido por loja (dashboard/data/dossiers/{site_id}.json)."""
+    site_id: str
+    site_name: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    status: HealthStatus = HealthStatus.HEALTHY
+    verdict_pt: str = Field(default="Inspeção de observabilidade concluída", description="Veredito executivo e causa-raiz")
+    failure_phase: Optional[str] = None
+    cf_cache_status: Optional[str] = None
+    content_encoding: Optional[str] = None
+    http_version: Optional[str] = None
+    ttfb_ms: Optional[float] = None
+    code_errors: List[CodeErrorDetail] = Field(default_factory=list)
+    console_errors: List[str] = Field(default_factory=list)
+    long_tasks: List[LongTaskDetail] = Field(default_factory=list)
+    performance: PerformanceMetrics = Field(default_factory=PerformanceMetrics)
+    slowest_requests: List[SlowRequestDetail] = Field(default_factory=list)
+    failed_requests: List[Dict[str, Any]] = Field(default_factory=list)
+    screenshot_path: Optional[str] = None
+    dom_extract: Optional[str] = None
 
 
 class ProbeResult(BaseModel):
@@ -184,6 +260,11 @@ class ProbeResult(BaseModel):
     dom_extract: Optional[str] = None
     verdict_pt: Optional[str] = None
     incident: Optional[ForensicIncident] = None
+    code_errors: List[CodeErrorDetail] = Field(default_factory=list)
+    long_tasks: List[LongTaskDetail] = Field(default_factory=list)
+    performance: PerformanceMetrics = Field(default_factory=PerformanceMetrics)
+    slowest_requests: List[SlowRequestDetail] = Field(default_factory=list)
+
 
 
 class HistoryPoint(BaseModel):

@@ -8,15 +8,20 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import os
 from pathlib import Path
+import re
 import time
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urljoin, urlparse
 import uuid
 
 from src.models import (
+    CodeErrorDetail,
     ForensicIncident,
+    LongTaskDetail,
+    PerformanceMetrics,
     ProbeResult,
     SiteConfig,
+    SlowRequestDetail,
     ThresholdsConfig,
 )
 
@@ -31,6 +36,80 @@ DEFAULT_VIEWPORT = {"width": 1440, "height": 900}
 DEFAULT_LOCALE = "en-US"
 DEFAULT_TIMEZONE = "America/New_York"
 
+SENTINEL_INIT_SCRIPT = """
+window.__sentinel_perf = {
+  longTasks: [],
+  unhandledErrors: []
+};
+try {
+  const observer = new PerformanceObserver((list) => {
+    for (const entry of list.getEntries()) {
+      window.__sentinel_perf.longTasks.push({
+        duration: Math.round(entry.duration),
+        startTime: Math.round(entry.startTime),
+        name: entry.name || 'self',
+        attribution: entry.attribution ? entry.attribution.map(a => a.name || a.containerSrc || '').join(', ') : ''
+      });
+    }
+  });
+  observer.observe({ entryTypes: ['longtask'] });
+} catch(e) {}
+
+window.addEventListener('unhandledrejection', (event) => {
+  try {
+    const reason = event.reason;
+    window.__sentinel_perf.unhandledErrors.push({
+      error_type: 'UnhandledPromiseRejection',
+      message: reason ? (reason.message || String(reason)) : 'Promise rejeitada sem razão explícita',
+      stack_trace: reason && reason.stack ? String(reason.stack) : null,
+      timestamp: new Date().toISOString()
+    });
+  } catch(e) {}
+});
+
+window.addEventListener('error', (event) => {
+  try {
+    if (event.target && (event.target.tagName === 'SCRIPT' || event.target.tagName === 'LINK')) {
+      const src = event.target.src || event.target.href || '';
+      window.__sentinel_perf.unhandledErrors.push({
+        error_type: 'ResourceLoadError',
+        message: 'Falha ao carregar recurso externo: ' + src,
+        source_file: src,
+        timestamp: new Date().toISOString()
+      });
+    }
+  } catch(e) {}
+}, true);
+"""
+
+
+def parse_js_error(err_msg: str, stack: Optional[str]) -> Tuple[str, Optional[str], Optional[int], Optional[int]]:
+    """
+    Extrai tipo de erro, ficheiro de origem, linha e coluna de mensagens e stack traces JavaScript.
+    """
+    error_type = "JavaScriptError"
+    if ":" in err_msg:
+        potential_type = err_msg.split(":")[0].strip()
+        if " " not in potential_type or "Uncaught " in potential_type:
+            error_type = potential_type.replace("Uncaught ", "").strip()
+
+    source_file = None
+    line_number = None
+    column_number = None
+
+    if stack:
+        pattern = r'(?:at\s+(?:[^\(]+?\s+\()?)?(https?://[^\s\)]+|[a-zA-Z0-9_\-\.\/]+\.js):(\d+):(\d+)\)?'
+        matches = re.findall(pattern, stack)
+        if matches:
+            source_file = matches[0][0]
+            try:
+                line_number = int(matches[0][1])
+                column_number = int(matches[0][2])
+            except ValueError:
+                pass
+
+    return error_type, source_file, line_number, column_number
+
 
 @dataclass
 class ForensicBuffer:
@@ -38,15 +117,22 @@ class ForensicBuffer:
     js_errors: List[Dict[str, Any]] = field(default_factory=list)
     console_errors: List[str] = field(default_factory=list)
     failed_ajax_calls: List[Dict[str, Any]] = field(default_factory=list)
+    requests_log: List[Dict[str, Any]] = field(default_factory=list)
+    long_tasks_fallback: List[Dict[str, Any]] = field(default_factory=list)
 
     def on_page_error(self, error: Any) -> None:
         """Captura exceções de execução JavaScript não tratadas."""
         err_msg = str(error)
         stack = getattr(error, "stack", None)
+        error_type, source_file, line_no, col_no = parse_js_error(err_msg, str(stack) if stack else None)
         entry = {
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "message": err_msg,
             "stack": str(stack) if stack else None,
+            "error_type": error_type,
+            "source_file": source_file,
+            "line_number": line_no,
+            "column_number": col_no,
         }
         self.js_errors.append(entry)
 
@@ -79,6 +165,44 @@ class ForensicBuffer:
             except Exception:
                 pass
             self.failed_ajax_calls.append(entry)
+
+    def on_request_finished(self, request: Any) -> None:
+        """Regista latência e metadados de cada recurso para análise de gargalos."""
+        try:
+            url = getattr(request, "url", "")
+            method = getattr(request, "method", "GET")
+            res_type = getattr(request, "resource_type", "other")
+            duration_ms = 0.0
+            timing_fn = getattr(request, "timing", None)
+            if callable(timing_fn):
+                t = timing_fn()
+                if isinstance(t, dict):
+                    duration_ms = max(0.0, float(t.get("responseEnd", 0.0)))
+
+            response = None
+            resp_fn = getattr(request, "response", None)
+            if callable(resp_fn):
+                response = resp_fn()
+
+            status = getattr(response, "status", 200) if response else 200
+            headers = getattr(response, "headers", {}) if response else {}
+            content_type = headers.get("content-type", "")
+            size_str = headers.get("content-length", "0")
+            size_bytes = int(size_str) if str(size_str).isdigit() else 0
+            cache_status = headers.get("cf-cache-status") or headers.get("x-cache")
+
+            self.requests_log.append({
+                "url": url,
+                "method": method,
+                "status": status,
+                "duration_ms": round(duration_ms, 2),
+                "resource_type": res_type,
+                "content_type": content_type,
+                "size_bytes": size_bytes,
+                "cache_status": cache_status,
+            })
+        except Exception:
+            pass
 
 
 def build_verdict_pt(
@@ -146,6 +270,7 @@ class BrowserProbeEngine:
             page.on("pageerror", buffer.on_page_error)
             page.on("console", buffer.on_console_message)
             page.on("response", lambda r: buffer.on_response(r, http_error_threshold))
+            page.on("requestfinished", buffer.on_request_finished)
 
     def capture_evidence(
         self,
@@ -183,6 +308,116 @@ class BrowserProbeEngine:
 
         return screenshot_path, dom_extract
 
+    def extract_telemetry(
+        self,
+        page: Any,
+        buffer: ForensicBuffer,
+        current_phase: str,
+    ) -> Tuple[List[CodeErrorDetail], List[LongTaskDetail], PerformanceMetrics, List[SlowRequestDetail]]:
+        """Extrai métricas avançadas de desempenho, Core Web Vitals e erros estruturados."""
+        perf_data: Dict[str, Any] = {}
+        if hasattr(page, "evaluate"):
+            try:
+                perf_data = page.evaluate("""() => {
+                    const perf = window.__sentinel_perf || { longTasks: [], unhandledErrors: [] };
+                    const nav = performance.getEntriesByType('navigation')[0];
+                    const paint = performance.getEntriesByType('paint') || [];
+                    let fcp = null;
+                    for (const p of paint) {
+                        if (p.name === 'first-contentful-paint') fcp = Math.round(p.startTime);
+                    }
+                    return {
+                        longTasks: perf.longTasks || [],
+                        unhandledErrors: perf.unhandledErrors || [],
+                        fcpMs: fcp,
+                        domContentLoadedMs: nav ? Math.round(nav.domContentLoadedEventEnd - nav.startTime) : null,
+                        loadEventMs: nav ? Math.round(nav.loadEventEnd - nav.startTime) : null,
+                    };
+                }""")
+            except Exception:
+                pass
+
+        if not isinstance(perf_data, dict):
+            perf_data = {}
+
+        # 1. Erros estruturados de código
+        structured_code_errors: List[CodeErrorDetail] = []
+        for err in buffer.js_errors:
+            structured_code_errors.append(
+                CodeErrorDetail(
+                    error_type=err.get("error_type", "JavaScriptError"),
+                    message=err.get("message", "Exceção não tratada"),
+                    source_file=err.get("source_file"),
+                    line_number=err.get("line_number"),
+                    column_number=err.get("column_number"),
+                    stack_trace=err.get("stack"),
+                    phase=err.get("phase", current_phase),
+                )
+            )
+        for uerr in perf_data.get("unhandledErrors", []):
+            structured_code_errors.append(
+                CodeErrorDetail(
+                    error_type=uerr.get("error_type", "UnhandledPromiseRejection"),
+                    message=uerr.get("message", "Erro assíncrono não tratado"),
+                    source_file=uerr.get("source_file"),
+                    stack_trace=uerr.get("stack_trace"),
+                    phase=current_phase,
+                )
+            )
+
+        # 2. Tarefas longas (>50ms) e TBT
+        long_task_details: List[LongTaskDetail] = []
+        raw_tasks = perf_data.get("longTasks", []) + buffer.long_tasks_fallback
+        for lt in raw_tasks:
+            long_task_details.append(
+                LongTaskDetail(
+                    duration_ms=float(lt.get("duration", 0)),
+                    start_time_ms=float(lt.get("startTime", 0)),
+                    name=lt.get("name", "self"),
+                    attribution=lt.get("attribution"),
+                )
+            )
+        tbt = sum(max(0.0, lt.duration_ms - 50.0) for lt in long_task_details)
+
+        # 3. Gargalos de rede (top 5 requisições lentas)
+        all_requests = buffer.requests_log
+        sorted_reqs = sorted(all_requests, key=lambda r: r.get("duration_ms", 0.0), reverse=True)
+        slowest_requests = [
+            SlowRequestDetail(
+                url=r.get("url", ""),
+                method=r.get("method", "GET"),
+                status=r.get("status", 200),
+                duration_ms=float(r.get("duration_ms", 0.0)),
+                resource_type=r.get("resource_type", "xhr"),
+                content_type=r.get("content_type"),
+                size_bytes=r.get("size_bytes"),
+                cache_status=r.get("cache_status"),
+            )
+            for r in sorted_reqs[:5]
+        ]
+
+        total_bytes = sum(r.get("size_bytes", 0) for r in all_requests)
+        js_bytes = sum(r.get("size_bytes", 0) for r in all_requests if r.get("resource_type") == "script" or "javascript" in (r.get("content_type") or ""))
+        css_bytes = sum(r.get("size_bytes", 0) for r in all_requests if r.get("resource_type") == "stylesheet" or "css" in (r.get("content_type") or ""))
+        img_bytes = sum(r.get("size_bytes", 0) for r in all_requests if r.get("resource_type") == "image" or "image" in (r.get("content_type") or ""))
+        font_bytes = sum(r.get("size_bytes", 0) for r in all_requests if r.get("resource_type") == "font" or "font" in (r.get("content_type") or ""))
+
+        perf_metrics = PerformanceMetrics(
+            total_blocking_time_ms=round(tbt, 2),
+            long_tasks_count=len(long_task_details),
+            fcp_ms=perf_data.get("fcpMs"),
+            dom_content_loaded_ms=perf_data.get("domContentLoadedMs"),
+            load_event_ms=perf_data.get("loadEventMs"),
+            total_transferred_bytes=total_bytes,
+            js_bytes=js_bytes,
+            css_bytes=css_bytes,
+            img_bytes=img_bytes,
+            font_bytes=font_bytes,
+            requests_count=len(all_requests),
+        )
+
+        return structured_code_errors, long_task_details, perf_metrics, slowest_requests
+
     def run_flow_on_page(
         self,
         page: Any,
@@ -197,6 +432,13 @@ class BrowserProbeEngine:
         timeout_ms = thresholds.step_timeout_sec * 1000.0
         start_global = time.perf_counter()
         current_phase = "init"
+
+        # Injeção de observadores de performance e erros antes de navegar
+        if hasattr(page, "add_init_script"):
+            try:
+                page.add_init_script(SENTINEL_INIT_SCRIPT)
+            except Exception:
+                pass
 
         try:
             # =========================================================================
@@ -332,6 +574,8 @@ class BrowserProbeEngine:
 
             # Sucesso integral de todas as etapas!
             total_duration = round((time.perf_counter() - start_global) * 1000.0, 2)
+            code_errors, long_tasks, perf_metrics, slowest_requests = self.extract_telemetry(page, buffer, current_phase)
+
             return ProbeResult(
                 site_id=site.id,
                 timestamp=datetime.now(timezone.utc),
@@ -343,12 +587,17 @@ class BrowserProbeEngine:
                 console_errors=buffer.console_errors,
                 failed_ajax_calls=buffer.failed_ajax_calls,
                 verdict_pt="Checkout 100% operacional para compradores nos EUA",
+                code_errors=code_errors,
+                long_tasks=long_tasks,
+                performance=perf_metrics,
+                slowest_requests=slowest_requests,
             )
 
         except Exception as exc:
             total_duration = round((time.perf_counter() - start_global) * 1000.0, 2)
             screenshot_path, dom_extract = self.capture_evidence(page, site.id, current_phase)
             verdict = build_verdict_pt(current_phase, buffer, custom_reason=str(exc) if "AssertionError" in str(type(exc)) else None)
+            code_errors, long_tasks, perf_metrics, slowest_requests = self.extract_telemetry(page, buffer, current_phase)
 
             incident = ForensicIncident(
                 incident_id=f"INC-{site.id}-{int(time.time())}",
@@ -362,6 +611,9 @@ class BrowserProbeEngine:
                 failed_ajax_calls=buffer.failed_ajax_calls,
                 dom_extract=dom_extract,
                 error_details=str(exc),
+                code_errors=code_errors,
+                long_tasks=long_tasks,
+                slowest_requests=slowest_requests,
             )
 
             return ProbeResult(
@@ -378,6 +630,10 @@ class BrowserProbeEngine:
                 dom_extract=dom_extract,
                 verdict_pt=verdict,
                 incident=incident,
+                code_errors=code_errors,
+                long_tasks=long_tasks,
+                performance=perf_metrics,
+                slowest_requests=slowest_requests,
             )
 
     def probe_site(

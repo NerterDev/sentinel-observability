@@ -9,12 +9,13 @@ import json
 import os
 from pathlib import Path
 import tempfile
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from pydantic import BaseModel
 
 from src.models import (
     CurrentStatusPayload,
+    DiagnosticsDossier,
     ForensicIncident,
     HealthStatus,
     HistoryPayload,
@@ -26,20 +27,22 @@ from src.models import (
 class ForensicRecorder:
     """
     Controlador de persistência GitOps com gravação atómica, manutenção de série temporal
-    deslizante de 30 dias e arquivo de dossiês de incidentes técnicos.
+    deslizante de 30 dias, arquivo de dossiês de incidentes e perfis diagnósticos.
     """
 
-    def __init__(self, data_dir: Optional[Path] = None):
-        self.data_dir = data_dir or Path("dashboard/data")
+    def __init__(self, data_dir: Optional[Any] = None):
+        self.data_dir = Path(data_dir) if data_dir is not None else Path("dashboard/data")
         self.current_status_path = self.data_dir / "current_status.json"
         self.history_path = self.data_dir / "history.json"
         self.incidents_dir = self.data_dir / "incidents"
+        self.dossiers_dir = self.data_dir / "dossiers"
         self._ensure_dirs()
 
     def _ensure_dirs(self) -> None:
         """Garante a existência das pastas necessárias para persistência."""
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.incidents_dir.mkdir(parents=True, exist_ok=True)
+        self.dossiers_dir.mkdir(parents=True, exist_ok=True)
 
     @staticmethod
     def atomic_write_json(file_path: Path, payload: BaseModel) -> None:
@@ -133,17 +136,24 @@ class ForensicRecorder:
         self.atomic_write_json(file_path, incident)
         return file_path
 
+    def save_dossier(self, dossier: DiagnosticsDossier) -> Path:
+        """Grava o dossiê de telemetria completa em dashboard/data/dossiers/{site_id}.json."""
+        file_path = self.dossiers_dir / f"{dossier.site_id}.json"
+        self.atomic_write_json(file_path, dossier)
+        return file_path
+
     def record_run(
         self,
         new_statuses: List[StoreStatus],
         new_points: List[HistoryPoint],
         incidents: Optional[List[ForensicIncident]] = None,
+        dossiers: Optional[List[DiagnosticsDossier]] = None,
         retention_days: int = 30,
         now: Optional[datetime] = None,
     ) -> None:
         """
         Regista o resultado de uma bateria completa de monitorização:
-        1. Arquiva dossiês de incidentes individuais.
+        1. Arquiva dossiês de incidentes individuais e dossiês por loja.
         2. Atualiza a série temporal em history.json, podando registos com mais de 30 dias.
         3. Recalcula as métricas estatísticas dos últimos 30 dias para cada loja.
         4. Grava current_status.json atomicamente.
@@ -152,6 +162,10 @@ class ForensicRecorder:
         if incidents:
             for inc in incidents:
                 self.save_incident(inc)
+
+        if dossiers:
+            for dos in dossiers:
+                self.save_dossier(dos)
 
         # 1. Rotação temporal deslizante (Pruning)
         cutoff_dt = now_dt - timedelta(days=retention_days)

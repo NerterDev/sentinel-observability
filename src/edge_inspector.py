@@ -7,7 +7,7 @@ Caminho Canónico: src/edge_inspector.py
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import os
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import socket
 import ssl
 import time
@@ -117,6 +117,7 @@ def measure_http(
     waf_bypass_header_name: str = "X-WAF-Bypass-Token",
     timeout: float = 10.0,
     client: Optional[httpx.Client] = None,
+    extra_diagnostics: Optional[Dict[str, Any]] = None,
 ) -> Tuple[Optional[int], Optional[float], Optional[float], bool, Optional[str]]:
     """
     Executa requisição HTTP e mede TTFB (Time To First Byte) e latência total.
@@ -155,6 +156,12 @@ def measure_http(
             error_msg = None
             if status_code >= 400:
                 error_msg = f"HTTP {status_code}: Resposta de erro do servidor"
+
+            if extra_diagnostics is not None:
+                extra_diagnostics["cf_cache_status"] = response.headers.get("cf-cache-status")
+                extra_diagnostics["content_encoding"] = response.headers.get("content-encoding")
+                extra_diagnostics["server"] = response.headers.get("server")
+                extra_diagnostics["http_version"] = getattr(response, "http_version", None)
 
             return status_code, round(ttfb_duration_ms, 2), round(total_duration_ms, 2), bypass_applied, error_msg
 
@@ -254,6 +261,7 @@ def inspect_edge(
 
     # 3. Medição HTTP & TTFB
     target_url = site.product_url if site.product_url else site.store_url
+    edge_diag: Dict[str, Any] = {}
     http_status, ttfb_ms, total_latency, bypass_applied, http_error = measure_http(
         url=target_url,
         custom_headers=site.custom_headers,
@@ -261,6 +269,7 @@ def inspect_edge(
         waf_bypass_header_name=site.waf_bypass_header_name,
         timeout=timeout,
         client=http_client,
+        extra_diagnostics=edge_diag,
     )
 
     # Consolidação de mensagens de erro
@@ -289,6 +298,10 @@ def inspect_edge(
             "port": port,
             "infrastructure_type": site.infrastructure_type.value,
             "target_url": target_url,
+            "cf_cache_status": edge_diag.get("cf_cache_status"),
+            "content_encoding": edge_diag.get("content_encoding"),
+            "server": edge_diag.get("server"),
+            "http_version": edge_diag.get("http_version"),
         },
     )
 

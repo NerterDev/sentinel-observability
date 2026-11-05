@@ -64,9 +64,33 @@
     modalVerdictText: document.getElementById('modal-verdict-text'),
     modalFailedStep: document.getElementById('modal-failed-step'),
     modalErrorCode: document.getElementById('modal-error-code'),
+    modalCfCache: document.getElementById('modal-cf-cache'),
+    modalTtfb: document.getElementById('modal-ttfb'),
+    modalRecommendationBox: document.getElementById('modal-recommendation-box'),
+    modalRecommendationText: document.getElementById('modal-recommendation-text'),
     modalScreenshotImg: document.getElementById('modal-screenshot-img'),
     modalScreenshotEmpty: document.getElementById('modal-screenshot-empty'),
+    modalDomExtract: document.getElementById('modal-dom-extract'),
+    modalJsErrorsCount: document.getElementById('modal-js-errors-count'),
+    modalCodeErrorsList: document.getElementById('modal-code-errors-list'),
     modalJsErrors: document.getElementById('modal-js-errors'),
+    modalVitalTbt: document.getElementById('modal-vital-tbt'),
+    modalVitalTbtStatus: document.getElementById('modal-vital-tbt-status'),
+    modalVitalFcp: document.getElementById('modal-vital-fcp'),
+    modalVitalDcl: document.getElementById('modal-vital-dcl'),
+    modalVitalLoad: document.getElementById('modal-vital-load'),
+    modalLongTasksCount: document.getElementById('modal-long-tasks-count'),
+    modalLongTasksList: document.getElementById('modal-long-tasks-list'),
+    modalWeightTotal: document.getElementById('modal-weight-total'),
+    modalWeightJs: document.getElementById('modal-weight-js'),
+    modalWeightCss: document.getElementById('modal-weight-css'),
+    modalWeightImg: document.getElementById('modal-weight-img'),
+    modalWeightRequests: document.getElementById('modal-weight-requests'),
+    modalNetCache: document.getElementById('modal-net-cache'),
+    modalNetEncoding: document.getElementById('modal-net-encoding'),
+    modalNetProtocol: document.getElementById('modal-net-protocol'),
+    modalNetServer: document.getElementById('modal-net-server'),
+    modalSlowestTbody: document.getElementById('modal-slowest-tbody'),
     modalNetworkTbody: document.getElementById('modal-network-tbody'),
 
     // Tabs
@@ -555,6 +579,31 @@
 
       const hasIncident = Boolean(store.last_incident || store.incident);
 
+      // Mini-métricas de diagnóstico avançado Tier-S
+      const diag = store.diagnostics_summary || {};
+      const jsErrCount = diag.js_error_count !== undefined ? diag.js_error_count : (store.last_incident?.js_errors?.length || 0);
+      const jsBadge = jsErrCount === 0
+        ? `<span class="badge badge-healthy">0 Erros JS</span>`
+        : `<span class="badge badge-critical">${jsErrCount} ${jsErrCount === 1 ? 'Erro JS' : 'Erros JS'}</span>`;
+
+      const tbtVal = diag.tbt_ms !== undefined ? diag.tbt_ms : 0;
+      const tbtBadge = tbtVal === 0
+        ? `<span class="badge badge-healthy">TBT: 0ms</span>`
+        : tbtVal < 300
+        ? `<span class="badge badge-degraded">TBT: ${tbtVal.toFixed(0)}ms</span>`
+        : `<span class="badge badge-critical">TBT: ${tbtVal.toFixed(0)}ms</span>`;
+
+      const cfStatus = diag.cf_cache_status || (store.edge && store.edge.cf_cache_status) || null;
+      const cfBadge = cfStatus
+        ? `<span class="badge ${cfStatus === 'HIT' ? 'badge-healthy' : 'badge-infra'}">CF: ${escapeHtml(cfStatus)}</span>`
+        : '';
+
+      const reqCount = diag.requests_count;
+      const bytes = diag.total_transferred_bytes;
+      const weightBadge = (reqCount && bytes)
+        ? `<span class="badge badge-infra">${(bytes / 1024).toFixed(0)} KB (${reqCount} reqs)</span>`
+        : '';
+
       card.innerHTML = `
         <div class="store-card-header">
           <div class="store-meta">
@@ -597,6 +646,13 @@
           ${sparklineSvg}
         </div>
 
+        <div class="store-card-diagnostics">
+          ${jsBadge}
+          ${tbtBadge}
+          ${cfBadge}
+          ${weightBadge}
+        </div>
+
         <div class="store-card-footer">
           <span class="card-timestamp">ID: ${escapeHtml(store.site_id)}</span>
           <button class="btn btn-secondary btn-inspect" type="button" data-site-id="${escapeHtml(store.site_id)}">
@@ -607,7 +663,7 @@
               <line x1="16" y1="17" x2="8" y2="17"></line>
               <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
-            <span>${hasIncident ? 'Dossiê Forense' : 'Inspecionar'}</span>
+            <span>Dossiê Forense</span>
           </button>
         </div>
       `;
@@ -679,7 +735,7 @@
   }
 
   /**
-   * Abertura do Modal de Investigação Forense
+   * Abertura do Modal de Investigação Forense e Dossiê Completo
    */
   async function openForensicModal(siteId) {
     const store = state.allStores.find((s) => s.site_id === siteId);
@@ -688,60 +744,262 @@
     state.activeModalSiteId = siteId;
 
     if (DOM.modalStoreName) {
-      DOM.modalStoreName.textContent = `${store.name} — Investigação Forense`;
+      DOM.modalStoreName.textContent = `${store.name} — Dossiê Forense`;
     }
 
-    let incident = store.last_incident || store.incident;
+    let dossier = null;
+    try {
+      const res = await fetch(`data/dossiers/${siteId}.json`);
+      if (res.ok) {
+        dossier = await res.json();
+      }
+    } catch (err) {
+      console.warn('[Sentinel] Dossiê em disco não encontrado:', err);
+    }
 
-    // Se o incidente não estiver embutido no status, tentar carregar ficheiro individual
-    if (!incident && (store.health === 'critical' || store.status === 'CRITICAL')) {
-      try {
-        const res = await fetch(`data/incidents/${siteId}.json`);
-        if (res.ok) {
-          incident = await res.json();
+    // Se o dossiê não existir, tentar fallback para incidente legado
+    if (!dossier) {
+      let incident = store.last_incident || store.incident;
+      if (!incident && (store.health === 'critical' || store.status === 'CRITICAL')) {
+        try {
+          const res = await fetch(`data/incidents/${siteId}.json`);
+          if (res.ok) {
+            incident = await res.json();
+          }
+        } catch (err) {
+          console.warn('[Sentinel] Incidente em disco não encontrado:', err);
         }
-      } catch (err) {
-        console.warn('[Sentinel] Incidente em disco não encontrado:', err);
+      }
+      if (incident) {
+        dossier = {
+          site_id: siteId,
+          name: store.name,
+          url: store.url,
+          verdict_pt: incident.verdict_pt || incident.root_cause_verdict,
+          failure_phase: incident.failure_phase || incident.step,
+          error_code: incident.error_details || incident.error_code || (incident.http_status ? `HTTP ${incident.http_status}` : 'CRITICAL'),
+          screenshot_path: incident.screenshot_path,
+          raw_js_errors: incident.js_errors || [],
+          failed_network_calls: incident.failed_ajax_calls || incident.network_errors || [],
+          code_errors: [],
+          long_tasks: [],
+          slowest_requests: [],
+          performance: null,
+          edge_diagnostics: store.edge || {}
+        };
       }
     }
 
-    // Preenchimento dos dados do modal
-    if (incident) {
-      DOM.modalVerdictText.textContent =
-        incident.verdict_pt || incident.root_cause_verdict || 'Anomalia intercetada durante o fluxo de checkout.';
-      DOM.modalFailedStep.textContent = incident.failure_phase || incident.step || 'N/A';
-      DOM.modalErrorCode.textContent = incident.http_status
-        ? `HTTP ${incident.http_status}`
-        : incident.error_details || incident.error_code || 'CRITICAL';
+    // Se ainda for nulo (loja saudável sem incidentes), criar objeto padrão
+    if (!dossier) {
+      dossier = {
+        site_id: siteId,
+        name: store.name,
+        url: store.url,
+        health: store.health || 'healthy',
+        checkout_ok: store.checkout_ok !== undefined ? store.checkout_ok : true,
+        verdict_pt: store.checkout_ok
+          ? 'Sem anomalias ativas registadas. A última ronda de observabilidade concluiu com sucesso todos os passos de verificação de borda e checkout.'
+          : 'Anomalia intercetada durante o fluxo sintético de checkout.',
+        failure_phase: store.checkout_ok ? 'Nenhum (Fluxo Concluído)' : 'Desconhecido',
+        error_code: store.checkout_ok ? 'HEALTHY_200' : 'CRITICAL',
+        screenshot_path: null,
+        raw_js_errors: [],
+        code_errors: [],
+        long_tasks: [],
+        slowest_requests: [],
+        performance: null,
+        edge_diagnostics: store.edge || {}
+      };
+    }
 
-      // Screenshot forense
-      if (incident.screenshot_path) {
-        // Ajustar caminho relativo de screenshots para o frontend
-        const cleanPath = incident.screenshot_path.replace(/^public[/\\]/, '');
-        DOM.modalScreenshotImg.src = cleanPath;
-        DOM.modalScreenshotImg.classList.remove('hidden');
-        DOM.modalScreenshotEmpty.classList.add('hidden');
+    // 1. Aba Veredito
+    if (DOM.modalVerdictText) {
+      DOM.modalVerdictText.textContent = dossier.verdict_pt || 'Sem anomalias ativas registadas.';
+    }
+    if (DOM.modalFailedStep) {
+      DOM.modalFailedStep.textContent = dossier.failure_phase || (store.checkout_ok ? 'Nenhum (Fluxo Concluído)' : 'N/A');
+    }
+    if (DOM.modalErrorCode) {
+      DOM.modalErrorCode.textContent = dossier.error_code || (dossier.http_status ? `HTTP ${dossier.http_status}` : (store.checkout_ok ? 'HEALTHY_200' : 'CRITICAL'));
+    }
+    const edgeDiag = {
+      cf_cache_status: dossier.cf_cache_status || dossier.edge_diagnostics?.cf_cache_status || store.diagnostics_summary?.cf_cache_status || store.edge?.cf_cache_status || '--',
+      content_encoding: dossier.content_encoding || dossier.edge_diagnostics?.content_encoding || store.edge?.content_encoding || '--',
+      http_version: dossier.http_version || dossier.edge_diagnostics?.http_version || store.edge?.http_version || 'HTTP/2',
+      server: dossier.server || dossier.edge_diagnostics?.server || store.edge?.server || 'cloudflare',
+    };
+    if (DOM.modalCfCache) {
+      DOM.modalCfCache.textContent = edgeDiag.cf_cache_status;
+    }
+    if (DOM.modalTtfb) {
+      const ttfbNum = typeof dossier.ttfb_ms === 'number'
+        ? dossier.ttfb_ms
+        : typeof dossier.latest_ttfb_ms === 'number'
+        ? dossier.latest_ttfb_ms
+        : typeof store.latest_ttfb_ms === 'number'
+        ? store.latest_ttfb_ms
+        : store.edge?.ttfb_ms;
+      DOM.modalTtfb.textContent = typeof ttfbNum === 'number' ? `${ttfbNum.toFixed(0)} ms` : '-- ms';
+    }
+    if (DOM.modalRecommendationBox && DOM.modalRecommendationText) {
+      const rec = dossier.recommendation_pt;
+      if (rec) {
+        DOM.modalRecommendationText.textContent = rec;
+        DOM.modalRecommendationBox.classList.remove('hidden');
+      } else if (!store.checkout_ok) {
+        DOM.modalRecommendationText.textContent = 'Verifique se regras de cache Cloudflare estão a colocar em cache endpoints dinâmicos ou se há scripts externos a quebrar a execução.';
+        DOM.modalRecommendationBox.classList.remove('hidden');
       } else {
-        DOM.modalScreenshotImg.src = '';
-        DOM.modalScreenshotImg.classList.add('hidden');
-        DOM.modalScreenshotEmpty.classList.remove('hidden');
+        DOM.modalRecommendationBox.classList.add('hidden');
       }
+    }
 
-      // Erros de consola JavaScript
-      const jsErrs = incident.js_errors || [];
-      if (jsErrs.length > 0) {
-        DOM.modalJsErrors.textContent = jsErrs
+    // 2. Aba Erros de Código (Runtime JS & Exceções)
+    const codeErrors = dossier.code_errors || [];
+    const rawJs = dossier.console_errors || dossier.raw_js_errors || [];
+    const totalJsErrors = codeErrors.length || rawJs.length || dossier.js_error_count || 0;
+
+    if (DOM.modalJsErrorsCount) {
+      DOM.modalJsErrorsCount.textContent = `${totalJsErrors} ${totalJsErrors === 1 ? 'erro' : 'erros'}`;
+      DOM.modalJsErrorsCount.className = totalJsErrors > 0 ? 'badge badge-critical' : 'badge badge-healthy';
+    }
+
+    if (DOM.modalCodeErrorsList) {
+      DOM.modalCodeErrorsList.innerHTML = '';
+      if (codeErrors.length > 0) {
+        codeErrors.forEach((err) => {
+          const card = document.createElement('div');
+          card.className = 'code-error-card';
+          const loc = err.source_file ? `${escapeHtml(err.source_file)}:${err.line_number || '?'}:${err.column_number || '?'}` : 'Origem embutida / inline';
+          const stackHtml = err.stack_trace ? `<pre class="code-terminal" style="margin-top: 8px; max-height: 120px;">${escapeHtml(err.stack_trace)}</pre>` : '';
+          card.innerHTML = `
+            <div class="code-error-header">
+              <span class="badge badge-critical">${escapeHtml(err.error_type || 'Exceção JS')}</span>
+              <span class="code-error-loc">${loc}</span>
+            </div>
+            <div class="code-error-msg">${escapeHtml(err.message || 'Erro sem mensagem')}</div>
+            ${stackHtml}
+          `;
+          DOM.modalCodeErrorsList.appendChild(card);
+        });
+      } else {
+        DOM.modalCodeErrorsList.innerHTML = '<p class="state-description" style="margin: 0; color: var(--status-success);">Zero exceções de código JavaScript intercetadas durante a execução da sonda.</p>';
+      }
+    }
+
+    if (DOM.modalJsErrors) {
+      if (rawJs.length > 0) {
+        DOM.modalJsErrors.textContent = rawJs
           .map((e) => (typeof e === 'object' ? JSON.stringify(e, null, 2) : String(e)))
           .join('\n\n');
       } else {
-        DOM.modalJsErrors.textContent = 'Nenhum erro de consola JavaScript intercetado.';
+        DOM.modalJsErrors.textContent = 'Consola limpa: 0 erros intercetados.';
       }
+    }
 
-      // Tabela de requisições AJAX com falha
-      const netCalls = incident.failed_ajax_calls || incident.network_errors || [];
-      if (netCalls.length > 0) {
-        DOM.modalNetworkTbody.innerHTML = '';
-        netCalls.forEach((net) => {
+    // 3. Aba Gargalos & Long Tasks
+    const perf = dossier.performance;
+    const tbt = perf?.total_blocking_time_ms ?? dossier.tbt_ms ?? 0;
+    if (DOM.modalVitalTbt) {
+      DOM.modalVitalTbt.textContent = `${tbt.toFixed(0)} ms`;
+    }
+    if (DOM.modalVitalTbtStatus) {
+      DOM.modalVitalTbtStatus.textContent = tbt === 0 ? 'Fluido' : tbt < 300 ? 'Moderado' : 'Bloqueante';
+      DOM.modalVitalTbtStatus.className = tbt === 0 ? 'vital-badge badge-healthy' : tbt < 300 ? 'vital-badge badge-degraded' : 'vital-badge badge-critical';
+    }
+    if (DOM.modalVitalFcp) {
+      const fcp = perf?.fcp_ms ?? 0;
+      DOM.modalVitalFcp.textContent = fcp > 0 ? `${fcp.toFixed(0)} ms` : '-- ms';
+    }
+    if (DOM.modalVitalDcl) {
+      const dcl = perf?.dom_content_loaded_ms ?? 0;
+      DOM.modalVitalDcl.textContent = dcl > 0 ? `${dcl.toFixed(0)} ms` : '-- ms';
+    }
+    if (DOM.modalVitalLoad) {
+      const load = perf?.load_event_ms ?? 0;
+      DOM.modalVitalLoad.textContent = load > 0 ? `${load.toFixed(0)} ms` : '-- ms';
+    }
+
+    const longTasks = dossier.long_tasks || [];
+    const ltCount = longTasks.length || dossier.long_tasks_count || 0;
+    if (DOM.modalLongTasksCount) {
+      DOM.modalLongTasksCount.textContent = `${ltCount} ${ltCount === 1 ? 'tarefa' : 'tarefas'}`;
+      DOM.modalLongTasksCount.className = ltCount > 0 ? 'badge badge-degraded' : 'badge badge-healthy';
+    }
+
+    if (DOM.modalLongTasksList) {
+      DOM.modalLongTasksList.innerHTML = '';
+      if (longTasks.length > 0) {
+        longTasks.forEach((lt) => {
+          const item = document.createElement('div');
+          item.className = 'long-task-item';
+          item.innerHTML = `
+            <div>
+              <span class="badge badge-degraded">${lt.duration_ms.toFixed(0)} ms</span>
+              <span style="margin-left: 8px; font-weight: 500;">${escapeHtml(lt.name || 'Tarefa longa na main thread')}</span>
+            </div>
+            <span class="code-error-loc">Início: ${lt.start_time_ms.toFixed(0)} ms</span>
+          `;
+          DOM.modalLongTasksList.appendChild(item);
+        });
+      } else {
+        DOM.modalLongTasksList.innerHTML = '<p class="state-description" style="margin: 0; color: var(--status-success);">Nenhum congelamento superior a 50ms detetado na thread principal.</p>';
+      }
+    }
+
+    if (DOM.modalWeightTotal) {
+      DOM.modalWeightTotal.textContent = perf ? `${(perf.total_transferred_bytes / 1024).toFixed(1)} KB` : '0 KB';
+    }
+    if (DOM.modalWeightJs) {
+      DOM.modalWeightJs.textContent = perf ? `${(perf.js_bytes / 1024).toFixed(1)} KB` : '0 KB';
+    }
+    if (DOM.modalWeightCss) {
+      DOM.modalWeightCss.textContent = perf ? `${(perf.css_bytes / 1024).toFixed(1)} KB` : '0 KB';
+    }
+    if (DOM.modalWeightImg) {
+      DOM.modalWeightImg.textContent = perf ? `${(perf.img_bytes / 1024).toFixed(1)} KB` : '0 KB';
+    }
+    if (DOM.modalWeightRequests) {
+      DOM.modalWeightRequests.textContent = perf ? String(perf.requests_count) : '0';
+    }
+
+    // 4. Aba Rede & Waterfall
+    if (DOM.modalNetCache) DOM.modalNetCache.textContent = edgeDiag.cf_cache_status || '--';
+    if (DOM.modalNetEncoding) DOM.modalNetEncoding.textContent = edgeDiag.content_encoding || '--';
+    if (DOM.modalNetProtocol) DOM.modalNetProtocol.textContent = edgeDiag.http_version || 'HTTP/2';
+    if (DOM.modalNetServer) DOM.modalNetServer.textContent = edgeDiag.server || 'cloudflare';
+
+    const slowest = dossier.slowest_requests || [];
+    if (DOM.modalSlowestTbody) {
+      DOM.modalSlowestTbody.innerHTML = '';
+      if (slowest.length > 0) {
+        slowest.forEach((r) => {
+          const row = document.createElement('tr');
+          const cacheBadge = r.cache_status === 'HIT'
+            ? `<span class="badge badge-healthy">HIT</span>`
+            : r.cache_status
+            ? `<span class="badge badge-infra">${escapeHtml(r.cache_status)}</span>`
+            : `<span class="badge badge-infra">--</span>`;
+          row.innerHTML = `
+            <td><span class="badge badge-infra">${escapeHtml(r.method || 'GET')}</span></td>
+            <td style="word-break: break-all; max-width: 320px;">${escapeHtml(r.url)}</td>
+            <td><strong>${r.duration_ms.toFixed(0)} ms</strong></td>
+            <td><span class="badge badge-infra">${escapeHtml(r.resource_type || '--')}</span></td>
+            <td>${cacheBadge}</td>
+          `;
+          DOM.modalSlowestTbody.appendChild(row);
+        });
+      } else {
+        DOM.modalSlowestTbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Nenhuma requisição registada na sonda.</td></tr>';
+      }
+    }
+
+    const failedNet = dossier.failed_requests || dossier.failed_network_calls || [];
+    if (DOM.modalNetworkTbody) {
+      DOM.modalNetworkTbody.innerHTML = '';
+      if (failedNet.length > 0) {
+        failedNet.forEach((net) => {
           const row = document.createElement('tr');
           const reason = net.failure_reason || (net.status ? `HTTP ${net.status}` : 'Falha');
           row.innerHTML = `
@@ -753,27 +1011,24 @@
           DOM.modalNetworkTbody.appendChild(row);
         });
       } else {
-        DOM.modalNetworkTbody.innerHTML = `
-          <tr>
-            <td colspan="4" style="text-align: center; color: var(--text-muted);">Nenhuma chamada AJAX com falha intercetada.</td>
-          </tr>
-        `;
+        DOM.modalNetworkTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Todas as chamadas responderam com código HTTP &lt; 400.</td></tr>';
       }
+    }
+
+    // 5. Aba Captura Forense
+    if (dossier.screenshot_path) {
+      const cleanPath = dossier.screenshot_path.replace(/^public[/\\]/, '');
+      DOM.modalScreenshotImg.src = cleanPath;
+      DOM.modalScreenshotImg.classList.remove('hidden');
+      DOM.modalScreenshotEmpty.classList.add('hidden');
     } else {
-      // Estado sem incidentes para lojas saudáveis
-      DOM.modalVerdictText.textContent =
-        'Sem anomalias ativas registadas. A última ronda de observabilidade concluiu com sucesso todos os passos de verificação de borda e checkout.';
-      DOM.modalFailedStep.textContent = 'Nenhum (Fluxo Concluído)';
-      DOM.modalErrorCode.textContent = 'HEALTHY_200';
       DOM.modalScreenshotImg.src = '';
       DOM.modalScreenshotImg.classList.add('hidden');
       DOM.modalScreenshotEmpty.classList.remove('hidden');
-      DOM.modalJsErrors.textContent = 'Consola limpa: 0 erros intercetados.';
-      DOM.modalNetworkTbody.innerHTML = `
-        <tr>
-          <td colspan="4" style="text-align: center; color: var(--text-muted);">Todas as chamadas WooCommerce responderam com código HTTP &lt; 400.</td>
-        </tr>
-      `;
+    }
+
+    if (DOM.modalDomExtract) {
+      DOM.modalDomExtract.textContent = dossier.dom_extract || 'Nenhum extrato DOM disponível.';
     }
 
     // Reset para a primeira aba (Veredito)

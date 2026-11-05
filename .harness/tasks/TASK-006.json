@@ -1,0 +1,10 @@
+{
+  "task_id": "TASK-006",
+  "objective": "Motor de Diagnóstico Forense Avançado Tier-S (Erros de Código, Bloqueios de Interface e Gargalos de Rede/Performance)",
+  "created_at": "2026-11-05T02:45:00+01:00",
+  "completed_at": "2026-11-05T02:55:00+01:00",
+  "status": "completed",
+  "receipt": "receipts/TASK-006.receipt.md",
+  "project": "F:\\PROJETOS ANTIGRAVITY\\Software\\Plataforma de observabilidade web",
+  "task_file": "tasks/TASK-006.yaml"
+}

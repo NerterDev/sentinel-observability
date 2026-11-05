@@ -1,0 +1,72 @@
+version: "1.0"
+task_id: "TASK-006"
+title: "Motor de Diagnóstico Forense Avançado Tier-S (Erros de Código, Bloqueios de Interface e Gargalos de Rede/Performance)"
+status: "completed"
+completed_at: "2026-11-05T02:55:00+01:00"
+created_at: "2026-11-05T02:45:00+01:00"
+
+objective: >
+  Elevar a plataforma de observabilidade sintética ao padrão Tier-S do mercado,
+  implementando deteção forense profunda de erros de código (exceções JavaScript estruturadas
+  com stack traces, ficheiro e linha, unhandled promise rejections, e falhas de carregamento
+  de scripts/links externos), bloqueios e atrito de interface (Long Tasks >50ms na main-thread,
+  Total Blocking Time TBT, Core Web Vitals FCP/LCP/CLS, e deteção de botões desativados ou
+  sobreposições de banners), e gargalos de rede/infraestrutura (top 5 requisições mais lentas,
+  quebras HTTP >= 400, estado de cache Cloudflare DYNAMIC vs HIT, e compressão Brotli/Gzip).
+  Gera dossiês de diagnóstico para cada loja e enriquece o painel web SPA em estrita
+  conformidade com .harness/invariants/ux_contract.yaml.
+
+canonical_path: "src/browser_probe.py"
+schema_authority: "src/models.py"
+
+data_trace:
+  ingress:
+    sources:
+      - "Eventos CDP e Playwright (pageerror, console, response, requestfinished)"
+      - "Injeção de PerformanceObserver no browser para Long Tasks e Navigation Timings"
+      - "Cabeçalhos HTTP de borda capturados via httpx (CF-Cache-Status, Content-Encoding)"
+    format: "Dicionários estruturados de eventos em tempo de execução"
+  validation:
+    rules:
+      - "Modelos Pydantic v2 estritos para erros de código, tarefas longas e requisições"
+      - "Preservação da compatibilidade com os campos existentes de ProbeResult e StoreStatus"
+  state:
+    models:
+      - "CodeErrorDetail"
+      - "LongTaskDetail"
+      - "SlowRequestDetail"
+      - "DiagnosticsDossier"
+      - "StoreStatus"
+      - "ProbeResult"
+    persistence_format: "JSON atómico em dashboard/data/dossiers/{site_id}.json e dashboard/data/current_status.json"
+  egress:
+    output: "Dashboard SPA atualizado com 5 abas forenses completas e mini-métricas nos cartões"
+    consumer: "Operadores de e-commerce, equipas de engenharia e compradores"
+
+affected_files:
+  - "src/models.py"
+  - "src/browser_probe.py"
+  - "src/edge_inspector.py"
+  - "src/orchestrator.py"
+  - "src/forensic_recorder.py"
+  - "dashboard/index.html"
+  - "dashboard/styles.css"
+  - "dashboard/app.js"
+  - "tests/test_browser_probe.py"
+  - "tests/test_dashboard_contract.py"
+  - "tests/test_forensic_recorder.py"
+  - "tests/test_orchestrator.py"
+
+done_when:
+  - id: "d01"
+    condition: "src/models.py define esquemas de CodeErrorDetail, LongTaskDetail, SlowRequestDetail e DiagnosticsDossier"
+  - id: "d02"
+    condition: "src/browser_probe.py interceta exceções JS com stack traces, unhandled rejections, Long Tasks (>50ms) e calcula TBT"
+  - id: "d03"
+    condition: "src/edge_inspector.py extrai CF-Cache-Status, Content-Encoding e versão HTTP"
+  - id: "d04"
+    condition: "src/forensic_recorder.py e orchestrator.py gravam dossiês ricos em dashboard/data/dossiers/{site_id}.json"
+  - id: "d05"
+    condition: "dashboard/ index.html, styles.css e app.js renderizam as 5 abas forenses e mini-métricas nos cartões conforme o UX contract"
+  - id: "d06"
+    condition: "100% dos testes determinísticos passam"

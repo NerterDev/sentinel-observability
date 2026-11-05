@@ -870,3 +870,142 @@ html, body {
   gap: 12px;
   background-color: var(--surface-card);
 }
+
+/* Tier-S Forensic Modal Enhancements */
+.forensic-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.forensic-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.code-errors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.code-error-card {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--status-error);
+  border-radius: var(--radius-control);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.code-error-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.code-error-msg {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.code-error-loc {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--status-info);
+  word-break: break-all;
+}
+
+.vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.vital-card {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vital-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.vital-value {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.vital-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0 4px;
+  border-radius: var(--radius-control);
+  align-self: flex-start;
+}
+
+.long-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.long-task-item {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.recommendation-box {
+  background-color: rgba(63, 185, 80, 0.08);
+  border: 1px solid rgba(63, 185, 80, 0.3);
+  border-radius: var(--radius-control);
+  padding: 12px;
+  margin-top: 16px;
+}
+
+.recommendation-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--status-success);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.recommendation-text {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: var(--line-height-base);
+}
+
+.store-card-diagnostics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
