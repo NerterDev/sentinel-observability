@@ -110,9 +110,10 @@
   "resume_hud": {
     "project": "Plataforma de observabilidade web",
     "profile": "software (E-Commerce Tier-S)",
-    "active_task": "Todas as Tarefas Conclu\u00eddas e Seladas (TASK-001 a TASK-005)",
+    "active_task": "Lan\u00e7amento Conclu\u00eddo em Produ\u00e7\u00e3o",
     "last_decision": "D043",
-    "next_step": "Plataforma Pronta para Lan\u00e7amento / Opera\u00e7\u00e3o Cont\u00ednua"
+    "live_url": "https://nerterdev.github.io/sentinel-observability/",
+    "repo_url": "https://github.com/NerterDev/sentinel-observability"
   },
   "verification_layer": "effect-runtime",
   "last_snapshot": {
