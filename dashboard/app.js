@@ -222,12 +222,12 @@
         : s.edge && typeof s.edge.ssl_days_remaining === 'number'
         ? s.edge.ssl_days_remaining
         : null;
-    const checkoutOk =
-      s.checkout_success_rate_pct !== undefined
-        ? s.checkout_success_rate_pct >= 90
-        : s.checkout_ok !== undefined
-        ? Boolean(s.checkout_ok)
-        : true;
+    const hasActiveCheckoutIncident = Boolean(
+      s.last_incident &&
+      s.last_incident.failure_phase &&
+      s.last_incident.failure_phase !== 'edge_network'
+    );
+    const checkoutOk = !hasActiveCheckoutIncident;
     const incident = s.last_incident || s.incident || null;
     const infra = s.infrastructure_type || s.infrastructure || 'rocket_cloudflare';
     const storeUrl = s.url || s.store_url || `https://${s.site_id}.com`;
@@ -285,7 +285,16 @@
       if (historyRes.status === 'fulfilled' && historyRes.value.ok) {
         try {
           const histPayload = await historyRes.value.json();
-          historyData = histPayload.history || {};
+          const points = histPayload.points || [];
+          const grouped = {};
+          points.forEach((pt) => {
+            const sid = pt.site_id;
+            if (!grouped[sid]) {
+              grouped[sid] = { points: [] };
+            }
+            grouped[sid].points.push(pt);
+          });
+          historyData = grouped;
           DOM.statePartialDegraded.classList.add('hidden');
         } catch (err) {
           console.warn('[Sentinel] Falha ao processar history.json:', err);
@@ -638,13 +647,22 @@
       let color = 'var(--status-success)';
       let barH = 24;
 
-      if (pt.health === 'critical' || !pt.checkout_ok) {
+      const ptStatus = (pt.status || pt.health || '').toLowerCase();
+      const ptCheckout =
+        pt.checkout_success !== undefined
+          ? pt.checkout_success
+          : pt.checkout_ok !== undefined
+          ? pt.checkout_ok
+          : true;
+
+      if (ptStatus === 'critical' || ptCheckout === false) {
         color = 'var(--status-error)';
         barH = 28;
-      } else if (pt.health === 'degraded') {
+      } else if (ptStatus === 'degraded') {
         color = 'var(--status-warning)';
         barH = 18;
       } else {
+        color = 'var(--status-success)';
         barH = 24;
       }
 
