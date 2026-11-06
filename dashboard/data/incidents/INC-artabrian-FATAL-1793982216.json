@@ -1,0 +1,17 @@
+{
+  "incident_id": "INC-artabrian-FATAL-1793982216",
+  "site_id": "artabrian",
+  "site_name": "Artabrian",
+  "timestamp": "2026-11-06T16:23:36.757687Z",
+  "failure_phase": "fatal_loop_error",
+  "verdict_pt": "Erro não tratado na execução da sonda: name 'CodeErrorDetail' is not defined",
+  "screenshot_path": null,
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": null,
+  "http_status": null,
+  "error_details": "name 'CodeErrorDetail' is not defined",
+  "code_errors": [],
+  "long_tasks": [],
+  "slowest_requests": []
+}
