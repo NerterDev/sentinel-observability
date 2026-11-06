@@ -1,0 +1,17 @@
+{
+  "incident_id": "INC-blukk-FATAL-1793954280",
+  "site_id": "blukk",
+  "site_name": "Blukk",
+  "timestamp": "2026-11-06T08:38:00.766882Z",
+  "failure_phase": "fatal_loop_error",
+  "verdict_pt": "Erro não tratado na execução da sonda: name 'CodeErrorDetail' is not defined",
+  "screenshot_path": null,
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": null,
+  "http_status": null,
+  "error_details": "name 'CodeErrorDetail' is not defined",
+  "code_errors": [],
+  "long_tasks": [],
+  "slowest_requests": []
+}
