@@ -1,0 +1,17 @@
+{
+  "incident_id": "INC-txrace-EDGE-1794060846",
+  "site_id": "txrace",
+  "site_name": "TX Race",
+  "timestamp": "2026-11-07T14:14:06.998856Z",
+  "failure_phase": "edge_network",
+  "verdict_pt": "TTFB crítico (2845ms excedeu limiar crítico de 2500ms)",
+  "screenshot_path": null,
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": null,
+  "http_status": 200,
+  "error_details": "TTFB crítico (2845ms excedeu limiar crítico de 2500ms)",
+  "code_errors": [],
+  "long_tasks": [],
+  "slowest_requests": []
+}
