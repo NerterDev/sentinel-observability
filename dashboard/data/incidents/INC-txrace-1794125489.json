@@ -1,0 +1,79 @@
+{
+  "incident_id": "INC-txrace-1794125489",
+  "site_id": "txrace",
+  "site_name": "TX Race",
+  "timestamp": "2026-11-08T08:11:29.055836Z",
+  "failure_phase": "order_review",
+  "verdict_pt": "Timeout ao aguardar atualização da tabela de pedido (#order_review)",
+  "screenshot_path": "public/screenshots/txrace_order_review_20261108_081128.png",
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": "<!DOCTYPE html><html lang=\"en-US\" prefix=\"og: https://ogp.me/ns#\"><head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n    <link rel=\"profile\" href=\"https://gmpg.org/xfn/11\">\n    <link rel=\"preload\" href=\"https://www.txrace.com/wp-content/uploads/kardeu-fonts/inter-395290514d.woff2\" as=\"font\" type=\"font/woff2\" crossorigin=\"\">\n<link rel=\"preload\" href=\"https://www.txrace.com/wp-content/uploads/kardeu-fonts/inter-4ee8fc9834.woff2\" as=\"font\" type=\"font/woff2\" crossorigin=\"\">\n        <script async=\"\" src=\"https://scripts.clarity.ms/0.8.75/clarity.js\"></script><script async=\"\" src=\"https://www.clarity.ms/tag/jjh9je9qpd\"></script><script>\n        (function() {\n            if (window.self !== window.top) {\n                document.documentElement.classList.add('is-kardeu-preview-mode');\n                var s = document.createElement('style');\n                s.id = 'kd-iframe-adminbar-killer';\n                s.textContent = '#wpadminbar { display: none !important; } html { margin-top: 0px !important; } body { margin-top: 0px !important; padding-top: 0px !important; }';\n                (document.head || document.documentElement).appendChild(s);\n            }\n        })();\n        </script>\n                <script id=\"kardeu-consent-mode-v2\">\n            window.dataLayer = window.dataLayer || [];\n            function gtag(){dataLayer.push(arguments);}\n            gtag('consent', 'default', {\n                'ad_storage': 'granted',\n                'analytics_storage': 'granted',\n                'ad_user_data': 'granted',\n                'ad_personalization': 'granted',\n                'wait_for_update': 500\n            });\n        </script>\n        \n<!-- Search Engine Optimization by Rank Math PRO - https://rankmath.com/ -->\n<title>Shop - TX RACE™</title>\n<meta name=\"description\" content=\"Products Archive - TX RACE™\">\n<meta name=\"robots\" content=\"follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large\">\n<link rel=\"canonical\" href=\"https://www.txrace.com/shop/\">\n<meta property=\"og:locale\" content=\"en_US\">\n<meta property=\"og:type\" content=\"article\">\n<meta property=\"og:title\" content=\"Shop - TX RACE™\">\n<meta property=\"og:description\" content=\"Products Archive - TX RACE™\">\n<meta property=\"og:url\" content=\"https://www.txrace.com/shop/\">\n<meta property=\"og:site_name\" content=\"TX RACE™\">\n<meta name=\"twitter:card\" content=\"summary_large_image\">\n<meta name=\"twitter:title\" content=\"Shop - TX RACE™\">\n<meta name=\"twitter:description\" content=\"Products Archive - TX RACE™\">\n<script type=\"application/ld+json\" class=\"rank-math-schema-pro\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":\"Person\",\"@id\":\"https://www.txrace.com/#person\",\"name\":\"TX RACE\\u2122\",\"sameAs\":[\"https://www.instagram.com/txrace/\",\"https://es.pinterest.com/txrace_com/tx-racetm-restyle-kit/\",\"https://www.youtube.com/@txracecom\"],\"image\":{\"@type\":\"ImageObject\",\"@id\":\"https://www.txrace.com/#logo\",\"url\":\"https://www.txrace.com/wp-content/uploads/2024/11/favicon600x600.png\",\"contentUrl\":\"https://www.txrace.com/wp-content/uploads/2024/11/favicon600x600.png\",\"caption\":\"TX RACE\\u2122\",\"inLanguage\":\"en-US\",\"width\":\"600\",\"height\":\"600\"}},{\"@type\":\"WebSite\",\"@id\":\"https://www.txrace.com/#website\",\"url\":\"https://www.txrace.com\",\"name\":\"TX RACE\\u2122\",\"publisher\":{\"@id\":\"https://www.txrace.com/#person\"},\"inLanguage\":\"en-US\"},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://www.txrace.com/shop/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":\"1\",\"item\":{\"@id\":\"https://www.txrace.com\",\"name\":\"Home\"}},{\"@type\":\"ListItem\",\"position\":\"2\",\"item\":{\"@id\":\"https://www.txrace.com/shop/\",\"name\":\"Shop\"}}]},{\"@type\":\"CollectionPage\",\"@id\":\"https://www.txrace.com/shop/#webpage\",\"url\":\"https://www.txrace.com/shop/\",\"name\":\"Shop - TX RACE\\u2122\",\"isPartOf\":{\"@id\":\"https://www.txrace.com/#website\"},\"inLanguage\":\"en-US\",\"breadcrumb\":{\"@id\":\"https://www.txrace.com/shop/#breadcrumb\"}}]}</script>\n<!-- /Rank Math WordPress SEO plugin -->\n\n<link rel=\"icon\" href=\"https://www.txrace.com/wp-content/uploads/2025/03/favicon152x152.png\">\n<link rel=\"apple-touch-icon\" href=\"https://www.txrace.com/wp-content/uploads/2025/03/favicon152x152.png\">\n    <style id=\"kardeu-critical-cls-fix\">\n        /* 1. Proporções explícitas imutáveis para imagens hero / banners */\n        .kd-grid-col-image-wrap img[src*=\"banner_500x908\"],\n        img[src*=\"banner_500x908\"] {\n            aspect-ratio: 500 / 908 !important;\n            width: 100% !important;\n            height: auto !important;\n            display: block !important;\n        }\n        .kd-grid-col-image-wrap img[src*=\"slider33a\"],\n        img[src*=\"slider33a\"] {\n            aspect-ratio: 1920 / 650 !important;\n            width: 100% !important;\n            height: auto !important;\n            display: block !important;\n        }\n\n        /* 1.1 Neutralizar fontes externas do cookie notice */\n        #daextlwcn-cookie-notice-container,\n        #daextlwcn-cookie-notice-wrapper,\n        #daextlwcn-cookie-notice-button-container * {\n            font-family: inherit !important;\n        }\n\n        /* 2. Prevenção de CLS em imagens de logo sem dimensões intrínsecas */\n        .kd-mobile-drawer__logo {\n            width: 140px;\n            height: 38px;\n            aspect-ratio: 140 / 38;\n            max-height: 38px;\n            object-fit: contain;\n            object-position: left center !important;\n            display: block;\n        }\n\n        .kd-footer-logo {\n            width: var(--kd-footer-logo-w-desktop, 105px);\n            max-width: 100%;\n            height: auto;\n            max-height: 48px;\n            object-fit: contain;\n            object-position: left center !important;\n            display: block;\n        }\n        @media (max-width: 992px) {\n            .kd-footer-logo {\n                width: var(--kd-footer-logo-w-tablet, 105px);\n                max-height: 42px;\n            }\n        }\n        @media (max-width: 767px) {\n            .kd-footer-logo {\n                width: var(--kd-footer-logo-w-mobile, 105px);\n                max-height: 38px;\n            }\n        }\n\n        /* 2.1 Contact Form 7: Assegurar que contentores ocultos e honeypots nunca são visíveis como caixas vazias */\n        .wpcf7 fieldset.hidden-fields-container,\n        fieldset.hidden-fields-container,\n        .wpcf7-hidden {\n            display: none !important;\n            border: none !important;\n            padding: 0 !important;\n            margin: 0 !important;\n            height: 0 !important;\n            width: 0 !important;\n            overflow: hidden !important;\n            visibility: hidden !important;\n        }\n\n        /* 3. Eliminar categoricamente tags fantasma com src em branco */\n        img.kd-footer-trust-img[src=\"\"],\n        img.kd-footer-trust-img:not([src]),\n        img.kd-footer-trust-img[src=\"#\"] {\n            display: none !important;\n        }\n\n        /* 4. Estilo harmonioso e legível para o H1 Canónico na Homepage */\n        .kd-front-h1 {\n            font-size: 1.5rem;\n            font-weight: 800;\n            color: var(--kardeu-color-text-primary, var(--kd-heading-color, #111827));\n            letter-spacing: -0.025em;\n            margin: 1.25rem 0 1rem 0;\n            text-align: center;\n            line-height: 1.25;\n        }\n        @media (min-width: 768px) {\n            .kd-front-h1 {\n                font-size: 2.25rem;\n                margin: 1.75rem 0 1.25rem 0;\n            }\n        }\n\n        /* 5. Fachada Leve para Vídeos do YouTube (Padrão Fachada / Lite YouTube) */\n        .kd-lite-youtube {\n            position: relative;\n            width: 100%;\n            height: 100%;\n            aspect-ratio: 16 / 9;\n            min-height: 0;\n            background-color: #000;\n            background-position: center center;\n            background-size: cover;\n            background-repeat: no-repeat;\n            cursor: pointer;\n            display: flex;\n            alig",
+  "http_status": null,
+  "error_details": "Page.wait_for_selector: Timeout 25000ms exceeded.\nCall log:\n  - waiting for locator(\"#order_review\") to be visible\n    - waiting for \"https://www.txrace.com/shop/?open-cart=1&currency=USD\" navigation to finish...\n    - navigated to \"https://www.txrace.com/shop/?open-cart=1&currency=USD\"\n",
+  "code_errors": [
+    {
+      "error_type": "ResourceLoadError",
+      "message": "Falha ao carregar recurso externo: https://cdn.lr-ingest.com/LogRocket.min.js",
+      "source_file": "https://cdn.lr-ingest.com/LogRocket.min.js",
+      "line_number": null,
+      "column_number": null,
+      "stack_trace": null,
+      "phase": "order_review",
+      "timestamp": "2026-11-08T08:11:29.055531Z"
+    }
+  ],
+  "long_tasks": [],
+  "slowest_requests": [
+    {
+      "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/wp-content/uploads/kardeu-fonts/inter-395290514d.woff2",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "font",
+      "content_type": "font/woff2",
+      "size_bytes": 85068,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/wp-content/uploads/kardeu-fonts/inter-4ee8fc9834.woff2",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "font",
+      "content_type": "font/woff2",
+      "size_bytes": 18748,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/wp-content/uploads/2025/05/tx-race-restyle-kit-gen25-honda-cr-125-250-2002-2007-IMG01c_blue_1000x1000px.fw_-600x600.avif",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "image",
+      "content_type": "image/avif",
+      "size_bytes": 61601,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/wp-content/themes/kardeu-canvas/style.css?ver=1.0.0",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "stylesheet",
+      "content_type": "text/css",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    }
+  ]
+}
