@@ -1,6 +1,6 @@
 {
   "retention_days": 30,
-  "updated_at": "2026-11-09T10:30:05.576546Z",
+  "updated_at": "2026-11-09T20:56:21.014445Z",
   "points": [
     {
       "timestamp": "2026-11-05T00:25:18.450289Z",
@@ -730,6 +730,33 @@
       "checkout_success": false,
       "total_duration_ms": null,
       "incident_id": "INC-blukk-FATAL-1794220205"
+    },
+    {
+      "timestamp": "2026-11-09T20:56:21.014445Z",
+      "site_id": "txrace",
+      "status": "CRITICAL",
+      "ttfb_ms": null,
+      "checkout_success": false,
+      "total_duration_ms": null,
+      "incident_id": "INC-txrace-FATAL-1794257781"
+    },
+    {
+      "timestamp": "2026-11-09T20:56:21.014445Z",
+      "site_id": "artabrian",
+      "status": "CRITICAL",
+      "ttfb_ms": null,
+      "checkout_success": false,
+      "total_duration_ms": null,
+      "incident_id": "INC-artabrian-FATAL-1794257781"
+    },
+    {
+      "timestamp": "2026-11-09T20:56:21.014445Z",
+      "site_id": "blukk",
+      "status": "CRITICAL",
+      "ttfb_ms": null,
+      "checkout_success": false,
+      "total_duration_ms": null,
+      "incident_id": "INC-blukk-FATAL-1794257781"
     }
   ]
 }
