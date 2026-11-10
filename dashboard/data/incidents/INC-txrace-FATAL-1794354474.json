@@ -1,0 +1,17 @@
+{
+  "incident_id": "INC-txrace-FATAL-1794354474",
+  "site_id": "txrace",
+  "site_name": "TX Race",
+  "timestamp": "2026-11-10T23:47:54.826081Z",
+  "failure_phase": "fatal_loop_error",
+  "verdict_pt": "Erro não tratado na execução da sonda: name 'CodeErrorDetail' is not defined",
+  "screenshot_path": null,
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": null,
+  "http_status": null,
+  "error_details": "name 'CodeErrorDetail' is not defined",
+  "code_errors": [],
+  "long_tasks": [],
+  "slowest_requests": []
+}
