@@ -1,0 +1,106 @@
+{
+  "incident_id": "INC-artabrian-1794395834",
+  "site_id": "artabrian",
+  "site_name": "Artabrian",
+  "timestamp": "2026-11-11T11:17:14.750329Z",
+  "failure_phase": "order_review",
+  "verdict_pt": "Timeout ao aguardar atualização da tabela de pedido (#order_review)",
+  "screenshot_path": "public/screenshots/artabrian_order_review_20261111_111714.png",
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": "<!DOCTYPE html><html lang=\"en-US\" prefix=\"og: https://ogp.me/ns#\"><head><meta http-equiv=\"origin-trial\" content=\"A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwaXJ5IjoxNzU3OTgwODAwLCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ==\"><script src=\"https://www.artabrian.com/wp-includes/js/zxcvbn.min.js\" type=\"text/javascript\" async=\"\"></script><script async=\"\" src=\"https://scripts.clarity.ms/0.8.73-beta/clarity.js\"></script><script type=\"text/javascript\" async=\"\" src=\"https://www.googletagmanager.com/gtag/js?id=AW-17389258677&amp;cx=c&amp;gtm=4e6b91\"></script><script type=\"text/javascript\" async=\"\" charset=\"utf-8\" src=\"https://www.gstatic.com/recaptcha/releases/0lEGiwO4Qwx5R9ArxUy0mBpf/recaptcha__en.js\" crossorigin=\"anonymous\" integrity=\"sha384-shnkLybQsS8ZF3OGX2CmBHMbNG6/Qvu5R7BbyzwL7pdd/IelHxNYcZ3Rjlq8jLM2\"></script><script async=\"\" src=\"https://www.clarity.ms/tag/lzrhstsjf5\"></script><script data-no-optimize=\"1\">var litespeed_docref=sessionStorage.getItem(\"litespeed_docref\");litespeed_docref&&(Object.defineProperty(document,\"referrer\",{get:function(){return litespeed_docref}}),sessionStorage.removeItem(\"litespeed_docref\"));</script>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\t<link rel=\"profile\" href=\"https://gmpg.org/xfn/11\"> \n\t<link rel=\"preload\" href=\"https://www.artabrian.com/wp-content/astra-local-fonts/inter/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2\" as=\"font\" type=\"font/woff2\" crossorigin=\"\"><link rel=\"preload\" href=\"https://www.artabrian.com/wp-content/astra-local-fonts/lato/S6u9w4BMUTPHh50XSwiPGQ.woff2\" as=\"font\" type=\"font/woff2\" crossorigin=\"\"><link rel=\"preload\" href=\"https://www.artabrian.com/wp-content/astra-local-fonts/roboto/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjalmUiAo.woff2\" as=\"font\" type=\"font/woff2\" crossorigin=\"\">\n<!-- Search Engine Optimization by Rank Math PRO - https://rankmath.com/ -->\n<title>Cart - Artabrian™ - MX ATV Templates</title>\n<meta name=\"robots\" content=\"noindex, follow\">\n<meta property=\"og:locale\" content=\"en_US\">\n<meta property=\"og:type\" content=\"article\">\n<meta property=\"og:title\" content=\"Cart - Artabrian™ - MX ATV Templates\">\n<meta property=\"og:url\" content=\"https://www.artabrian.com/cart/\">\n<meta property=\"og:site_name\" content=\"Artabrian™ - MX ATV Templates\">\n<meta property=\"article:publisher\" content=\"https://www.facebook.com/artabriantemplates\">\n<meta property=\"og:updated_time\" content=\"2026-02-26T19:01:17+01:00\">\n<meta property=\"og:image\" content=\"https://www.artabrian.com/wp-content/uploads/2025/01/favicon_artabrian_512x512.png\">\n<meta property=\"og:image:secure_url\" content=\"https://www.artabrian.com/wp-content/uploads/2025/01/favicon_artabrian_512x512.png\">\n<meta property=\"og:image:width\" content=\"512\">\n<meta property=\"og:image:height\" content=\"512\">\n<meta property=\"og:image:alt\" content=\"Cart\">\n<meta property=\"og:image:type\" content=\"image/png\">\n<meta property=\"article:published_time\" content=\"2023-07-29T01:20:20+02:00\">\n<meta property=\"article:modified_time\" content=\"2026-02-26T19:01:17+01:00\">\n<meta name=\"twitter:card\" content=\"summary_large_image\">\n<meta name=\"twitter:title\" content=\"Cart - Artabrian™ - MX ATV Templates\">\n<meta name=\"twitter:site\" content=\"@https://twitter.com/artabrian\">\n<meta name=\"twitter:creator\" content=\"@https://twitter.com/artabrian\">\n<meta name=\"twitter:image\" content=\"https://www.artabrian.com/wp-content/uploads/2025/01/favicon_artabrian_512x512.png\">\n<script type=\"application/ld+json\" class=\"rank-math-schema-pro\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":[\"Person\",\"Organization\"],\"@id\":\"https://www.artabrian.com/#person\",\"name\":\"Artabrian\\u2122 Templates\",\"sameAs\":[\"https://www.facebook.com/artabriantemplates\",\"https://twitter.com/https://twitter.com/artabrian\",\"https://www.instagram.com/artabrian_templates/\",\"https://www.youtube.com/channel/UCGRu8fhCM2VAX3bXf_tV0tA\",\"https://www.pinterest.es/Artabrian/\"],\"logo\":{\"@type\":\"ImageObject\",\"@id\":\"https://www.artabrian.com/#logo\",\"url\":\"https://www.artabrian.com/wp-content/uploads/2024/03/icon_01_512x512.png\",\"contentUrl\":\"https://www.artabrian.com/wp-content/uploads/2024/03/icon_01_512x512.png\",\"caption\":\"Artabrian\\u2122 - MX ATV Templates\",\"inLanguage\":\"en-US\",\"width\":\"512\",\"height\":\"512\"}},{\"@type\":\"WebSite\",\"@id\":\"https://www.artabrian.com/#website\",\"url\":\"https://www.artabrian.com\",\"name\":\"Artabrian\\u2122 - MX ATV Templates\",\"publisher\":{\"@id\":\"https://www.artabrian.com/#person\"},\"inLanguage\":\"en-US\"},{\"@type\":\"ImageObject\",\"@id\":\"https://www.artabrian.com/wp-content/uploads/2025/01/favicon_artabrian_512x512.png\",\"url\":\"https://www.artabrian.com/wp-content/uploads/2025/01/favicon_artabrian_512x512.png\",\"width\":\"512\",\"height\":\"512\",\"inLanguage\":\"en-US\"},{\"@type\":\"BreadcrumbList\",\"@id\":\"https://www.artabrian.com/cart/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":\"1\",\"item\":{\"@id\":\"https://www.artabrian.com\",\"name\":\"Home\"}},{\"@type\":\"ListItem\",\"position\":\"2\",\"item\":{\"@id\":\"https://www.artabrian.com/cart/\",\"name\":\"Cart\"}}]},{\"@type\":\"WebPage\",\"@id\":\"https://www.artabrian.com/cart/#webpage\",\"url\":\"https://www.artabrian.com/cart/\",\"name\":\"Cart - Artabrian\\u2122 - MX ATV Templates\",\"datePublished\":\"2023-07-29T01:20:20+02:00\",\"dateModified\":\"2026-02-26T19:01:17+01:00\",\"isPartOf\":{\"@id\":\"https://www.artabrian.com/#website\"},\"primaryImageOfPage\":{\"@id\":\"https://www.artabrian.com/wp-content/uploads/2025/01/favicon_artabrian_512x512.png\"},\"inLanguage\":\"en-US\",\"breadcrumb\":{\"@id\":\"https://www.artabrian.com/cart/#breadcrumb\"}},{\"@type\":\"Person\",\"@id\":\"https://www.artabrian.com/cart/#author\",\"name\":\"Nerter Global\",\"image\":{\"@type\":\"ImageObject\",\"@id\":\"https://secure.gravatar.com/avatar/33680ccfcb60867170a0d70054b51e23993cbc0dbf5186f2cbd8468f8d21609c?s=96&amp;d=mm&amp;r=g\",\"url\":\"https://secure.gravatar.com/avatar/33680ccfcb60867170a0d70054b51e23993cbc0dbf5186f2cbd8468f8d21609c?s=96&amp;d=mm&amp;r=g\",\"caption\":\"Nerter Global\",\"inLanguage\":\"en-US\"},\"sameAs\":[\"https://www.artabrian.com\"]},{\"@type\":\"Article\",\"headline\":\"Cart - Artabrian\\u2122 - MX ATV Templates\",\"datePublished\":\"2023-07-29T01:20:20+02:00\",\"dateModified\":\"2026-02-26T19:01:17+01:00\",\"author\":{\"@id\":\"https://www.artabrian.com/cart/#author\",\"name\":\"Nerter Global\"},\"publisher\":{\"@id\":\"https://www.artabrian.com/#person\"},\"name\":\"Cart - Artabrian\\u2122 - MX ATV Templates\",\"@id\":\"https://www.artabrian.com/cart/#richSnippet\",\"isPartOf\":{\"@id\":\"https://www.artabrian.com/cart/#webpage\"},\"image\":{\"@id\":\"https://www.artabrian.com/wp-content/uploads/2025/01/favicon_artabrian_512x512.png\"},\"inLanguage\":\"en-US\",\"mainEntityOfPage\":{\"@id\":\"https://www.artabrian.com/cart/#webpage\"}}]}</script>\n<!-- /Rank Math WordPress SEO plugin -->\n\n<link rel=\"dns-prefetch\" href=\"//challenges.cloudflare.com\">\n<link rel=\"dns-prefetch\" href=\"//use.fontawesome.com\">\n<link rel=\"alternate\" type=\"application/rss+xml\" title=\"Artabrian™ - MX ATV Templates » Feed\" href=\"https://www.artabrian.com/feed/\">\n<link rel=\"alternate\" title=\"oEmbed (JSON)\" type=\"application/json+oembed\" href=\"https://www.artabrian.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.artabrian.com%2Fcart%2F\">\n<link rel=\"alternate\" title=\"oEmbed (XML)\" type=\"text/xml+oembed\" href=\"https://www.artabrian.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.artabrian.com%2Fcart%2F&amp;format=xml\">\n<style id=\"wp-img-auto-sizes-contain-inline-css\">\nimg:is([sizes=auto i],[sizes^=\"auto,\" i]){contain-intrinsic-size:3000px 1500px}\n/*# sourceURL=wp-img-auto-sizes-contain-inline-css */\n</style>\n\n<link rel=\"stylesheet\" id=\"fluent_snippet_14-cartflows-checkout-css-css\" href=\"https://www.artabrian.com/wp-content/fluent-snippet-storage/cached/14-cartflows-checkout-css.css?ver=1775576793\" media=\"all\">\n<link rel=\"stylesheet\" id=\"astra-theme-css-css\" href=\"https://www.artabrian.com/wp-content/themes/astra/ass",
+  "http_status": null,
+  "error_details": "Page.wait_for_selector: Timeout 25000ms exceeded.\nCall log:\n  - waiting for locator(\"#order_review\") to be visible\n",
+  "code_errors": [
+    {
+      "error_type": "ResourceLoadError",
+      "message": "Falha ao carregar recurso externo: https://use.fontawesome.com/releases/v6.4.0/css/all.css",
+      "source_file": "https://use.fontawesome.com/releases/v6.4.0/css/all.css",
+      "line_number": null,
+      "column_number": null,
+      "stack_trace": null,
+      "phase": "order_review",
+      "timestamp": "2026-11-11T11:17:14.749966Z"
+    },
+    {
+      "error_type": "ResourceLoadError",
+      "message": "Falha ao carregar recurso externo: https://use.fontawesome.com/releases/v6.4.0/css/v4-shims.css",
+      "source_file": "https://use.fontawesome.com/releases/v6.4.0/css/v4-shims.css",
+      "line_number": null,
+      "column_number": null,
+      "stack_trace": null,
+      "phase": "order_review",
+      "timestamp": "2026-11-11T11:17:14.749977Z"
+    },
+    {
+      "error_type": "ResourceLoadError",
+      "message": "Falha ao carregar recurso externo: https://www.gstatic.com/recaptcha/releases/0lEGiwO4Qwx5R9ArxUy0mBpf/recaptcha__en.js",
+      "source_file": "https://www.gstatic.com/recaptcha/releases/0lEGiwO4Qwx5R9ArxUy0mBpf/recaptcha__en.js",
+      "line_number": null,
+      "column_number": null,
+      "stack_trace": null,
+      "phase": "order_review",
+      "timestamp": "2026-11-11T11:17:14.749979Z"
+    }
+  ],
+  "long_tasks": [
+    {
+      "duration_ms": 59.0,
+      "start_time_ms": 1449.0,
+      "name": "self",
+      "attribution": "unknown"
+    }
+  ],
+  "slowest_requests": [
+    {
+      "url": "https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/",
+      "method": "GET",
+      "status": 307,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 0,
+      "cache_status": "DYNAMIC"
+    },
+    {
+      "url": "https://www.artabrian.com/wp-content/fluent-snippet-storage/cached/14-cartflows-checkout-css.css?ver=1775576793",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "stylesheet",
+      "content_type": "text/css",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.artabrian.com/cdn-cgi/speculation",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "other",
+      "content_type": "application/speculationrules+json",
+      "size_bytes": 151,
+      "cache_status": null
+    },
+    {
+      "url": "https://www.artabrian.com/wp-content/plugins/woocommerce/assets/css/photoswipe/photoswipe.min.css?ver=10.9.4",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "stylesheet",
+      "content_type": "text/css",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.artabrian.com/wp-content/uploads/astra-addon/astra-addon-69ea97290021a7-87208889.css?ver=4.12.1",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "stylesheet",
+      "content_type": "text/css",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    }
+  ]
+}
