@@ -1,0 +1,36 @@
+{
+  "incident_id": "INC-artabrian-1794729655",
+  "site_id": "artabrian",
+  "site_name": "Artabrian",
+  "timestamp": "2026-11-15T08:00:55.013040Z",
+  "failure_phase": "product_page",
+  "verdict_pt": "Página do produto inacessível ou falha no carregamento inicial",
+  "screenshot_path": null,
+  "js_errors": [],
+  "failed_ajax_calls": [
+    {
+      "timestamp": "2026-11-15T08:00:55.002706+00:00",
+      "url": "https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/",
+      "status": 504,
+      "method": "GET",
+      "body_preview": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head>\n\n<title>artabrian.com | 504: Gateway time-out</title>\n<meta charset=\"UTF-8\" />\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n<meta http-equiv=\"X-UA-Compat"
+    }
+  ],
+  "dom_extract": null,
+  "http_status": null,
+  "error_details": "Page.goto: Timeout 25000ms exceeded.\nCall log:\n  - navigating to \"https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/\", waiting until \"domcontentloaded\"\n",
+  "code_errors": [],
+  "long_tasks": [],
+  "slowest_requests": [
+    {
+      "url": "https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/",
+      "method": "GET",
+      "status": 504,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 6432,
+      "cache_status": null
+    }
+  ]
+}
