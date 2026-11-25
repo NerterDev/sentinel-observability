@@ -1,0 +1,68 @@
+{
+  "incident_id": "INC-txrace-1795569000",
+  "site_id": "txrace",
+  "site_name": "TX Race",
+  "timestamp": "2026-11-25T01:10:00.387921Z",
+  "failure_phase": "product_page",
+  "verdict_pt": "Página do produto inacessível ou falha no carregamento inicial",
+  "screenshot_path": "public/screenshots/txrace_product_page_20261125_011000.png",
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": "<html><head></head><body></body></html>",
+  "http_status": null,
+  "error_details": "Page.goto: net::ERR_TOO_MANY_REDIRECTS at https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/\nCall log:\n  - navigating to \"https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/\", waiting until \"domcontentloaded\"\n",
+  "code_errors": [],
+  "long_tasks": [],
+  "slowest_requests": [
+    {
+      "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/",
+      "method": "GET",
+      "status": 307,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/?v=0b3b97fa6688",
+      "method": "GET",
+      "status": 307,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/?v=75bd8c82f05b",
+      "method": "GET",
+      "status": 307,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/?v=82a9e4d26595",
+      "method": "GET",
+      "status": 307,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.txrace.com/product/tx-race-restyle-kit-for-honda-cr125-250-2002-2007/?v=75bd8c82f05b",
+      "method": "GET",
+      "status": 307,
+      "duration_ms": 0.0,
+      "resource_type": "document",
+      "content_type": "text/html; charset=UTF-8",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    }
+  ]
+}
