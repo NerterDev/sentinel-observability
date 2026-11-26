@@ -1,0 +1,68 @@
+{
+  "incident_id": "INC-artabrian-1795660361",
+  "site_id": "artabrian",
+  "site_name": "Artabrian",
+  "timestamp": "2026-11-26T02:32:41.661585Z",
+  "failure_phase": "add_to_cart",
+  "verdict_pt": "Falha na reação da interface ao adicionar produto ao carrinho",
+  "screenshot_path": "public/screenshots/artabrian_add_to_cart_20261126_023241.png",
+  "js_errors": [],
+  "failed_ajax_calls": [],
+  "dom_extract": "<!DOCTYPE html><html lang=\"en-US\" prefix=\"og: https://ogp.me/ns#\"><head><script async=\"\" src=\"https://scripts.clarity.ms/0.8.77/clarity.js\"></script><script async=\"\" src=\"https://www.clarity.ms/tag/lzrhstsjf5\"></script><script data-no-optimize=\"1\">var litespeed_docref=sessionStorage.getItem(\"litespeed_docref\");litespeed_docref&&(Object.defineProperty(document,\"referrer\",{get:function(){return litespeed_docref}}),sessionStorage.removeItem(\"litespeed_docref\"));</script>\n\t<meta charset=\"UTF-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<link rel=\"preload\" href=\"https://www.artabrian.com/wp-content/uploads/kardeu-fonts/inter-395290514d.woff2\" as=\"font\" type=\"font/woff2\" crossorigin=\"\">\n<link rel=\"preload\" href=\"https://www.artabrian.com/wp-content/uploads/kardeu-fonts/inter-4ee8fc9834.woff2\" as=\"font\" type=\"font/woff2\" crossorigin=\"\">\n        <script src=\"data:text/javascript;base64,KGZ1bmN0aW9uKCl7aWYod2luZG93LnNlbGYhPT13aW5kb3cudG9wKXtkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQuY2xhc3NMaXN0LmFkZCgnaXMta2FyZGV1LXByZXZpZXctbW9kZScpO3ZhciBzPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ3N0eWxlJyk7cy5pZD0na2QtaWZyYW1lLWFkbWluYmFyLWtpbGxlcic7cy50ZXh0Q29udGVudD0nI3dwYWRtaW5iYXIgeyBkaXNwbGF5OiBub25lICFpbXBvcnRhbnQ7IH0gaHRtbCB7IG1hcmdpbi10b3A6IDBweCAhaW1wb3J0YW50OyB9IGJvZHkgeyBtYXJnaW4tdG9wOiAwcHggIWltcG9ydGFudDsgcGFkZGluZy10b3A6IDBweCAhaW1wb3J0YW50OyB9JzsoZG9jdW1lbnQuaGVhZHx8ZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50KS5hcHBlbmRDaGlsZChzKX19KSgp\" defer=\"\"></script>\n        <link rel=\"preload\" as=\"image\" href=\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3-600x390.png\" fetchpriority=\"high\">\n<link rel=\"preload\" as=\"image\" href=\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3-600x390.png\" fetchpriority=\"high\">\n        <script id=\"kardeu-consent-mode-v2\" src=\"data:text/javascript;base64,d2luZG93LmRhdGFMYXllcj13aW5kb3cuZGF0YUxheWVyfHxbXTtmdW5jdGlvbiBndGFnKCl7ZGF0YUxheWVyLnB1c2goYXJndW1lbnRzKX0KZ3RhZygnY29uc2VudCcsJ2RlZmF1bHQnLHsnYWRfc3RvcmFnZSc6J2dyYW50ZWQnLCdhbmFseXRpY3Nfc3RvcmFnZSc6J2dyYW50ZWQnLCdhZF91c2VyX2RhdGEnOidncmFudGVkJywnYWRfcGVyc29uYWxpemF0aW9uJzonZ3JhbnRlZCcsJ3dhaXRfZm9yX3VwZGF0ZSc6NTAwfSk=\" defer=\"\"></script>\n        \n<!-- Search Engine Optimization by Rank Math PRO - https://rankmath.com/ -->\n<title>Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian™ - MX ATV Templates</title>\n<meta name=\"description\" content=\"Buy and download now a Template for Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian™ - MX ATV Templates\">\n<meta name=\"robots\" content=\"follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large\">\n<link rel=\"canonical\" href=\"https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/\">\n<meta property=\"og:locale\" content=\"en_US\">\n<meta property=\"og:type\" content=\"product\">\n<meta property=\"og:title\" content=\"Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian™ - MX ATV Templates\">\n<meta property=\"og:description\" content=\"Buy and download now a Template for Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian™ - MX ATV Templates\">\n<meta property=\"og:url\" content=\"https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/\">\n<meta property=\"og:site_name\" content=\"Artabrian™ - MX ATV Templates\">\n<meta property=\"og:updated_time\" content=\"2025-07-28T11:43:30+02:00\">\n<meta property=\"og:image\" content=\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3.png\">\n<meta property=\"og:image:secure_url\" content=\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3.png\">\n<meta property=\"og:image:width\" content=\"630\">\n<meta property=\"og:image:height\" content=\"409\">\n<meta property=\"og:image:alt\" content=\"Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template\">\n<meta property=\"og:image:type\" content=\"image/png\">\n<meta property=\"product:price:amount\" content=\"26.99\">\n<meta property=\"product:price:currency\" content=\"USD\">\n<meta property=\"product:availability\" content=\"instock\">\n<meta property=\"product:retailer_item_id\" content=\"40ee613242e8\">\n<meta property=\"product:brand\" content=\"Artabrian™ Templates\">\n<meta property=\"product:price:amount\" content=\"24.37\">\n<meta property=\"product:price:currency\" content=\"EUR\">\n<meta name=\"twitter:card\" content=\"summary_large_image\">\n<meta name=\"twitter:title\" content=\"Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian™ - MX ATV Templates\">\n<meta name=\"twitter:description\" content=\"Buy and download now a Template for Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian™ - MX ATV Templates\">\n<meta name=\"twitter:site\" content=\"@https://twitter.com/artabrian\">\n<meta name=\"twitter:creator\" content=\"@https://twitter.com/artabrian\">\n<meta name=\"twitter:image\" content=\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3.png\">\n<script type=\"application/ld+json\" class=\"rank-math-schema-pro\">{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":[\"Person\",\"Organization\"],\"@id\":\"https://www.artabrian.com/#person\",\"name\":\"Artabrian\\u2122 Templates\",\"sameAs\":[\"https://www.facebook.com/artabriantemplates\",\"https://twitter.com/https://twitter.com/artabrian\",\"https://www.instagram.com/artabrian_templates/\",\"https://www.youtube.com/channel/UCGRu8fhCM2VAX3bXf_tV0tA\",\"https://www.pinterest.es/Artabrian/\"],\"logo\":{\"@type\":\"ImageObject\",\"@id\":\"https://www.artabrian.com/#logo\",\"url\":\"https://www.artabrian.com/wp-content/uploads/2024/03/icon_01_512x512.png\",\"contentUrl\":\"https://www.artabrian.com/wp-content/uploads/2024/03/icon_01_512x512.png\",\"caption\":\"Artabrian\\u2122 - MX ATV Templates\",\"inLanguage\":\"en-US\",\"width\":\"512\",\"height\":\"512\"}},{\"@type\":\"WebSite\",\"@id\":\"https://www.artabrian.com/#website\",\"url\":\"https://www.artabrian.com\",\"name\":\"Artabrian\\u2122 - MX ATV Templates\",\"publisher\":{\"@id\":\"https://www.artabrian.com/#person\"},\"inLanguage\":\"en-US\"},{\"@type\":\"ImageObject\",\"@id\":\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3.png\",\"url\":\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3.png\",\"width\":\"630\",\"height\":\"409\",\"caption\":\"Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template\",\"inLanguage\":\"en-US\"},{\"@type\":\"ItemPage\",\"@id\":\"https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/#webpage\",\"url\":\"https://www.artabrian.com/templates/honda-crf-450r-mx-motocross-2013-2014-2015-2016-graphics-template/\",\"name\":\"Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian\\u2122 - MX ATV Templates\",\"datePublished\":\"2024-02-14T13:04:32+01:00\",\"dateModified\":\"2025-07-28T11:43:30+02:00\",\"isPartOf\":{\"@id\":\"https://www.artabrian.com/#website\"},\"primaryImageOfPage\":{\"@id\":\"https://www.artabrian.com/wp-content/uploads/2024/02/honda-crf-450r-motocross-mx-2013-2014-2015-2016-graphics-template3.png\"},\"inLanguage\":\"en-US\"},{\"name\":\"Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian\\u2122 - MX ATV Templates\",\"description\":\"Buy and download now a Template for Honda CRF 450R MX Motocross 2013 2014 2015 2016 Graphics Template - Artabrian\\u2122 - MX ATV Templates\",\"sku\":\"40ee613242e8\",\"brand\":{\"@type\":\"Brand\",\"name\":\"Artabrian\\u2122 Templates\"},\"offers\":{\"@type\":\"Offer\",\"price\":\"26.99\",\"priceCurrency\":\"USD\",\"availability\":\"InStock\",\"priceValidUntil\":\"2034-03-31 12:00 AM\",\"hasMerchantReturnPolicy\":{\"@type\":\"MerchantReturnPolicy\",\"applicableCountry\":[\"US\",\"ES\",\"PT\",\"FR\",\"IT\",\"DE\",\"GB\",\"AU\"],\"returnPolicyCategory\":\"https://sche",
+  "http_status": null,
+  "error_details": "Page.wait_for_selector: Timeout 25000ms exceeded.\nCall log:\n  - waiting for locator(\"button[name='add-to-cart'], .single_add_to_cart_button\") to be visible\n",
+  "code_errors": [],
+  "long_tasks": [],
+  "slowest_requests": [
+    {
+      "url": "https://www.artabrian.com/cdn-cgi/speculation",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "other",
+      "content_type": "application/speculationrules+json",
+      "size_bytes": 151,
+      "cache_status": null
+    },
+    {
+      "url": "https://www.artabrian.com/wp-content/uploads/kardeu-fonts/inter-395290514d.woff2",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "font",
+      "content_type": "font/woff2",
+      "size_bytes": 85068,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.artabrian.com/wp-content/uploads/kardeu-fonts/inter-4ee8fc9834.woff2",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "font",
+      "content_type": "font/woff2",
+      "size_bytes": 18748,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.artabrian.com/wp-content/uploads/kardeu-fonts/inter.css?ver=1.0.2",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "stylesheet",
+      "content_type": "text/css",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    },
+    {
+      "url": "https://www.artabrian.com/wp-content/themes/kardeu-canvas/style.css?ver=1.0.0",
+      "method": "GET",
+      "status": 200,
+      "duration_ms": 0.0,
+      "resource_type": "stylesheet",
+      "content_type": "text/css",
+      "size_bytes": 0,
+      "cache_status": "HIT"
+    }
+  ]
+}
